@@ -1,2 +1,0 @@
-# AAV
-Alianza Anti Venecos
