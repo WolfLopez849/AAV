@@ -98,7 +98,6 @@ function showNotification(message, type = 'info') {
 
 function initializeCharts() {
     if (window.Chart) {
-
         const topProductsCtx = document.getElementById('topProductsChart');
         if (topProductsCtx) {
             new Chart(topProductsCtx.getContext('2d'), {
@@ -127,7 +126,7 @@ function initializeCharts() {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
                     plugins: { legend: { display: false } },
                     scales: {
                         y: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
@@ -162,7 +161,7 @@ function initializeCharts() {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
                     plugins: { legend: { position: 'bottom' } }
                 }
             });
@@ -186,7 +185,7 @@ function initializeCharts() {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
                     plugins: { legend: { display: false } },
                     scales: {
                         y: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
@@ -223,7 +222,7 @@ function initializeCharts() {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,                    
                     plugins: { legend: { position: 'bottom' } }
                 }
             });
