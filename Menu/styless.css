@@ -13,6 +13,13 @@ body {
 }
 
 /* Barra Superior */
+
+.btn-close {
+    filter: invert(23%) sepia(97%) saturate(7482%) hue-rotate(357deg) brightness(97%) contrast(119%) !important;
+    border: none;
+    border-radius: 50%;
+}
+
 .top-bar {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
