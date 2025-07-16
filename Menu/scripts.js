@@ -95,7 +95,6 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
-
 function initializeCharts() {
     if (window.Chart) {
         const topProductsCtx = document.getElementById('topProductsChart');

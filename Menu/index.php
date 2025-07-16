@@ -79,7 +79,7 @@
 
             <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                <div class="logo d-flex align-items-center">
+                    <div class="logo d-flex align-items-center">
                         <i class="fas fa-store"></i>
                         <span class="ms-2">Sistema POS</span>
                     </div>
