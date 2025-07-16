@@ -1,0 +1,12 @@
+[
+  { "id": 101, "nombre": "Laptop", "categoria": "Electrónicos", "stock": 10, "entradas": 20, "salidas": 10, "vendidos": 8 },
+  { "id": 102, "nombre": "Mouse", "categoria": "Electrónicos", "stock": 30, "entradas": 40, "salidas": 10, "vendidos": 8 },
+  { "id": 103, "nombre": "Teclado", "categoria": "Electrónicos", "stock": 25, "entradas": 30, "salidas": 5, "vendidos": 5 },
+  { "id": 104, "nombre": "Monitor", "categoria": "Electrónicos", "stock": 12, "entradas": 15, "salidas": 3, "vendidos": 2 },
+  { "id": 105, "nombre": "Impresora", "categoria": "Oficina", "stock": 8, "entradas": 10, "salidas": 2, "vendidos": 3 },
+  { "id": 106, "nombre": "Silla Oficina", "categoria": "Oficina", "stock": 20, "entradas": 25, "salidas": 5, "vendidos": 4 },
+  { "id": 107, "nombre": "Escritorio", "categoria": "Oficina", "stock": 7, "entradas": 10, "salidas": 3, "vendidos": 2 },
+  { "id": 108, "nombre": "USB 32GB", "categoria": "Accesorios", "stock": 50, "entradas": 60, "salidas": 10, "vendidos": 6 },
+  { "id": 109, "nombre": "Cámara Web", "categoria": "Accesorios", "stock": 15, "entradas": 20, "salidas": 5, "vendidos": 3 },
+  { "id": 110, "nombre": "Auriculares", "categoria": "Accesorios", "stock": 18, "entradas": 25, "salidas": 7, "vendidos": 4 }
+]
