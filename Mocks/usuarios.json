@@ -1,0 +1,12 @@
+[
+  { "id": 1, "usuario": "AUXILIARCONTABLE", "nombre": "María López", "correo": "maria.lopez@empresa.com", "rol": "Auxiliar Contable" },
+  { "id": 2, "usuario": "VENDEDOR1", "nombre": "Carlos Pérez", "correo": "carlos.perez@empresa.com", "rol": "Vendedor" },
+  { "id": 3, "usuario": "ADMIN", "nombre": "Ana Torres", "correo": "ana.torres@empresa.com", "rol": "Administrador" },
+  { "id": 4, "usuario": "GERENTE", "nombre": "Luis Gómez", "correo": "luis.gomez@empresa.com", "rol": "Gerente" },
+  { "id": 5, "usuario": "CAJERO1", "nombre": "Sofía Ramírez", "correo": "sofia.ramirez@empresa.com", "rol": "Cajero" },
+  { "id": 6, "usuario": "AUXILIARINVENTARIO", "nombre": "Pedro Sánchez", "correo": "pedro.sanchez@empresa.com", "rol": "Auxiliar Inventario" },
+  { "id": 7, "usuario": "VENDEDOR2", "nombre": "Laura Herrera", "correo": "laura.herrera@empresa.com", "rol": "Vendedor" },
+  { "id": 8, "usuario": "AUXILIARADMIN", "nombre": "Miguel Castro", "correo": "miguel.castro@empresa.com", "rol": "Auxiliar Administrativo" },
+  { "id": 9, "usuario": "SUPERVISOR", "nombre": "Patricia Díaz", "correo": "patricia.diaz@empresa.com", "rol": "Supervisor" },
+  { "id": 10, "usuario": "CAJERO2", "nombre": "Jorge Ruiz", "correo": "jorge.ruiz@empresa.com", "rol": "Cajero" }
+]
