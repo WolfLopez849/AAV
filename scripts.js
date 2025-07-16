@@ -95,8 +95,10 @@ function showNotification(message, type = 'info') {
     }, 3000);
 }
 
+
 function initializeCharts() {
     if (window.Chart) {
+
         const topProductsCtx = document.getElementById('topProductsChart');
         if (topProductsCtx) {
             new Chart(topProductsCtx.getContext('2d'), {
@@ -125,7 +127,7 @@ function initializeCharts() {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
                         y: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
@@ -160,7 +162,7 @@ function initializeCharts() {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
                     plugins: { legend: { position: 'bottom' } }
                 }
             });
@@ -184,7 +186,7 @@ function initializeCharts() {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,
+                    maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
                         y: { beginAtZero: true, grid: { color: 'rgba(0, 0, 0, 0.1)' } },
@@ -221,7 +223,7 @@ function initializeCharts() {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: true,                    
+                    maintainAspectRatio: false,
                     plugins: { legend: { position: 'bottom' } }
                 }
             });
