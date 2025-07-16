@@ -1,35 +1,35 @@
 
 <?php
-session_start();
+    session_start();
 
-function isUserLoggedIn() {
-    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
-}
+    function isUserLoggedIn() {
+        return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+    }
 
-function getUserInfo() {
-    if (isUserLoggedIn()) {
+    function getUserInfo() {
+        if (isUserLoggedIn()) {
+            return [
+                'name' => $_SESSION['user_name'] ?? 'Usuario',
+                'role' => $_SESSION['user_role'] ?? 'Administrador'
+            ];
+        }
         return [
-            'name' => $_SESSION['user_name'] ?? 'Usuario',
-            'role' => $_SESSION['user_role'] ?? 'Administrador'
+            'name' => 'Usuario',
+            'role' => 'Administrador'
         ];
     }
-    return [
-        'name' => 'Usuario',
-        'role' => 'Administrador'
-    ];
-}
 
-function logout() {
-    session_destroy();
-    header('Location: login.php');
-    exit();
-}
+    function logout() {
+        session_destroy();
+        header('Location: ../login/index.php');
+        exit();
+    }
 
-if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-    logout();
-}
+    if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+        logout();
+    }
 
-$userInfo = getUserInfo();
+    $userInfo = getUserInfo();
 ?>
 
 <!DOCTYPE html>
@@ -78,40 +78,42 @@ $userInfo = getUserInfo();
             </div>
 
             <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-               <div class="logo d-flex align-items-center">
-                    <i class="fas fa-store"></i>
-                    <span class="ms-2">Sistema POS</span>
+                <div class="offcanvas-header">
+                <div class="logo d-flex align-items-center">
+                        <i class="fas fa-store"></i>
+                        <span class="ms-2">Sistema POS</span>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="index.php">Apartado principal</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Otro apartado</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            desplegable
+                            </a>
+                            <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Otro apartado</a></li>
+                            <li><a class="dropdown-item" href="#">Otro apartado</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Otro apartado</a></li>
+                            </ul>
+                        </li>
                     </ul>
-                </li>
-                </ul>
-                <form class="d-flex mt-3" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
+                    <!-- 
+                    <form class="d-flex mt-3" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                     -->
+                </div>
             </div>
         </div>
     </nav>
@@ -120,56 +122,56 @@ $userInfo = getUserInfo();
         <section class="navigation-section">
             <h2>Menú Principal</h2>
             <div class="menu-grid">
-                <div class="menu-item" onclick="navigateTo('inventario')">
+                <div class="menu-item" onclick="navigateTo('inventario/index.php')">
                     <div class="menu-icon">
                         <i class="fas fa-boxes"></i>
                     </div>
                     <h3>Inventario</h3>
                     <p>Gestionar productos y stock</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('ventas')">
+                <div class="menu-item" onclick="navigateTo('ventas/index.php')">
                     <div class="menu-icon">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
                     <h3>Ventas</h3>
                     <p>Procesar ventas y facturas</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('clientes')">
+                <div class="menu-item" onclick="navigateTo('clientes/index.php')">
                     <div class="menu-icon">
                         <i class="fas fa-users"></i>
                     </div>
                     <h3>Clientes</h3>
                     <p>Gestionar base de clientes</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('proveedores')">
+                <div class="menu-item" onclick="navigateTo('proveedores/index.php')">
                     <div class="menu-icon">
                         <i class="fas fa-truck"></i>
                     </div>
                     <h3>Proveedores</h3>
                     <p>Administrar proveedores</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('usuarios')">
+                <div class="menu-item" onclick="navigateTo('usuarios/index.php')">
                     <div class="menu-icon">
                         <i class="fas fa-user-cog"></i>
                     </div>
                     <h3>Usuarios</h3>
                     <p>Gestionar usuarios del sistema</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('reportes')">
+                <div class="menu-item" onclick="navigateTo('reportes/index.php')">
                     <div class="menu-icon">
                         <i class="fas fa-chart-bar"></i>
                     </div>
                     <h3>Reportes</h3>
                     <p>Generar reportes detallados</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('caja')">
+                <div class="menu-item" onclick="navigateTo('caja/index.php')">
                     <div class="menu-icon">
                         <i class="fas fa-cash-register"></i>
                     </div>
                     <h3>Caja</h3>
                     <p>Control de caja y efectivo</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('configuracion')">
+                <div class="menu-item" onclick="navigateTo('configuracion/index.php')">
                     <div class="menu-icon">
                         <i class="fas fa-cog"></i>
                     </div>
