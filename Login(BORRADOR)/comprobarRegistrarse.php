@@ -5,7 +5,7 @@ ini_set("display_startup_errors", 1);
 
 error_reporting(E_ALL);
     if (isset($_POST['registrarse'])){
-        require_once("functionesLogin.php");
+        require_once("funcionesRegistrar.php");
         $registro = new RegistroUser(
             $_POST['documento'],
             $_POST['usuario'],

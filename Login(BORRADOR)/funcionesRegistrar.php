@@ -6,7 +6,7 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
     require_once("../Config/db.php");
     require_once("../Config/conectar.php");
-    require_once("functionsRegister.php");
+    require_once("funcionesLogin.php");
    
     class RegistroUser extends Conectar{
         private $documento;
