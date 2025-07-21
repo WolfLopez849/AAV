@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <body>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Usuarios</title>
     <link rel="stylesheet" href="Menu/styless.css">
 </head>
-<body>
-<?php
-// ...existing code...
 
-    </body>
+
+</body>
 </html>
 
 <?php
