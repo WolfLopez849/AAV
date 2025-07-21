@@ -42,11 +42,11 @@ $userInfo = getUserInfo();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">  
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-light bg-white fixed-top">
         <div class="container-fluid">
 
             <div class="d-flex align-items-center">
-                <button class="navbar-toggler me-2 border border-1 border-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <button class="navbar-toggler me-2 border border-1 border-black" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -76,33 +76,33 @@ $userInfo = getUserInfo();
                 
             </div>
 
-            <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas offcanvas-start bg-white text-black" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
                     <div class="logo d-flex align-items-center">
                         <i class="fas fa-store"></i>
                         <span class="ms-2">Sistema POS</span>
                     </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php">Apartado principal</a>
+                            <a class="nav-link active text-black" aria-current="page" href="index.php">Apartado principal</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Otro apartado</a>
+                            <a class="nav-link text-black" href="#">Otro apartado</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-black" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             desplegable
                             </a>
-                            <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Otro apartado</a></li>
-                            <li><a class="dropdown-item" href="#">Otro apartado</a></li>
+                            <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item " href="#">Otro apartado</a></li>
+                            <li><a class="dropdown-item " href="#">Otro apartado</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item" href="#">Otro apartado</a></li>
+                            <li><a class="dropdown-item " href="#">Otro apartado</a></li>
                             </ul>
                         </li>
                     </ul>
