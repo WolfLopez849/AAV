@@ -1,34 +1,34 @@
 <?php
-    session_start();
+session_start();
 
-    function isUserLoggedIn() {
-        return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
-    }
+function isUserLoggedIn() {
+    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+}
 
-    function getUserInfo() {
-        if (isUserLoggedIn()) {
-            return [
-                'name' => $_SESSION['user_name'] ?? 'Usuario',
-                'role' => $_SESSION['user_role'] ?? 'Administrador'
-            ];
-        }
+function getUserInfo() {
+    if (isUserLoggedIn()) {
         return [
-            'name' => 'Usuario',
-            'role' => 'Administrador'
+            'name' => $_SESSION['user_name'] ?? 'Usuario',
+            'role' => $_SESSION['user_role'] ?? 'Administrador'
         ];
     }
+    return [
+        'name' => 'Usuario',
+        'role' => 'Administrador'
+    ];
+}
 
-    function logout() {
-        session_destroy();
-        header('Location: ../login/index.php');
-        exit();
-    }
+function logout() {
+    session_destroy();
+    header('Location: login.php');
+    exit();
+}
 
-    if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-        logout();
-    }
+if (isset($_GET['action']) && $_GET['action'] === 'logout') {
+    logout();
+}
 
-    $userInfo = getUserInfo();
+$userInfo = getUserInfo();
 ?>
 
 <!DOCTYPE html>
@@ -204,9 +204,10 @@
             </div>
         </section>
     </main>
-    
+
+    <script src="scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-    <script src="scripts.js"></script>
+   
 </body>
 </html>

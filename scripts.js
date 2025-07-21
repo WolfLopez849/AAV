@@ -406,4 +406,4 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateRealTimeData() {
     setInterval(updateAllCharts, 30000);
 }
-updateRealTimeData(); 
+updateRealTimeData();
