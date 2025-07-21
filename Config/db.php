@@ -1,23 +1,16 @@
 <?php
+ini_set("display_errors", 1);
 
-if(!defined("DB_TYPE")){
-    define("DB_TYPE","mysql");
-}
+ini_set("display_startup_errors", 1);
 
-if(!defined("DB_HOST")){
-    define("DB_HOST","localhost");
-}
+error_reporting(E_ALL);
 
-if(!defined("DB_NAME")){
-    define("DB_NAME","aav");
-}
+define('DB_TYPE', 'mysql');
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'aav'); // o el nombre de tu base de datos
+define('DB_USER', 'root');
+define('DB_PWD', ''); 
 
-if(!defined("DB_USER")){
-    define("DB_USER","root"); 
-}
 
-if(!defined("DB_PWD")){
-    define("DB_PWD"," ");
-}
 
 ?>

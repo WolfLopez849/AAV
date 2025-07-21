@@ -27,6 +27,16 @@ session_destroy();
              <div  class="d-flex justify-content-center align-items-center" >
                 <form action="comprobarRegistrarse.php"   method="POST">
                     <h1 class="m-5" id="h1" style="font-weight: 800;">REGISTRAR</h1>
+
+                    <div class="mb-3"id="escritura">
+                        <label id="label" for="documento" class="form-label">Documento</label>
+                        <input 
+                          type="text"
+                          id="documento input"
+                          name="documento"
+                          class="form-control"  
+                        />
+                      </div>
                     <div class="mb-3"id="escritura">
                         <label id="label" for="nombre" class="form-label">Nombre</label>
                         <input 
@@ -63,6 +73,15 @@ session_destroy();
                           class="form-control"  
                         />
                     </div>
+                    <div class="mb-3"id="escritura">
+                        <label id="label" for="rol" class="form-label">Rol</label>
+                        <input 
+                          type="text"
+                          id="rol input"
+                          name="rol"
+                          class="form-control"  
+                        />
+                      </div>
                     <div class="mb-3 form-check">
                       <input type="checkbox" class="form-check-input" id="exampleCheck1">
                       <label id="recuerdame" class="form-check-label" for="exampleCheck1">No me olvides dorindel</label>

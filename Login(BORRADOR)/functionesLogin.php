@@ -6,28 +6,29 @@ ini_set("display_startup_errors", 1);
 error_reporting(E_ALL);
     require_once("../Config/db.php");
     require_once("../Config/conectar.php");
-    require_once("../Login/functionsRegister.php");
+    require_once("functionsRegister.php");
    
     class RegistroUser extends Conectar{
-        private $id;
+        private $documento;
         private $usuario;
-        private $nombre /* falta*/ */
+        private $nombre; 
         private $correo;
         private $password;
+        private $rol;
 
-        public function __construc($id=0,$usuario="",$nombre="",$correo="",$password="", $dbCnx=""){
-            $this->id=$id;
+        public function __construct($documento=0,$usuario="",$nombre="",$correo="",$password="",$rol="", $dbCnx=""){
+            $this->documento=$documento;
             $this->usuario=$usuario;
             $this->nombre=$nombre;
             $this->correo=$correo;
             $this->password=$password;
+            $this->rol=$rol;
             parent::__construct($dbCnx);
         }
         /* set's */
-        public function setId($id){
-            $this->id=$id;
+        public function setDocumento($documento){
+            $this->documento=$documento;
         }
-      
         public function setUsuario($usuario){
             $this->usuario=$usuario;
         }
@@ -40,12 +41,14 @@ error_reporting(E_ALL);
         public function setPassword($password){
             $this->password=$password;
         }
+        public function setRol($rol){
+            $this->rol=$rol;
+        }
      
         /* get's */
-        public function getId(){
-            return $this->id;
+        public function getDocumento(){
+            return $this->documento;
         }
-      
         public function getUsuario(){
             return $this->usuario;
         }
@@ -58,9 +61,13 @@ error_reporting(E_ALL);
         public function getPassword(){
             return $this->password;
         }
+        public function getRol(){
+            return $this->rol;
+        }
+
         public function checkUser($documento){
             try {
-                $stm=$this->dbCnx->prepare("SELECT * FROM AAV WHERE documento = '$documento'");
+                $stm=$this->dbCnx->prepare("SELECT * FROM usuarios WHERE documento = '$documento'");
                 $stm->execute();
                 if ($stm->fetchColumn()) {
                     return true;
@@ -74,13 +81,14 @@ error_reporting(E_ALL);
         /* finish */
         public function insertData(){
             try {
-                $stm= $this->dbCnx->prepare("INSERT INTO AAV (correo,usuario,password)
-                VALUES(?,?,?)");
-                $stm -> execute([$this->correo, $this->usuario, md5($this->password)]);
-                $login = new LoginUser();
+                $stm= $this->dbCnx->prepare("INSERT INTO usuarios (documento,nombre,usuario,correo,password,rol)
+                VALUES(?,?,?,?,?,?)");
+                $stm -> execute([ $this->documento, $this->nombre, $this->usuario, $this->correo, md5($this->password), $this->rol
+        ]);
+                /*$login = new LoginUser();
                 $login ->setCorreo($_POST['correo']);
                 $login ->setPassword($_POST['password']);
-                $success= $login->login();
+                $success= $login->login();*/
             } catch (Exception $e) {
                 return $e->getMessage();
             }
