@@ -73,6 +73,7 @@ $userInfo = getUserInfo();
                         <i class="fas fa-sign-out-alt me-2"></i>
                     </button>
                 </div>
+                
             </div>
 
             <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
