@@ -1,0 +1,12 @@
+[
+  { "id": 1, "nombre": "TechSupplier S.A.", "contacto": "contacto@techsupplier.com", "productos": [101, 102, 103] },
+  { "id": 2, "nombre": "OfiMax", "contacto": "ventas@ofimax.com", "productos": [104, 105] },
+  { "id": 3, "nombre": "AccesoriosYA", "contacto": "info@accesoriosya.com", "productos": [108, 109, 110] },
+  { "id": 4, "nombre": "ElectronixPro", "contacto": "soporte@electronixpro.com", "productos": [101, 104] },
+  { "id": 5, "nombre": "MundoPC", "contacto": "contacto@mundopc.com", "productos": [102, 103, 108] },
+  { "id": 6, "nombre": "OfiSillas", "contacto": "ventas@ofisillas.com", "productos": [106, 107] },
+  { "id": 7, "nombre": "PrintExpress", "contacto": "soporte@printexpress.com", "productos": [105] },
+  { "id": 8, "nombre": "WebCamPro", "contacto": "ventas@webcampro.com", "productos": [109] },
+  { "id": 9, "nombre": "AudioPlus", "contacto": "info@audioplus.com", "productos": [110] },
+  { "id": 10, "nombre": "MegaOficina", "contacto": "contacto@megaoficina.com", "productos": [106, 107, 105] }
+]
