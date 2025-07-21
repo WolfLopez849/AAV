@@ -1,0 +1,122 @@
+/* *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} */
+.body{
+    background-image: url(../img/fondo.gif);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position-x: right;
+}
+
+#h1{
+    margin: 0.1rem 0 !important;
+    text-align: center;
+    font-size: 4rem;
+    color: aqua;
+    text-shadow: 0 0 25px aqua;
+    background-color:crimson;
+    background: rgb(149, 12, 187);
+    background: linear-gradient(90deg, rgba(225,121,255,1) 18%, rgba(214,67,245,1) 53%, rgba(162,44,255,1) 83%);
+    -webkit-background-clip: text;  
+    -webkit-text-fill-color: transparent;
+}
+#cambioA{
+    margin: 0 0 0 5.5rem!important;
+    text-align: center;
+    font-size: 2rem;
+    color: aqua;
+    text-shadow: 0 0 25px aqua;
+    background-color:crimson;
+    background: rgb(149, 12, 187);
+    background: linear-gradient(90deg, rgba(225,121,255,1) 18%, rgba(214,67,245,1) 53%, rgba(162,44,255,1) 83%);
+    -webkit-background-clip: text;  
+    -webkit-text-fill-color: transparent;
+}
+#imagen{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1rem;
+    
+}
+#indicador{
+    font-size: 2rem;
+    color:deeppink;
+}
+
+fieldset{
+    border: 0;
+}
+#label{
+    color: rgb(252, 6, 6);
+    text-decoration: none !important;
+}
+#recuerdame{
+    color: chartreuse;
+}
+#escritura input{
+    padding: 0.3rem 0.2rem;
+    font-size: 1rem;
+    border: 2px solid black;
+    border-radius: 2rem;
+    background: rgb(214, 210, 210);
+
+}
+#escritura input:hover{
+    box-shadow: 0 0 25px rgb(255, 36, 255) !important;
+}
+#button{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    margin-left: 4rem;
+    padding: 1rem 4rem;
+    font-size: 1.5rem;
+    background: rgb(225,121,255);
+    background: linear-gradient(90deg, rgba(225,121,255,1) 18%, rgba(214,67,245,1) 53%, rgba(162,44,255,1) 83%);
+    color: rgb(255, 255, 255);
+    border-radius: 2rem;
+}
+#button:hover{
+    margin-left: 3rem;
+    color: aqua !important;
+    transition: 0.5s;
+    padding: 1rem 5rem;
+    font-size: 1.5rem;
+    background: rgb(225,121,255);
+    background: linear-gradient(90deg, rgba(225,121,255,1) 18%, rgba(214,67,245,1) 53%, rgba(162,44,255,1) 83%);
+    color: rgb(255, 255, 255);
+    border-radius: 2rem;
+    box-shadow: 0 0 25px purple !important;
+}
+
+form a{
+    text-decoration: none;
+    color: rgb(255, 0, 0);
+    font-size: 2rem;
+}
+.horizontal{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    border: 0;
+    border-radius: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.contenido{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button:hover{
+    padding: 1.5rem 7rem;
+    transition: .5s ease;
+    text-shadow: 0 0 20px  aqua;
+}
