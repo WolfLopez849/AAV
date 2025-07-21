@@ -82,7 +82,7 @@ $userInfo = getUserInfo();
                         <i class="fas fa-store"></i>
                         <span class="ms-2">Sistema POS</span>
                     </div>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
                     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
