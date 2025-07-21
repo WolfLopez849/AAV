@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 220px;
+            background: #22313f;
+            color: #fff;
+            padding: 24px 0 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .sidebar .logo {
+            margin-bottom: 32px;
+        }
+        .sidebar nav ul {
+            list-style: none;
+            width: 100%;
+            padding: 0;
+        }
+        .sidebar nav ul li {
+            padding: 12px 32px;
+            font-size: 1.08rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+        .sidebar nav ul li.active,
+        .sidebar nav ul li:hover {
+            background: #34495e;
+            color: #4fc3f7;
+        }
+        .main-content {
+            flex: 1;
+            background: #22313f;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 32px 0 32px;
+            background: #22313f;
+        }
+        .header-title {
+            font-size: 2rem;
+            color: #4fc3f7;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .header-right span {
+            margin-left: 24px;
+            font-size: 1.5rem;
+            color: #4fc3f7;
+            cursor: pointer;
+        }
+        .usuarios-panel {
+            background: #f7f7fa;
+            border-radius: 12px;
+            margin: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 32px;
+            max-width: 900px;
+            align-self: center;
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #22313f;
+        }
+        .btn-agregar {
+            background: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .btn-agregar:hover {
+            background: #217dbb;
+        }
+        .panel-body {
+            background: #fbeeee;
+            border-radius: 8px;
+            padding: 24px 18px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+        }
+        .panel-body p {
+            color: #22313f;
+            margin-bottom: 16px;
+        }
+        .input-buscar {
+            width: 100%;
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1px solid #b0bec5;
+            margin-bottom: 18px;
+            font-size: 1rem;
+            background: #fff;
+        }
+        .tabla-usuarios {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: transparent;
+        }
+        .tabla-usuarios th, .tabla-usuarios td {
+            padding: 8px 6px;
+            text-align: left;
+            border-bottom: none;
+        }
+        .tabla-usuarios th {
+            background: none;
+            color: #22313f;
+            font-weight: 600;
+        }
+        .tabla-usuarios td {
+            color: #22313f;
+        }
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(34, 49, 63, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 32px 28px;
+            border-radius: 10px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+            min-width: 340px;
+            position: relative;
+        }
+        .modal-content h2 {
+            margin-bottom: 18px;
+            color: #22313f;
+        }
+        .modal-content label {
+            display: block;
+            margin-bottom: 6px;
+            color: #22313f;
+            font-weight: 500;
+        }
+        .modal-content input, .modal-content select {
+            width: 80%;
+            padding: 6px 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: 1px solid #b0bec5;
+            font-size: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .modal-content button {
+            background: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+        .modal-content button:hover {
+            background: #217dbb;
+        }
+        .close {
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 1.5rem;
+            color: #22313f;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        /* Iconos básicos */
+        .icon-eye::before { content: '\1F441'; font-size: 1.2em; }
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                flex-direction: row;
+                justify-content: flex-start;
+                padding: 12px 0;
+            }
+            .sidebar nav ul {
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+            }
+            .main-content {
+                padding: 0;
+            }
+            .usuarios-panel {
+                margin: 16px;
+                padding: 16px;
+            }
+        }
+        .form-horizontal-modal {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .form-row-modal {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .form-group-modal {
+            display: flex;
+            flex-direction: column;
+            min-width: 120px;
+        }
+        .form-group-modal label {
+            margin-bottom: 4px;
+            color: #22313f;
+            font-weight: 500;
+            font-size: 0.98rem;
+        }
+        .form-group-modal input,
+        .form-group-modal select {
+            width: 120px;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #b0bec5;
+            font-size: 0.98rem;
+            margin-bottom: 0;
+        }
+        .form-horizontal-modal button {
+            background: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .form-horizontal-modal button:hover {
+            background: #217dbb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="Menu/logo-posnova.png" alt="POSNOVA" style="width: 90px;">
+            </div>
+            <nav>
+                <ul>
+                    <li><span class="icon-menu"></span> Menu principal</li>
+                    <li><span class="icon-inventario"></span> Inventario</li>
+                    <li><span class="icon-ventas"></span> Ventas</li>
+                    <li><span class="icon-clientes"></span> Clientes</li>
+                    <li><span class="icon-proveedores"></span> Proveedores</li>
+                    <li><span class="icon-caja"></span> Caja</li>
+                    <li><span class="icon-reportes"></span> Reportes</li>
+                    <li class="active"><span class="icon-usuarios"></span> Usuarios</li>
+                    <li><span class="icon-configuracion"></span> Configuración</li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <span class="icon-usuarios header-icon"></span>
+                    <span class="header-title">Gestion de Usuarios</span>
+                </div>
+                <div class="header-right">
+                    <span class="icon-bell"></span>
+                    <span class="icon-user"></span>
+                    <span class="icon-logout"></span>
+                </div>
+            </header>
+            <section class="usuarios-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Listado de Usuarios</span>
+                    <button class="btn-agregar" onclick="mostrarModal()">
+                        <span class="icon-eye"></span> Agregar Usuarios
+                    </button>
+                </div>
+                <div class="panel-body">
+                    <p>Aun no tienes usuarios agregados. Pulsa en agregar usuarios para comenzar.</p>
+                    <input type="text" class="input-buscar" placeholder="Buscar Usuarios">
+                    <table class="tabla-usuarios">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>N°Cédula</th>
+                                <th>Usuario</th>
+                                <th>Contraseña</th>
+                                <th>Rol</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Aquí se mostrarán los usuarios -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para agregar usuario -->
+    <div id="modalUsuario" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModal()">&times;</span>
+            <h2>Registrar Usuario</h2>
+            <form id="registroForm" class="form-horizontal-modal">
+                <div class="form-row-modal">
+                    <div class="form-group-modal">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="cedula">N°Cédula:</label>
+                        <input type="text" id="cedula" name="cedula" required>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="usuario">Usuario:</label>
+                        <input type="text" id="usuario" name="usuario" required>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="password">Contraseña:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group-modal">
+                        <label for="rol">Rol:</label>
+                        <select id="rol" name="rol" required>
+                            <option value="">Selecciona un rol</option>
+                            <option value="Administrador">Administrador</option>
+                            <option value="Cajero">Cajero</option>
+                            <option value="Supervisor">Supervisor</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit">Registrar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function mostrarModal() {
+            document.getElementById('modalUsuario').style.display = 'flex';
+        }
+        function cerrarModal() {
+            document.getElementById('modalUsuario').style.display = 'none';
+        }
+        function filtrarUsuarios() {
+            var input = document.querySelector('.input-buscar').value.toLowerCase();
+            var rows = document.querySelectorAll('#tablaUsuarios tbody tr');
+            rows.forEach(function(row) {
+                var text = row.textContent.toLowerCase();
+                row.style.display = text.includes(input) ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
