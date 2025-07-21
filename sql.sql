@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `usuario` varchar(80) NOT NULL,
   `nombre` varchar(80) NOT NULL,
   `password` varchar(100) NOT NULL,
+  `correo` varchar(80) NOT NULL,
   `rol` varchar(80) NOT NULL,
   PRIMARY KEY (`documento`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
