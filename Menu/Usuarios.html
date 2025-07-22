@@ -1,65 +1,74 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Gestión de Usuarios</title>
+    <!-- Enlace al archivo de estilos CSS -->
+    <link rel="stylesheet" href="styless.css" />
+    <!-- Enlace a Font Awesome para los iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+    <div class="app-container" id="appContainer">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <!-- Botón de alternancia dentro del logo -->
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <span>POSNOVA</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><i class="fas fa-home"></i> <span>Menu principal</span></li>
+                    <li><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+                    <li><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+                    <li><i class="fas fa-users"></i> <span>Clientes</span></li>
+                    <li><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+                    <li><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+                    <li><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+                    <li><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
+                    <li><i class="fas fa-cog"></i> <span>Configuración</span></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="title">
+                    <h2><i class="fas fa-cash-register"></i>Gestion De Usuarios</h2>
+                </div>
+                <div class="topbar-icons">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-user-circle"></i>
+                    <i class="fas fa-right-from-bracket logout"></i>
+                </div>
+            </header>
+            <section>
+    </head>
+</body>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            min-height: 100vh;
+            min-height: 200vh;
             color: #333;
         }
         .container {
             display: flex;
             min-height: 100vh;
         }
-        .sidebar {
-            width: 220px;
-            background: #22313f;
-            color: #fff;
-            padding: 24px 0 0 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .sidebar .logo {
-            margin-bottom: 32px;
-        }
-        .sidebar nav ul {
-            list-style: none;
-            width: 100%;
-            padding: 0;
-        }
-        .sidebar nav ul li {
-            padding: 12px 32px;
-            font-size: 1.08rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: background 0.2s;
-        }
-        .sidebar nav ul li.active,
-        .sidebar nav ul li:hover {
-            background: #34495e;
-            color: #4fc3f7;
-        }
-        .main-content {
-            flex: 1;
-            background: #22313f;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-        }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 24px 32px 0 32px;
-            background: #22313f;
+            background: #539add;
         }
         .header-title {
             font-size: 2rem;
@@ -76,10 +85,10 @@
         .usuarios-panel {
             background: #f7f7fa;
             border-radius: 12px;
-            margin: 32px;
+            margin: 42px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            padding: 32px;
-            max-width: 900px;
+            padding: 42px;
+            max-width: 2000px;
             align-self: center;
         }
         .panel-header {
@@ -113,7 +122,7 @@
         .panel-body {
             background: #fbeeee;
             border-radius: 8px;
-            padding: 24px 18px;
+            padding: 30px 180px 30px 200px;
             box-shadow: 0 1px 6px rgba(0,0,0,0.05);
         }
         .panel-body p {
@@ -237,89 +246,59 @@
                 padding: 16px;
             }
         }
-        .form-horizontal-modal {
+        /* Horizontal modal form styles for user registration */
+        .modal-content-horizontal {
+            background: #f7f7fa;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 32px 32px 24px 32px;
+            min-width: 900px;
+            max-width: 1100px;
+        }
+        .form-horizontal-modal-horizontal {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 0;
         }
-        .form-row-modal {
+        .form-row-modal-horizontal {
             display: flex;
             flex-direction: row;
-            gap: 12px;
-            align-items: flex-end;
+            gap: 18px;
+            align-items: flex-start;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 18px;
+            width: 100%;
         }
-        .form-group-modal {
-            display: flex;
-            flex-direction: column;
-            min-width: 120px;
-        }
-        .form-group-modal label {
-            margin-bottom: 4px;
-            color: #22313f;
-            font-weight: 500;
-            font-size: 0.98rem;
-        }
-        .form-group-modal input,
-        .form-group-modal select {
-            width: 120px;
-            padding: 6px 8px;
+        .form-row-modal-horizontal input,
+        .form-row-modal-horizontal select {
+            width: 180px;
+            padding: 7px 10px;
             border-radius: 6px;
             border: 1px solid #b0bec5;
-            font-size: 0.98rem;
+            font-size: 1rem;
             margin-bottom: 0;
+            background: #fff;
         }
-        .form-horizontal-modal button {
+        .form-horizontal-modal-horizontal button {
             background: #3498db;
             color: #fff;
             border: none;
-            padding: 8px 18px;
+            padding: 10px 0;
             border-radius: 6px;
             font-size: 1rem;
             cursor: pointer;
             font-weight: 500;
-            margin-top: 10px;
+            margin-top: 8px;
             transition: background 0.2s;
+            width: 100%;
+            display: block;
         }
-        .form-horizontal-modal button:hover {
+        .form-horizontal-modal-horizontal button:hover {
             background: #217dbb;
         }
     </style>
-</head>
-<body>
-    <div class="container">
-        <aside class="sidebar">
-            <div class="logo">
-                <img src="Menu/logo-posnova.png" alt="POSNOVA" style="width: 90px;">
-            </div>
-            <nav>
-                <ul>
-                    <li><span class="icon-menu"></span> Menu principal</li>
-                    <li><span class="icon-inventario"></span> Inventario</li>
-                    <li><span class="icon-ventas"></span> Ventas</li>
-                    <li><span class="icon-clientes"></span> Clientes</li>
-                    <li><span class="icon-proveedores"></span> Proveedores</li>
-                    <li><span class="icon-caja"></span> Caja</li>
-                    <li><span class="icon-reportes"></span> Reportes</li>
-                    <li class="active"><span class="icon-usuarios"></span> Usuarios</li>
-                    <li><span class="icon-configuracion"></span> Configuración</li>
-                </ul>
-            </nav>
-        </aside>
         <main class="main-content">
-            <header class="header">
-                <div class="header-left">
-                    <span class="icon-usuarios header-icon"></span>
-                    <span class="header-title">Gestion de Usuarios</span>
-                </div>
-                <div class="header-right">
-                    <span class="icon-bell"></span>
-                    <span class="icon-user"></span>
-                    <span class="icon-logout"></span>
-                </div>
-            </header>
-            <section class="usuarios-panel">
+        <section class="usuarios-panel">
                 <div class="panel-header">
                     <span class="panel-title">Listado de Usuarios</span>
                     <button class="btn-agregar" onclick="mostrarModal()">
@@ -350,36 +329,21 @@
 
     <!-- Modal para agregar usuario -->
     <div id="modalUsuario" class="modal" style="display:none;">
-        <div class="modal-content">
+        <div class="modal-content modal-content-horizontal">
             <span class="close" onclick="cerrarModal()">&times;</span>
             <h2>Registrar Usuario</h2>
-            <form id="registroForm" class="form-horizontal-modal">
-                <div class="form-row-modal">
-                    <div class="form-group-modal">
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" id="nombre" name="nombre" required>
-                    </div>
-                    <div class="form-group-modal">
-                        <label for="cedula">N°Cédula:</label>
-                        <input type="text" id="cedula" name="cedula" required>
-                    </div>
-                    <div class="form-group-modal">
-                        <label for="usuario">Usuario:</label>
-                        <input type="text" id="usuario" name="usuario" required>
-                    </div>
-                    <div class="form-group-modal">
-                        <label for="password">Contraseña:</label>
-                        <input type="password" id="password" name="password" required>
-                    </div>
-                    <div class="form-group-modal">
-                        <label for="rol">Rol:</label>
-                        <select id="rol" name="rol" required>
-                            <option value="">Selecciona un rol</option>
-                            <option value="Administrador">Administrador</option>
-                            <option value="Cajero">Cajero</option>
-                            <option value="Supervisor">Supervisor</option>
-                        </select>
-                    </div>
+            <form id="registroForm" class="form-horizontal-modal-horizontal">
+                <div class="form-row-modal-horizontal">
+                    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                    <input type="text" id="cedula" name="cedula" placeholder="N°Cédula" required>
+                    <input type="text" id="usuario" name="usuario" placeholder="Usuario" required>
+                    <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                    <select id="rol" name="rol" required>
+                        <option value="">Rol</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Cajero">Cajero</option>
+                        <option value="Supervisor">Supervisor</option>
+                    </select>
                 </div>
                 <button type="submit">Registrar</button>
             </form>
@@ -387,20 +351,109 @@
     </div>
 
     <script>
+        // Funcionalidad de los iconos de la barra superior derecha
+        document.querySelector('.fa-bell').addEventListener('click', function() {
+            alert('No tienes notificaciones nuevas.');
+        });
+        document.querySelector('.fa-user-circle').addEventListener('click', function() {
+            alert('Perfil de usuario.');
+        });
+        document.querySelector('.fa-right-from-bracket').addEventListener('click', function() {
+            if (confirm('¿Seguro que deseas cerrar sesión?')) {
+                // Aquí puedes agregar lógica de logout real si tienes backend
+                localStorage.clear();
+                location.reload();
+            }
+        });
+        // Sidebar toggle (tres rayitas)
+        document.getElementById('sidebarToggleBtn').addEventListener('click', function() {
+            document.getElementById('appContainer').classList.toggle('collapsed');
+        });
         function mostrarModal() {
             document.getElementById('modalUsuario').style.display = 'flex';
         }
         function cerrarModal() {
             document.getElementById('modalUsuario').style.display = 'none';
         }
-        function filtrarUsuarios() {
-            var input = document.querySelector('.input-buscar').value.toLowerCase();
-            var rows = document.querySelectorAll('#tablaUsuarios tbody tr');
-            rows.forEach(function(row) {
-                var text = row.textContent.toLowerCase();
-                row.style.display = text.includes(input) ? '' : 'none';
-            });
+
+        // Guardar y mostrar usuarios
+        function getUsuarios() {
+            return JSON.parse(localStorage.getItem('usuarios') || '[]');
         }
+
+        function setUsuarios(usuarios) {
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        }
+
+        function agregarUsuario(usuario) {
+            const usuarios = getUsuarios();
+            usuarios.push(usuario);
+            setUsuarios(usuarios);
+            mostrarUsuarios();
+        }
+
+        function mostrarUsuarios(filtro = '') {
+            const usuarios = getUsuarios();
+            const tbody = document.querySelector('.tabla-usuarios tbody');
+            tbody.innerHTML = '';
+            let filtrados = usuarios;
+            if (filtro) {
+                filtrados = usuarios.filter(u => {
+                    return (
+                        u.nombre.toLowerCase().includes(filtro) ||
+                        u.cedula.toLowerCase().includes(filtro) ||
+                        u.usuario.toLowerCase().includes(filtro) ||
+                        u.password.toLowerCase().includes(filtro) ||
+                        u.rol.toLowerCase().includes(filtro)
+                    );
+                });
+            }
+            if (filtrados.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5"></td></tr>';
+            } else {
+                filtrados.forEach(u => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${u.nombre}</td>
+                        <td>${u.cedula}</td>
+                        <td>${u.usuario}</td>
+                        <td>${u.password}</td>
+                        <td>${u.rol}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value.trim();
+            const cedula = document.getElementById('cedula').value.trim();
+            const usuario = document.getElementById('usuario').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const rol = document.getElementById('rol').value;
+            if (nombre && cedula && usuario && password && rol) {
+                agregarUsuario({ nombre, cedula, usuario, password, rol });
+                this.reset();
+                cerrarModal();
+            }
+        });
+
+        document.querySelector('.input-buscar').addEventListener('input', function() {
+            mostrarUsuarios(this.value.toLowerCase());
+        });
+
+        // Inicializar tabla al cargar
+        window.addEventListener('DOMContentLoaded', function() {
+            mostrarUsuarios();
+        });
     </script>
 </body>
+</html><!-- Aquí puedes añadir el contenido de tu página -->
+    <script src="main.js"></script>
+</body>
 </html>
+    </style>
+
+
+
