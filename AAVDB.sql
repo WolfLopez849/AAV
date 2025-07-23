@@ -18,9 +18,14 @@ CREATE TABLE IF NOT EXISTS `caja` (
 
 --DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE IF NOT EXISTS `clientes` (
-  `cedula` int NOT NULL,
-  `combre` int NOT NULL,
-  PRIMARY KEY (`cedula`)
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `tipo_documento` varchar(50) NOT NULL,
+  `numero_documento` int NOT NULL,
+  `direccion` varchar(80) NOT NULL,
+  `telefono` int NOT NULL,
+  `correo` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `inventario`
