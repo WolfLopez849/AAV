@@ -302,7 +302,7 @@ function initializeCharts() {
                     }]
                 },
                 options: {
-                    responsive: true,
+                    responsive: false,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
@@ -326,7 +326,7 @@ function initializeCharts() {
                     }]
                 },
                 options: {
-                    responsive: true,
+                    responsive: false,
                     maintainAspectRatio: false,
                     plugins: { legend: { position: 'bottom' } }
                 }
@@ -349,7 +349,7 @@ function initializeCharts() {
                     }]
                 },
                 options: {
-                    responsive: true,
+                    responsive: false,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
@@ -373,7 +373,7 @@ function initializeCharts() {
                     }]
                 },
                 options: {
-                    responsive: true,
+                    responsive: false,
                     maintainAspectRatio: false,
                     plugins: { legend: { position: 'bottom' } }
                 }
