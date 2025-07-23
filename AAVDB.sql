@@ -7,7 +7,7 @@ USE AAVDB;
 
 -- Estructura de tabla para la tabla `caja`
 
-DROP TABLE IF EXISTS `caja`;
+--DROP TABLE IF EXISTS `caja`;
 CREATE TABLE IF NOT EXISTS `caja` (
   `id_venta` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `caja` (
 
 -- Estructura de tabla para la tabla `clientes`
 
-DROP TABLE IF EXISTS `clientes`;
+--DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE IF NOT EXISTS `clientes` (
   `cedula` int NOT NULL,
   `combre` int NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
 
 -- Estructura de tabla para la tabla `inventario`
 
-DROP TABLE IF EXISTS `inventario`;
+--DROP TABLE IF EXISTS `inventario`;
 CREATE TABLE IF NOT EXISTS `inventario` (
   `codigo_barra` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS `inventario` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `productos`
+
+--DROP TABLE IF EXISTS `productos`;
 CREATE TABLE IF NOT EXISTS `productos` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(80) NOT NULL,
@@ -45,7 +47,8 @@ CREATE TABLE IF NOT EXISTS `productos` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `proveedores`
-DROP TABLE IF EXISTS `proveedores`;
+
+--DROP TABLE IF EXISTS `proveedores`;
 CREATE TABLE IF NOT EXISTS `proveedores` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(80) NOT NULL,
@@ -56,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `proveedores` (
 
 -- Estructura de tabla para la tabla `usuarios`
 
-DROP TABLE IF EXISTS `usuarios`;
+--DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `documento` int NOT NULL,
   `usuario` varchar(80) NOT NULL,
@@ -69,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 
 -- Estructura de tabla para la tabla `bitacora`
 
-DROP TABLE IF EXISTS `bitacora`;
+--DROP TABLE IF EXISTS `bitacora`;
 CREATE TABLE IF NOT EXISTS `bitacora` (
   `id` int NOT NULL AUTO_INCREMENT,
   `usuario_id` int DEFAULT NULL,
@@ -80,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `bitacora` (
 
 -- Estructura de tabla para la tabla `ventas`
 
-DROP TABLE IF EXISTS `ventas`;
+--DROP TABLE IF EXISTS `ventas`;
 CREATE TABLE IF NOT EXISTS `ventas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `fecha` varchar(80) NOT NULL,
