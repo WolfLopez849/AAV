@@ -1,3 +1,4 @@
+<?php // menu.php ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -126,4 +127,4 @@
 
     <script src="scripts.js"></script>
 </body>
-</html>
+</html> 
