@@ -1,9 +1,9 @@
 -- ESTE ARCHIVO ES PARA IMPORTAL AL PHPMYADMIN NO EJECUTAR.
 -- ESPERO QUE LEAN Y NO ME PREGUNTEN COMO HACERLO, YA QUE EL QUE ME PREGUNTE LE VOY PARTIENDO EL PALO DE LA ESCOBA.
 -- ADVERTIDOS QUEDAN;
-DROP DATABASE IF EXISTS AAV;
-CREATE DATABASE IF NOT EXISTS AAV;
-USE AAV;
+DROP DATABASE IF EXISTS AAVDB;
+CREATE DATABASE IF NOT EXISTS AAVDB;
+USE AAVDB;
 
 -- Estructura de tabla para la tabla `caja`
 
@@ -65,6 +65,17 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `correo` varchar(80) NOT NULL,
   `rol` varchar(80) NOT NULL,
   PRIMARY KEY (`documento`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Estructura de tabla para la tabla `bitacora`
+
+DROP TABLE IF EXISTS `bitacora`;
+CREATE TABLE IF NOT EXISTS `bitacora` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `usuario_id` int DEFAULT NULL,
+  `accion` varchar(255) DEFAULT NULL,
+  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `ventas`
