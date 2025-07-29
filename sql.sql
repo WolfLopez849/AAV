@@ -9,8 +9,13 @@ USE AAV;
 
 DROP TABLE IF EXISTS `caja`;
 CREATE TABLE IF NOT EXISTS `caja` (
-  `id_venta` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
+  `product_id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(40) NOT NULL,
+  `name` varchar(120) NOT NULL,
+  `purchase_price` decimal(12,2) NOT NULL,
+  `iva_percent` decimal(5,2) NOT NULL,
+  `category` varchar(60) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_venta`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -18,8 +23,12 @@ CREATE TABLE IF NOT EXISTS `caja` (
 
 DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE IF NOT EXISTS `clientes` (
-  `cedula` int NOT NULL,
-  `combre` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `tipo_documento` varchar(50) NOT NULL,
+  `numero_documento` varchar(10) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `correo` varchar(100) NOT NULL,
   PRIMARY KEY (`cedula`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -27,8 +36,13 @@ CREATE TABLE IF NOT EXISTS `clientes` (
 
 DROP TABLE IF EXISTS `inventario`;
 CREATE TABLE IF NOT EXISTS `inventario` (
-  `codigo_barra` int NOT NULL AUTO_INCREMENT,
+  `codigo_barra` int NOT NULL,
   `nombre` varchar(50) NOT NULL,
+  `precio_venta` int NOT NULL,
+  `precio_compra` int NOT NULL,
+  `stock` int NOT NULL,
+  `categoria` varchar(50) NOT NULL,
+  `proveedor` varchar(80) NOT NULL,
   PRIMARY KEY (`codigo_barra`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
