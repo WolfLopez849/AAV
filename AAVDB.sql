@@ -1,13 +1,13 @@
 -- ESTE ARCHIVO ES PARA IMPORTAL AL PHPMYADMIN NO EJECUTAR.
 -- ESPERO QUE LEAN Y NO ME PREGUNTEN COMO HACERLO, YA QUE EL QUE ME PREGUNTE LE VOY PARTIENDO EL PALO DE LA ESCOBA.
 -- ADVERTIDOS QUEDAN;
-DROP DATABASE IF EXISTS AAV;
-CREATE DATABASE IF NOT EXISTS AAV;
-USE AAV;
+DROP DATABASE IF EXISTS AAVDB;
+CREATE DATABASE IF NOT EXISTS AAVDB;
+USE AAVDB;
 
 -- Estructura de tabla para la tabla `caja`
 
-DROP TABLE IF EXISTS `caja`;
+--DROP TABLE IF EXISTS `caja`;
 CREATE TABLE IF NOT EXISTS `caja` (
   `product_id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(40) NOT NULL,
@@ -21,20 +21,30 @@ CREATE TABLE IF NOT EXISTS `caja` (
 
 -- Estructura de tabla para la tabla `clientes`
 
-DROP TABLE IF EXISTS `clientes`;
+--DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE IF NOT EXISTS `clientes` (
   `id` int NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD:sql.sql
   `nombre` varchar(100) NOT NULL,
   `tipo_documento` varchar(50) NOT NULL,
   `numero_documento` varchar(10) NOT NULL,
   `telefono` varchar(20) NOT NULL,
   `correo` varchar(100) NOT NULL,
   PRIMARY KEY (`cedula`)
+=======
+  `nombre` varchar(50) NOT NULL,
+  `tipo_documento` varchar(50) NOT NULL,
+  `numero_documento` int NOT NULL,
+  `direccion` varchar(80) NOT NULL,
+  `telefono` int NOT NULL,
+  `correo` varchar(80) NOT NULL,
+  PRIMARY KEY (`id`)
+>>>>>>> 1d30b93d7e4ead658e73c6eea6bec41633baac46:AAVDB.sql
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `inventario`
 
-DROP TABLE IF EXISTS `inventario`;
+--DROP TABLE IF EXISTS `inventario`;
 CREATE TABLE IF NOT EXISTS `inventario` (
   `codigo_barra` int NOT NULL,
   `nombre` varchar(50) NOT NULL,
@@ -47,6 +57,8 @@ CREATE TABLE IF NOT EXISTS `inventario` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `productos`
+
+--DROP TABLE IF EXISTS `productos`;
 CREATE TABLE IF NOT EXISTS `productos` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(80) NOT NULL,
@@ -59,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `productos` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `proveedores`
-DROP TABLE IF EXISTS `proveedores`;
+
+--DROP TABLE IF EXISTS `proveedores`;
 CREATE TABLE IF NOT EXISTS `proveedores` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(80) NOT NULL,
@@ -70,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `proveedores` (
 
 -- Estructura de tabla para la tabla `usuarios`
 
-DROP TABLE IF EXISTS `usuarios`;
+--DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `documento` int NOT NULL,
   `usuario` varchar(80) NOT NULL,
@@ -81,9 +94,20 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`documento`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Estructura de tabla para la tabla `bitacora`
+
+--DROP TABLE IF EXISTS `bitacora`;
+CREATE TABLE IF NOT EXISTS `bitacora` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `usuario_id` int DEFAULT NULL,
+  `accion` varchar(255) DEFAULT NULL,
+  `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- Estructura de tabla para la tabla `ventas`
 
-DROP TABLE IF EXISTS `ventas`;
+--DROP TABLE IF EXISTS `ventas`;
 CREATE TABLE IF NOT EXISTS `ventas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `fecha` varchar(80) NOT NULL,

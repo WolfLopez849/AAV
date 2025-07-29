@@ -10,6 +10,7 @@ if(!defined("DB_TYPE")){
 }else {
     define('DB_TYPE', 'mysql');
 }
+
 if(!defined("DB_HOST")){
     define('DB_HOST', 'localhost');
 }else {
@@ -17,9 +18,9 @@ if(!defined("DB_HOST")){
 }
 
 if(!defined("DB_NAME")){
-    define('DB_NAME', 'aav');
+    define('DB_NAME', 'aavdb');
 }else {
-    define('DB_NAME', 'aav');
+    define('DB_NAME', 'aavdb');
 }
 
 if(!defined("DB_USER")){
