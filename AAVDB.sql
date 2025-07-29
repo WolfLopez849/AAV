@@ -66,9 +66,11 @@ CREATE TABLE IF NOT EXISTS `productos` (
 --DROP TABLE IF EXISTS `proveedores`;
 CREATE TABLE IF NOT EXISTS `proveedores` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(80) NOT NULL,
-  `contacto` varchar(80) NOT NULL,
-  `productos` varchar(225) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `documento` varchar(20) NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `direccion` varchar(150) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
