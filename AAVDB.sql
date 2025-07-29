@@ -24,14 +24,6 @@ CREATE TABLE IF NOT EXISTS `caja` (
 --DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE IF NOT EXISTS `clientes` (
   `id` int NOT NULL AUTO_INCREMENT,
-<<<<<<< HEAD:sql.sql
-  `nombre` varchar(100) NOT NULL,
-  `tipo_documento` varchar(50) NOT NULL,
-  `numero_documento` varchar(10) NOT NULL,
-  `telefono` varchar(20) NOT NULL,
-  `correo` varchar(100) NOT NULL,
-  PRIMARY KEY (`cedula`)
-=======
   `nombre` varchar(50) NOT NULL,
   `tipo_documento` varchar(50) NOT NULL,
   `numero_documento` int NOT NULL,
@@ -39,7 +31,6 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   `telefono` int NOT NULL,
   `correo` varchar(80) NOT NULL,
   PRIMARY KEY (`id`)
->>>>>>> 1d30b93d7e4ead658e73c6eea6bec41633baac46:AAVDB.sql
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `inventario`
