@@ -1,18 +1,17 @@
-let productos = JSON.parse(localStorage.getItem('productos')) || [];
+let productos = [];
 let editando = false;
 let seleccionados = new Set();
 
 document.addEventListener('DOMContentLoaded', () => {
-  actualizarTabla();
+  cargarProductos();
   document.getElementById('formProducto').addEventListener('submit', guardarProducto);
   document.getElementById('buscarProducto').addEventListener('input', actualizarTabla);
   document.getElementById('btnMostrarFormulario').addEventListener('click', toggleFormulario);
   document.getElementById('btnEditarSeleccionados').addEventListener('click', editarSeleccionado);
 
-  const appContainer = document.getElementById('appContainer');
   const toggleBtn = document.getElementById('sidebarToggleBtn');
   toggleBtn?.addEventListener('click', () => {
-    appContainer.classList.toggle('collapsed');
+    document.getElementById('appContainer').classList.toggle('collapsed');
   });
 });
 
@@ -24,7 +23,7 @@ function toggleFormulario() {
   if (visible) {
     if (editando) {
       document.querySelector('.contenedor-tabla')?.classList.remove('oculto');
-      document.querySelector('.buscador-contenedor, .buscador-pastilla')?.classList.remove('oculto');
+      document.querySelector('.contenedor-busqueda-acciones')?.classList.remove('oculto');
     }
     contenedor.classList.remove('visible');
     contenedor.classList.add('oculto');
@@ -32,7 +31,7 @@ function toggleFormulario() {
     btn.innerHTML = '<i class="fas fa-plus-circle"></i> Agregar Producto';
     editando = false;
     seleccionados.clear();
-    actualizarTabla();
+    cargarProductos();
   } else {
     resetFormulario();
     contenedor.classList.remove('oculto');
@@ -42,41 +41,41 @@ function toggleFormulario() {
   }
 }
 
-function guardarProducto(e) {
+async function cargarProductos() {
+  try {
+    const res = await fetch('api.php');
+    productos = await res.json();
+    actualizarTabla();
+  } catch (error) {
+    showNotification('Error al cargar productos', 'error');
+  }
+}
+
+async function guardarProducto(e) {
   e.preventDefault();
   const form = e.target;
-  const data = new FormData(form);
-  const nuevo = Object.fromEntries(data.entries());
+  const data = Object.fromEntries(new FormData(form));
+  data.precioCompra = parseFloat(data.precioCompra);
+  data.precioVenta = parseFloat(data.precioVenta);
+  data.stock = parseInt(data.stock);
+  data.iva = parseInt(data.iva);
 
-  nuevo.precioCompra = parseFloat(nuevo.precioCompra);
-  nuevo.precioVenta = parseFloat(nuevo.precioVenta);
-  nuevo.stock = parseInt(nuevo.stock);
-  nuevo.iva = parseInt(nuevo.iva);
-  nuevo.codigo = nuevo.codigo.trim();
-  nuevo.id = nuevo.codigo;
+  const metodo = data.id ? 'PUT' : 'POST';
 
-  const existente = productos.find(p => p.codigo === nuevo.codigo);
+  try {
+    await fetch('api.php', {
+      method: metodo,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
 
-  if (editando && existente) {
-    Object.assign(existente, nuevo);
-    showNotification(`Producto actualizado: ${nuevo.nombre}`, 'success');
-  } else if (!existente) {
-    productos.push(nuevo);
-    showNotification(`Producto agregado: ${nuevo.nombre}`, 'success');
-  } else {
-    showNotification(`Ya existe un producto con ese código`, 'error');
-    return;
+    showNotification(data.id ? 'Producto actualizado' : 'Producto agregado', 'success');
+    resetFormulario();
+    toggleFormulario();
+    cargarProductos();
+  } catch (error) {
+    showNotification('Error al guardar producto', 'error');
   }
-
-  localStorage.setItem('productos', JSON.stringify(productos));
-
-  editando = false;
-  form.reset();
-  document.getElementById('contenedorFormulario').classList.remove('visible');
-  document.getElementById('contenedorFormulario').classList.add('oculto');
-  document.getElementById('btnMostrarFormulario').innerHTML = '<i class="fas fa-plus-circle"></i> Agregar Producto';
-  seleccionados.clear();
-  actualizarTabla();
 }
 
 function actualizarTabla() {
@@ -85,84 +84,94 @@ function actualizarTabla() {
   const mensaje = document.getElementById('mensajeVacio');
   const textoMensaje = document.getElementById('textoMensajeVacio');
   const tabla = document.querySelector('.contenedor-tabla');
-  const buscador = document.querySelector('.buscador-contenedor, .buscador-pastilla');
+  const contenedorBuscador = document.querySelector('.contenedor-busqueda-acciones');
 
   tbody.innerHTML = '';
 
   if (productos.length === 0) {
-    if (mensaje && textoMensaje) {
-      textoMensaje.innerHTML = 'Aún no tienes productos agregados. Pulsa en <strong>Agregar Producto</strong> para comenzar.';
-      mensaje.classList.remove('oculto');
-    }
-    buscador?.classList.add('oculto');
+    textoMensaje.innerHTML = 'Aún no tienes productos agregados. Pulsa en <strong>Agregar Producto</strong> para comenzar.';
+    mensaje.classList.remove('oculto');
     tabla?.classList.add('oculto');
+    contenedorBuscador?.classList.add('oculto');
     actualizarBarraOpciones();
     return;
   }
-
-  buscador?.classList.remove('oculto');
 
   const filtrados = productos.filter(p =>
     p.nombre.toLowerCase().includes(filtro) || p.codigo.toLowerCase().includes(filtro)
   );
 
   if (filtrados.length === 0) {
-    if (mensaje && textoMensaje) {
-      textoMensaje.innerHTML = 'No se encontraron productos con ese término.';
-      mensaje.classList.remove('oculto');
-    }
+    textoMensaje.innerHTML = 'No se encontraron productos con ese término.';
+    mensaje.classList.remove('oculto');
     tabla?.classList.add('oculto');
-    actualizarBarraOpciones();
   } else {
     mensaje?.classList.add('oculto');
     tabla?.classList.remove('oculto');
-
-    filtrados.forEach(p => {
-      const tr = document.createElement('tr');
-      if (p.stock <= 5) tr.classList.add('alerta-stock');
-      tr.setAttribute('data-codigo', p.codigo);
-      tr.classList.toggle('seleccionado', seleccionados.has(p.codigo));
-
-      tr.innerHTML = `
-        <td><input type="checkbox" class="checkbox-seleccion" data-codigo="${p.codigo}" ${seleccionados.has(p.codigo) ? 'checked' : ''}></td>
-        <td>${p.nombre}</td>
-        <td>${p.codigo}</td>
-        <td>$${p.precioVenta.toFixed(2)}</td>
-        <td>${p.stock}</td>
-        <td>${p.categoria || '-'}</td>
-        <td>${p.proveedor || '-'}</td>
-      `;
-
-      tr.addEventListener('click', (e) => {
-        if (e.target.tagName !== 'INPUT' && !editando) {
-          const codigo = p.codigo;
-          if (e.ctrlKey) {
-            seleccionados.has(codigo) ? seleccionados.delete(codigo) : seleccionados.add(codigo);
-          } else {
-            seleccionados.clear();
-            seleccionados.add(codigo);
-          }
-          actualizarTabla();
-        }
-      });
-
-      tbody.appendChild(tr);
-    });
   }
 
-  document.querySelectorAll('.checkbox-seleccion').forEach(checkbox => {
-    checkbox.addEventListener('change', (e) => {
-      if (editando) {
-        e.preventDefault();
-        e.target.checked = seleccionados.has(e.target.dataset.codigo);
-        return;
+  contenedorBuscador?.classList.remove('oculto');
+
+  filtrados.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.setAttribute('data-id', p.id);
+    tr.classList.toggle('seleccionado', seleccionados.has(p.id));
+    if (p.stock <= 5) tr.classList.add('alerta-stock');
+    const columnas = [
+      `<input type="checkbox" class="checkbox-seleccion" data-id="${p.id}" ${seleccionados.has(p.id) ? 'checked' : ''}>`,
+      p.nombre,
+      p.codigo,
+      `$${parseFloat(p.precioVenta).toFixed(2)}`,
+      p.stock <= 5
+        ? `<i class="fas fa-exclamation-triangle icono-alerta" title="Stock bajo: considera reabastecer"></i> ${p.stock}`
+        : p.stock,
+      p.categoria || '-',
+      p.proveedor || '-'
+    ];
+
+    columnas.forEach(col => {
+      const td = document.createElement('td');
+      td.innerHTML = col;
+      td.classList.add('celda-animada');
+      tr.appendChild(td);
+    });
+
+    tr.addEventListener('click', e => {
+      if (e.target.tagName !== 'INPUT' && !editando) {
+        if (e.ctrlKey) {
+          seleccionados.has(p.id) ? seleccionados.delete(p.id) : seleccionados.add(p.id);
+        } else {
+          if (seleccionados.has(p.id)) {
+            seleccionados.delete(p.id);
+          } else {
+            seleccionados.clear();
+            seleccionados.add(p.id);
+          }
+        }
+        actualizarTabla();
       }
-      const codigo = e.target.dataset.codigo;
+    });
+
+    tbody.appendChild(tr);
+  });
+
+  // Manejar cambios de los checkboxes sin redibujar la tabla
+  document.querySelectorAll('.checkbox-seleccion').forEach(cb => {
+    cb.addEventListener('change', e => {
+      if (editando) return;
+      const id = parseInt(e.target.dataset.id);
       if (e.target.checked) {
-        seleccionados.add(codigo);
+        seleccionados.add(id);
       } else {
-        seleccionados.delete(codigo);
+        seleccionados.delete(id);
       }
+
+      // Actualizar clase visual del <tr>
+      const fila = e.target.closest('tr');
+      if (fila) {
+        fila.classList.toggle('seleccionado', seleccionados.has(id));
+      }
+
       actualizarBarraOpciones();
     });
   });
@@ -171,60 +180,83 @@ function actualizarTabla() {
 }
 
 function actualizarBarraOpciones() {
-  const barra = document.querySelector('.barra-opciones');
+  const barra = document.querySelector('.botones-busqueda');
   const btnEditar = document.getElementById('btnEditarSeleccionados');
-  if (!barra || !btnEditar) return;
+  const btnEliminar = document.getElementById('btnEliminarSeleccionados');
+  const count = seleccionados.size;
 
-  barra.classList.toggle('visible', seleccionados.size > 0);
-  btnEditar.style.display = (!editando && seleccionados.size === 1) ? 'inline-flex' : 'none';
+  if (count > 0) {
+    barra.classList.add('visible');
+    btnEditar.style.display = count === 1 ? 'inline-flex' : 'none';
+    btnEliminar.style.display = 'inline-flex';
+  } else {
+    barra.classList.remove('visible');
+    btnEditar.style.display = 'none';
+    btnEliminar.style.display = 'none';
+  }
 }
 
 function editarSeleccionado() {
   if (seleccionados.size !== 1) return;
-  const codigo = [...seleccionados][0];
-  const producto = productos.find(p => p.codigo === codigo);
+
+  const id = [...seleccionados][0];
+  const producto = productos.find(p => p.id == id);
   if (!producto) return;
 
-  mostrarFormularioConProducto(producto);
-  showNotification(`Editando: ${producto.nombre}`, 'info');
-}
-
-function eliminarSeleccionados() {
-  const confirmacion = confirm("¿Eliminar productos seleccionados?");
-  if (!confirmacion) return;
-  productos = productos.filter(p => !seleccionados.has(p.codigo));
-  seleccionados.clear();
-  localStorage.setItem('productos', JSON.stringify(productos));
-  actualizarTabla();
-  showNotification(`Productos eliminados`, 'success');
-}
-
-function mostrarFormularioConProducto(producto) {
   const form = document.getElementById('formProducto');
   resetFormulario();
-  Object.keys(producto).forEach(k => {
-    if (k === 'id') return;
-    if (form.elements[k]) form.elements[k].value = producto[k];
-  });
+
+  for (let campo in producto) {
+    if (form.elements[campo]) {
+      form.elements[campo].value = producto[campo];
+    }
+  }
+
+  const contenedorFormulario = document.getElementById('contenedorFormulario');
+  contenedorFormulario.classList.remove('oculto');
+  contenedorFormulario.classList.add('visible');
 
   document.querySelector('.contenedor-tabla')?.classList.add('oculto');
-  document.querySelector('.buscador-contenedor, .buscador-pastilla')?.classList.add('oculto');
+  document.querySelector('.contenedor-busqueda-acciones')?.classList.add('oculto');
+
+  const btn = document.getElementById('btnMostrarFormulario');
+  btn.classList.add('cancelar');
+  btn.innerHTML = '<i class="fas fa-times"></i> Cancelar';
+
   editando = true;
-  document.getElementById('contenedorFormulario').classList.remove('oculto');
-  document.getElementById('contenedorFormulario').classList.add('visible');
-  document.getElementById('btnMostrarFormulario').innerHTML = '<i class="fas fa-times"></i> Cancelar';
   actualizarBarraOpciones();
+}
+
+async function eliminarSeleccionados() {
+  const confirmacion = confirm("¿Eliminar productos seleccionados?");
+  if (!confirmacion) return;
+
+  try {
+    for (let id of seleccionados) {
+      await fetch('api.php', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id })
+      });
+    }
+    showNotification("Productos eliminados", 'success');
+    seleccionados.clear();
+    cargarProductos();
+  } catch (error) {
+    showNotification("Error al eliminar", 'error');
+  }
 }
 
 function resetFormulario() {
   document.getElementById('formProducto').reset();
+  document.getElementById('formProducto').elements['id'].value = '';
   editando = false;
 }
 
-function showNotification(mensaje, tipo = 'info') {
+function showNotification(msg, tipo = 'info') {
   const toast = document.getElementById('toast');
   if (!toast) return;
-  toast.textContent = mensaje;
+  toast.textContent = msg;
   toast.className = `toast show ${tipo}`;
-  setTimeout(() => toast.className = 'toast', 3000);
+  setTimeout(() => (toast.className = 'toast'), 3000);
 }

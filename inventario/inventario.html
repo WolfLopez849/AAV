@@ -19,15 +19,15 @@
       </div>
       <nav>
         <ul>
-          <li><i class="fas fa-home"></i> <span>Menú principal</span></li>
-          <li class="active"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
-          <li><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
-          <li><i class="fas fa-users"></i> <span>Clientes</span></li>
-          <li><i class="fas fa-truck"></i> <span>Proveedores</span></li>
-          <li><i class="fas fa-cash-register"></i> <span>Caja</span></li>
-          <li><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
-          <li><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
-          <li><i class="fas fa-cog"></i> <span>Configuración</span></li>
+          <li onclick="location.href='../Menu/index.php'"><i class="fas fa-home"></i> <span>Menú principal</span></li>
+          <li class="active" onclick="location.href='../inventario/inventario.html'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+          <li onclick="location.href='../ventas/index.php'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+          <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
+          <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+          <li onclick="location.href='../caja/index.php'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+          <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+          <li onclick="location.href='../usuarios/index.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
+          <li onclick="location.href='../configuracion/index.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
         </ul>
       </nav>
     </aside>
@@ -42,7 +42,7 @@
         <div class="topbar-icons">
           <i class="fas fa-bell"></i>
           <i class="fas fa-user-circle"></i>
-          <i class="fas fa-right-from-bracket logout"></i>
+          <i class="fas fa-right-from-bracket logout" onclick="location.href='../login/logout.php'"></i>
         </div>
       </header>
 

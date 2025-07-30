@@ -1,14 +1,14 @@
 <?php
-require 'conexion.php';
-$conexion = obtenerConexion();
+  require 'conexion.php';
+  $conexion = obtenerConexion();
 
-$stmt = $conexion->query("SELECT * FROM clientes ORDER BY id DESC");
-$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$totalClientes = count($clientes);
+  $stmt = $conexion->query("SELECT * FROM clientes ORDER BY id DESC");
+  $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  $totalClientes = count($clientes);
 
-// Variables para reabrir formulario en caso de error
-$showForm = isset($_GET['error']) && $_GET['error'] == 'doc_existente';
-$editMode = isset($_GET['edit']) && $_GET['edit'] == 1;
+  // Variables para reabrir formulario en caso de error
+  $showForm = isset($_POST['error']) && $_POST['error'] == 'doc_existente';
+  $editMode = isset($_POST['edit']) && $_POST['edit'] == 1;
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +17,7 @@ $editMode = isset($_GET['edit']) && $_GET['edit'] == 1;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Clientes - POSNOVA</title>
-  <link rel="stylesheet" href="css/estilo_clientes.css?v=1.5" />
+  <link rel="stylesheet" href="estilo_clientes.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
@@ -32,15 +32,15 @@ $editMode = isset($_GET['edit']) && $_GET['edit'] == 1;
     </div>
     <nav>
       <ul>
-        <li><i class="fas fa-home"></i> <span>Menu principal</span></li>
-        <li><i class="fas fa-boxes"></i> <span>Inventario</span></li>
-        <li><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
-        <li><i class="fas fa-users"></i> <span>Clientes</span></li>
-        <li><i class="fas fa-truck"></i> <span>Proveedores</span></li>
-        <li><i class="fas fa-cash-register"></i> <span>Caja</span></li>
-        <li><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
-        <li><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
-        <li><i class="fas fa-cog"></i> <span>Configuración</span></li>
+        <li onclick="location.href='../Menu/index.php'"><i class="fas fa-home"></i> <span>Menu principal</span></li>
+        <li onclick="location.href='../inventario/inventario.html'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+        <li onclick="location.href='../ventas/index.php'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+        <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
+        <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+        <li onclick="location.href='../caja/index.php'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+        <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+        <li onclick="location.href='../usuarios/index.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
+        <li onclick="location.href='../configuracion/index.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
       </ul>
     </nav>
   </aside>
@@ -54,20 +54,20 @@ $editMode = isset($_GET['edit']) && $_GET['edit'] == 1;
       <div class="topbar-icons">
         <i class="fas fa-bell"></i>
         <i class="fas fa-user-circle"></i>
-        <i class="fas fa-right-from-bracket logout"></i>
+        <i class="fas fa-right-from-bracket logout" onclick="location.href='../login/logout.php'"></i>
       </div>
     </header>
 
     <section class="clientes-seccion">
 
       <!-- Mensajes -->
-      <?php if (isset($_GET['exito'])): ?>
+      <?php if (isset($_POST['exito'])): ?>
         <div class="alerta">Cliente agregado correctamente</div>
-      <?php elseif (isset($_GET['editado'])): ?>
+      <?php elseif (isset($_POST['editado'])): ?>
         <div class="alerta">Cliente editado correctamente</div>
-      <?php elseif (isset($_GET['eliminado'])): ?>
+      <?php elseif (isset($_POST['eliminado'])): ?>
         <div class="alerta">Cliente(s) eliminado(s) correctamente</div>
-      <?php elseif (isset($_GET['error']) && $_GET['error'] == 'doc_existente'): ?>
+      <?php elseif (isset($_POST['error']) && $_POST['error'] == 'doc_existente'): ?>
         <div class="alerta error">El número de documento ya está registrado, por favor ingresa otro.</div>
       <?php endif; ?>
 
@@ -75,13 +75,13 @@ $editMode = isset($_GET['edit']) && $_GET['edit'] == 1;
       <div id="formularioCliente" class="formulario-box" style="display: <?= $showForm ? 'block' : 'none' ?>;">
         <h3 id="tituloFormulario"><?= $editMode ? 'Editar Cliente' : 'Datos del cliente' ?></h3>
         <form method="POST" action="funcionalidades_clientes.php" id="formCliente">
-          <input type="hidden" name="id" id="clienteId" value="<?= $_GET['id'] ?? '' ?>" />
+          <input type="hidden" name="id" id="clienteId" value="<?= $_POST['id'] ?? '' ?>" />
           <div class="formulario-cliente">
-            <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required value="<?= $_GET['nombre'] ?? '' ?>" />
-            <input type="text" name="tipo_doc" id="tipo_doc" placeholder="Tipo de documento" required value="<?= $_GET['tipo_doc'] ?? '' ?>" />
-            <input type="text" name="numero_doc" id="numero_doc" placeholder="Número de documento" maxlength="10" required value="<?= $_GET['numero_doc'] ?? '' ?>" />
-            <input type="text" name="telefono" id="telefono" placeholder="Teléfono" value="<?= $_GET['telefono'] ?? '' ?>" />
-            <input type="email" name="correo" id="correo" placeholder="Correo electrónico" value="<?= $_GET['correo'] ?? '' ?>" />
+            <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required value="<?= $_POST['nombre'] ?? '' ?>" />
+            <input type="text" name="tipo_doc" id="tipo_doc" placeholder="Tipo de documento" required value="<?= $_POST['tipo_doc'] ?? '' ?>" />
+            <input type="text" name="numero_doc" id="numero_doc" placeholder="Número de documento" maxlength="10" required value="<?= $_POST['numero_doc'] ?? '' ?>" />
+            <input type="text" name="telefono" id="telefono" placeholder="Teléfono" value="<?= $_POST['telefono'] ?? '' ?>" />
+            <input type="email" name="correo" id="correo" placeholder="Correo electrónico" value="<?= $_POST['correo'] ?? '' ?>" />
           </div>
           <div class="botones-formulario">
             <button type="submit" name="accion" value="<?= $editMode ? 'editar' : 'agregar' ?>" class="btn btn-guardar">
@@ -162,7 +162,7 @@ $editMode = isset($_GET['edit']) && $_GET['edit'] == 1;
       </div>
     </section>
 
-    <script src="js/clientes.js?v=2.1"></script>
+    <script src="clientes.js"></script>
   </div>
 </div>
 </body>

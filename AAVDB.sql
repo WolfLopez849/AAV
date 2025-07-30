@@ -19,9 +19,8 @@ CREATE TABLE IF NOT EXISTS `caja` (
 CREATE TABLE IF NOT EXISTS `clientes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
-  `tipo_documento` varchar(50) NOT NULL,
-  `numero_documento` int NOT NULL,
-  `direccion` varchar(80) NOT NULL,
+  `tipo_doc` varchar(50) NOT NULL,
+  `numero_doc` int NOT NULL,
   `telefono` int NOT NULL,
   `correo` varchar(80) NOT NULL,
   PRIMARY KEY (`id`)
@@ -51,13 +50,15 @@ CREATE TABLE IF NOT EXISTS `proveedores` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `usuarios` (
-  `documento` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre_completo` varchar(100) NOT NULL,
   `usuario` varchar(80) NOT NULL,
-  `nombre` varchar(80) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `correo` varchar(80) NOT NULL,
-  `rol` varchar(80) NOT NULL,
-  PRIMARY KEY (`documento`)
+  `contrasena` varchar(225) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `rol` enum('Administrador','Cajero','Supervisor') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `estado` enum('activo','inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creado_por` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `bitacora` (
@@ -65,6 +66,13 @@ CREATE TABLE IF NOT EXISTS `bitacora` (
   `usuario_id` int DEFAULT NULL,
   `accion` varchar(255) DEFAULT NULL,
   `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `accesos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `usuario` varchar(50) NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 

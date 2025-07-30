@@ -46,9 +46,6 @@ $userInfo = getUserInfo();
         <div class="container-fluid">
 
             <div class="d-flex align-items-center">
-                <button class="navbar-toggler me-2 border border-1 border-black" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
                 <div class="logo d-flex align-items-center">
                     <i class="fas fa-store"></i>
@@ -76,44 +73,6 @@ $userInfo = getUserInfo();
                 
             </div>
 
-            <div class="offcanvas offcanvas-start bg-white text-black" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header">
-                    <div class="logo d-flex align-items-center">
-                        <i class="fas fa-store"></i>
-                        <span class="ms-2">Sistema POS</span>
-                    </div>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        <li class="nav-item">
-                            <a class="nav-link active text-black" aria-current="page" href="index.php">Apartado principal</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-black" href="#">Otro apartado</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-black" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            desplegable
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item " href="#">Otro apartado</a></li>
-                            <li><a class="dropdown-item " href="#">Otro apartado</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item " href="#">Otro apartado</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <!-- 
-                    <form class="d-flex mt-3" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-                     -->
-                </div>
-            </div>
         </div>
     </nav>
 
@@ -121,56 +80,56 @@ $userInfo = getUserInfo();
         <section class="navigation-section">
             <h2>Menú Principal</h2>
             <div class="menu-grid">
-                <div class="menu-item" onclick="navigateTo('inventario/index.php')">
+                <div class="menu-item" onclick="location.href='../inventario/inventario.html'">
                     <div class="menu-icon">
                         <i class="fas fa-boxes"></i>
                     </div>
                     <h3>Inventario</h3>
                     <p>Gestionar productos y stock</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('ventas/index.php')">
+                <div class="menu-item" onclick="location.href='../ventas/index.php'">
                     <div class="menu-icon">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
                     <h3>Ventas</h3>
                     <p>Procesar ventas y facturas</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('clientes/index.php')">
+                <div class="menu-item" onclick="location.href='../clientes/clientes.php'">
                     <div class="menu-icon">
                         <i class="fas fa-users"></i>
                     </div>
                     <h3>Clientes</h3>
                     <p>Gestionar base de clientes</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('proveedores/index.php')">
+                <div class="menu-item" onclick="location.href='../proveedores/index.php'">
                     <div class="menu-icon">
                         <i class="fas fa-truck"></i>
                     </div>
                     <h3>Proveedores</h3>
                     <p>Administrar proveedores</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('usuarios/index.php')">
+                <div class="menu-item" onclick="location.href='../usuarios/index.php'">
                     <div class="menu-icon">
                         <i class="fas fa-user-cog"></i>
                     </div>
                     <h3>Usuarios</h3>
                     <p>Gestionar usuarios del sistema</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('reportes/index.php')">
+                <div class="menu-item" onclick="location.href='../reportes/index.php'">
                     <div class="menu-icon">
                         <i class="fas fa-chart-bar"></i>
                     </div>
                     <h3>Reportes</h3>
                     <p>Generar reportes detallados</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('caja/index.php')">
+                <div class="menu-item" onclick="location.href='../caja/index.php'">
                     <div class="menu-icon">
                         <i class="fas fa-cash-register"></i>
                     </div>
                     <h3>Caja</h3>
                     <p>Control de caja y efectivo</p>
                 </div>
-                <div class="menu-item" onclick="navigateTo('configuracion/index.php')">
+                <div class="menu-item" onclick="location.href='../configuracion/index.php'">
                     <div class="menu-icon">
                         <i class="fas fa-cog"></i>
                     </div>

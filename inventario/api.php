@@ -7,7 +7,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db = "inventarioDB";
+$db = "aavdb";
 
 $conn = new mysqli($host, $user, $pass, $db);
 if ($conn->connect_error) {
