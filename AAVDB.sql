@@ -5,9 +5,6 @@ DROP DATABASE IF EXISTS AAVDB;
 CREATE DATABASE IF NOT EXISTS AAVDB;
 USE AAVDB;
 
--- Estructura de tabla para la tabla `caja`
-
---DROP TABLE IF EXISTS `caja`;
 CREATE TABLE IF NOT EXISTS `caja` (
   `product_id` int NOT NULL AUTO_INCREMENT,
   `code` varchar(40) NOT NULL,
@@ -16,12 +13,9 @@ CREATE TABLE IF NOT EXISTS `caja` (
   `iva_percent` decimal(5,2) NOT NULL,
   `category` varchar(60) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_venta`)
+  PRIMARY KEY (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `clientes`
-
---DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE IF NOT EXISTS `clientes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
@@ -33,9 +27,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `inventario`
---DROP TABLE IF EXISTS `productos`;
-CREATE TABLE productos (
+CREATE TABLE IF NOT EXISTS `productos` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `nombre` VARCHAR(100) NOT NULL,
   `codigo` VARCHAR(50) UNIQUE NOT NULL,
@@ -48,22 +40,16 @@ CREATE TABLE productos (
   `fecha_creacion` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `proveedores`
-
---DROP TABLE IF EXISTS `proveedores`;
 CREATE TABLE IF NOT EXISTS `proveedores` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   `documento` varchar(20) NOT NULL,
   `telefono` varchar(20) NOT NULL,
-  `email` varchar(100) NOT NULL,
   `direccion` varchar(150) NOT NULL,
+  `email` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `usuarios`
-
---DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `documento` int NOT NULL,
   `usuario` varchar(80) NOT NULL,
@@ -74,9 +60,6 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`documento`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `bitacora`
-
---DROP TABLE IF EXISTS `bitacora`;
 CREATE TABLE IF NOT EXISTS `bitacora` (
   `id` int NOT NULL AUTO_INCREMENT,
   `usuario_id` int DEFAULT NULL,
@@ -85,9 +68,6 @@ CREATE TABLE IF NOT EXISTS `bitacora` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Estructura de tabla para la tabla `ventas`
-
---DROP TABLE IF EXISTS `ventas`;
 CREATE TABLE IF NOT EXISTS `ventas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `fecha` varchar(80) NOT NULL,
