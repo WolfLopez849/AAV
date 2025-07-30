@@ -34,32 +34,19 @@ CREATE TABLE IF NOT EXISTS `clientes` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `inventario`
-
---DROP TABLE IF EXISTS `inventario`;
-CREATE TABLE IF NOT EXISTS `inventario` (
-  `codigo_barra` int NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `precio_venta` int NOT NULL,
-  `precio_compra` int NOT NULL,
-  `stock` int NOT NULL,
-  `categoria` varchar(50) NOT NULL,
-  `proveedor` varchar(80) NOT NULL,
-  PRIMARY KEY (`codigo_barra`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- Estructura de tabla para la tabla `productos`
-
 --DROP TABLE IF EXISTS `productos`;
-CREATE TABLE IF NOT EXISTS `productos` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(80) NOT NULL,
-  `categoria` varchar(80) NOT NULL,
-  `stock` int NOT NULL,
-  `entradas` int NOT NULL,
-  `salidas` int NOT NULL,
-  `vendidos` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE productos (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `nombre` VARCHAR(100) NOT NULL,
+  `codigo` VARCHAR(50) UNIQUE NOT NULL,
+  `precioCompra` DECIMAL(10,2) NOT NULL,
+  `precioVenta` DECIMAL(10,2) NOT NULL,
+  `stock` INT NOT NULL,
+  `categoria` VARCHAR(100),
+  `iva` INT NOT NULL DEFAULT 19,
+  `proveedor` VARCHAR(100),
+  `fecha_creacion` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Estructura de tabla para la tabla `proveedores`
 
