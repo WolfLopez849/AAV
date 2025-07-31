@@ -9,6 +9,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         return trim(htmlspecialchars($valor));
     }
 
+    // Función para redirigir con POST
+    function redirigirConPost($datos) {
+        echo "<form id='redirigir' method='POST' action='clientes.php'>";
+        foreach ($datos as $clave => $valor) {
+            echo "<input type='hidden' name='$clave' value='$valor'>";
+        }
+        echo "</form>
+        <script>document.getElementById('redirigir').submit();</script>";
+        exit;
+    }
+
     switch ($accion) {
         case 'agregar':
             $nombre     = limpiar($_POST['nombre'] ?? '');
@@ -22,12 +33,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $stmt = $conexion->prepare("SELECT COUNT(*) FROM clientes WHERE numero_doc = :numero_doc");
                 $stmt->execute([':numero_doc' => $numero_doc]);
                 if ($stmt->fetchColumn() > 0) {
-                    // Devolver error sin cerrar el formulario
-                    header("Location: clientes.php?error=doc_existente&nombre={$nombre}&tipo_doc={$tipo_doc}&numero_doc={$numero_doc}&telefono={$telefono}&correo={$correo}");
-                    exit;
+                    // Reabrir formulario con datos y mensaje de error
+                    redirigirConPost([
+                        'error' => 'doc_existente',
+                        'mensaje' => 'El número de documento ya está registrado, ingrese otro.',
+                        'tipo' => 'error',
+                        'nombre' => $nombre,
+                        'tipo_doc' => $tipo_doc,
+                        'numero_doc' => $numero_doc,
+                        'telefono' => $telefono,
+                        'correo' => $correo
+                    ]);
                 }
 
-                // Si no existe, insertamos
+                // Insertar
                 $sql = "INSERT INTO clientes (nombre, tipo_doc, numero_doc, telefono, correo)
                         VALUES (:nombre, :tipo_doc, :numero_doc, :telefono, :correo)";
                 $stmt = $conexion->prepare($sql);
@@ -38,8 +57,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ':telefono'   => $telefono,
                     ':correo'     => $correo
                 ]);
-                header("Location: clientes.php?exito=1");
-                exit;
+
+                redirigirConPost([
+                    'mensaje' => 'Cliente agregado correctamente',
+                    'tipo' => 'success'
+                ]);
             }
             break;
 
@@ -52,14 +74,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $correo     = limpiar($_POST['correo'] ?? '');
 
             if ($id && $nombre && $tipo_doc && $numero_doc) {
-                // Validar si el número de documento ya existe para otro cliente
+                // Validar duplicado
                 $stmt = $conexion->prepare("SELECT COUNT(*) FROM clientes WHERE numero_doc = :numero_doc AND id != :id");
                 $stmt->execute([':numero_doc' => $numero_doc, ':id' => $id]);
                 if ($stmt->fetchColumn() > 0) {
-                    header("Location: clientes.php?error=doc_existente&edit=1&id={$id}&nombre={$nombre}&tipo_doc={$tipo_doc}&numero_doc={$numero_doc}&telefono={$telefono}&correo={$correo}");
-                    exit;
+                    redirigirConPost([
+                        'error' => 'doc_existente',
+                        'mensaje' => 'El número de documento ya está registrado en otro cliente.',
+                        'tipo' => 'error',
+                        'edit' => 1,
+                        'id' => $id,
+                        'nombre' => $nombre,
+                        'tipo_doc' => $tipo_doc,
+                        'numero_doc' => $numero_doc,
+                        'telefono' => $telefono,
+                        'correo' => $correo
+                    ]);
                 }
 
+                // Actualizar
                 $sql = "UPDATE clientes SET nombre = :nombre, tipo_doc = :tipo_doc, numero_doc = :numero_doc,
                         telefono = :telefono, correo = :correo WHERE id = :id";
                 $stmt = $conexion->prepare($sql);
@@ -71,8 +104,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     ':telefono'   => $telefono,
                     ':correo'     => $correo
                 ]);
-                header("Location: clientes.php?editado=1");
-                exit;
+
+                redirigirConPost([
+                    'mensaje' => 'Cliente editado correctamente',
+                    'tipo' => 'success'
+                ]);
             }
             break;
 
@@ -83,11 +119,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $sql = "DELETE FROM clientes WHERE id IN ($in)";
                 $stmt = $conexion->prepare($sql);
                 $stmt->execute($ids);
-                header("Location: clientes.php?eliminado=1");
-                exit;
+
+                redirigirConPost([
+                    'mensaje' => 'Cliente(s) eliminado(s) correctamente',
+                    'tipo' => 'success'
+                ]);
             }
             break;
     }
 }
-header("Location: clientes.php");
-exit;
+
+redirigirConPost(['mensaje' => 'Acción no válida', 'tipo' => 'error']);
