@@ -129,7 +129,7 @@ $userInfo = getUserInfo();
                     <h3>Caja</h3>
                     <p>Control de caja y efectivo</p>
                 </div>
-                <div class="menu-item" onclick="location.href='../configuracion/index.php'">
+                <div class="menu-item" onclick="location.href='../configuracion/config.php'">
                     <div class="menu-icon">
                         <i class="fas fa-cog"></i>
                     </div>
