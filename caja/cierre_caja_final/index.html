@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Caja - Apertura</title>
+    <!-- Enlace al archivo de estilos CSS -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Enlace a Font Awesome para los iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+    <div class="app-container" id="appContainer">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <!-- Botón de alternancia dentro del logo -->
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <span>POSNOVA</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><i class="fas fa-home"></i> <span>Menu principal</span></li>
+                    <li><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+                    <li><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+                    <li><i class="fas fa-users"></i> <span>Clientes</span></li>
+                    <li><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+                    <li><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+                    <li><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+                    <li><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
+                    <li><i class="fas fa-cog"></i> <span>Configuración</span></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="title">
+                    <h2><i class="fas fa-cash-register"></i> Cierre de caja</h2>
+                </div>
+                <div class="topbar-icons">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-user-circle"></i>
+                    <i class="fas fa-right-from-bracket logout"></i>
+                </div>
+            </header>
+            <section class="form-section">
+                <!-- Aquí puedes añadir el contenido de tu página -->
+                <h2>Reporte de caja</h2>
+
+                <div class="report-box">
+                    <label>Total acumulado por tipo de pago</label>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Tipo de Pago</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Efectivo</td>
+                                <td>$1,500,000.00</td>
+                            </tr>
+                            <tr>
+                                <td>Tarjeta de Crédito</td>
+                                <td>$750,000.00</td>
+                            </tr>
+                            <tr>
+                                <td>Transferencia</td>
+                                <td>$320,000.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="report-box">
+                    <label>Comparación de monto inicial y monto final:</label>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Descripción</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Monto Inicial en Caja</td>
+                                <td>$200,000.00</td>
+                            </tr>
+                            <tr>
+                                <td>Monto Final en Caja</td>
+                                <td>$1,700,000.00</td>
+                            </tr>
+                            <tr class="summary-row">
+                                <td><b>Diferencia (Ventas en Efectivo)</b></td>
+                                <td><b>$1,500,000.00</b></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="report-box">
+                    <label>Historial de caja por turno:</label>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Turno</th>
+                                <th>Apertura</th>
+                                <th>Cierre</th>
+                                <th>Monto Inicial</th>
+                                <th>Monto Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Mañana</td>
+                                <td>18/07/2025 08:00 AM</td>
+                                <td>18/07/2025 02:00 PM</td>
+                                <td>$200,000.00</td>
+                                <td>$950,000.00</td>
+                            </tr>
+                            <tr>
+                                <td>Tarde</td>
+                                <td>18/07/2025 02:00 PM</td>
+                                <td>18/07/2025 10:00 PM</td>
+                                <td>$950,000.00</td>
+                                <td>$1,700,000.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <button class="generate-report-btn">Generar reporte</button>
+            </section>
+        </div>
+    </div>
+
+    <!-- Enlace al archivo JavaScript -->
+    <script src="main.js"></script>
+</body>
+</html>
