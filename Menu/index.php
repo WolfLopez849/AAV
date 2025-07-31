@@ -122,7 +122,7 @@ $userInfo = getUserInfo();
                     <h3>Reportes</h3>
                     <p>Generar reportes detallados</p>
                 </div>
-                <div class="menu-item" onclick="location.href='../caja/index.php'">
+                <div class="menu-item" onclick="location.href='../caja/index.html'">
                     <div class="menu-icon">
                         <i class="fas fa-cash-register"></i>
                     </div>
