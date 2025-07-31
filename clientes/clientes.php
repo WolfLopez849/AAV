@@ -1,14 +1,14 @@
 <?php
-  require 'conexion.php';
-  $conexion = obtenerConexion();
+require 'conexion.php';
+$conexion = obtenerConexion();
 
-  $stmt = $conexion->query("SELECT * FROM clientes ORDER BY id DESC");
-  $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  $totalClientes = count($clientes);
+$stmt = $conexion->query("SELECT * FROM clientes ORDER BY id DESC");
+$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$totalClientes = count($clientes);
 
-  // Variables para reabrir formulario en caso de error
-  $showForm = isset($_POST['error']) && $_POST['error'] == 'doc_existente';
-  $editMode = isset($_POST['edit']) && $_POST['edit'] == 1;
+// Variables para reabrir formulario en caso de error
+$showForm = isset($_POST['error']) && $_POST['error'] == 'doc_existente';
+$editMode = isset($_POST['edit']) && $_POST['edit'] == 1;
 ?>
 
 <!DOCTYPE html>
@@ -19,8 +19,11 @@
   <title>Clientes - POSNOVA</title>
   <link rel="stylesheet" href="estilo_clientes.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body>
+<body 
+  data-mensaje="<?= $_POST['mensaje'] ?? '' ?>" 
+  data-tipo="<?= $_POST['tipo'] ?? '' ?>">
 <div class="app-container" id="appContainer">
   <!-- Sidebar -->
   <aside class="sidebar">
@@ -37,10 +40,10 @@
         <li onclick="location.href='../ventas/index.php'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
         <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
         <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
-        <li onclick="location.href='../caja/index.html'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+        <li onclick="location.href='../caja/index.php'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
         <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
         <li onclick="location.href='../usuarios/index.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
-        <li onclick="location.href='../configuracion/index.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
+        <li onclick="location.href='../configuracion/config.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
       </ul>
     </nav>
   </aside>
@@ -60,29 +63,50 @@
 
     <section class="clientes-seccion">
 
-      <!-- Mensajes -->
-      <?php if (isset($_POST['exito'])): ?>
-        <div class="alerta">Cliente agregado correctamente</div>
-      <?php elseif (isset($_POST['editado'])): ?>
-        <div class="alerta">Cliente editado correctamente</div>
-      <?php elseif (isset($_POST['eliminado'])): ?>
-        <div class="alerta">Cliente(s) eliminado(s) correctamente</div>
-      <?php elseif (isset($_POST['error']) && $_POST['error'] == 'doc_existente'): ?>
-        <div class="alerta error">El número de documento ya está registrado, por favor ingresa otro.</div>
-      <?php endif; ?>
-
       <!-- Formulario -->
       <div id="formularioCliente" class="formulario-box" style="display: <?= $showForm ? 'block' : 'none' ?>;">
         <h3 id="tituloFormulario"><?= $editMode ? 'Editar Cliente' : 'Datos del cliente' ?></h3>
         <form method="POST" action="funcionalidades_clientes.php" id="formCliente">
           <input type="hidden" name="id" id="clienteId" value="<?= $_POST['id'] ?? '' ?>" />
           <div class="formulario-cliente">
-            <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required value="<?= $_POST['nombre'] ?? '' ?>" />
-            <input type="text" name="tipo_doc" id="tipo_doc" placeholder="Tipo de documento" required value="<?= $_POST['tipo_doc'] ?? '' ?>" />
-            <input type="text" name="numero_doc" id="numero_doc" placeholder="Número de documento" maxlength="10" required value="<?= $_POST['numero_doc'] ?? '' ?>" />
-            <input type="text" name="telefono" id="telefono" placeholder="Teléfono" value="<?= $_POST['telefono'] ?? '' ?>" />
-            <input type="email" name="correo" id="correo" placeholder="Correo electrónico" value="<?= $_POST['correo'] ?? '' ?>" />
+            <!-- Primera fila -->
+             <div class="fila-campos">
+              <!-- Nombre -->
+               <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="nombre" id="nombre" placeholder="Nombre completo" required>
+              </div>
+              <!-- Tipo de documento (select) -->
+               <div class="input-icon">
+                <i class="fas fa-id-card"></i>
+                <select name="tipo_doc" id="tipo_doc" class="input-field" required>
+                  <option value="" disabled selected hidden>Tipo de documento</option>
+                  <option value="CC">Cédula de Ciudadanía</option>
+                  <option value="CE">Cédula de Extranjería</option>
+                  <option value="NIT">NIT</option>
+                </select>
+              </div>
+              <!-- Número de documento -->
+               <div class="input-group">
+                <i class="fas fa-hashtag"></i>
+                <input type="text" name="numero_doc" id="numero_doc" placeholder="Número de documento" required>
+              </div>
+            </div>
+            <!-- Segunda fila -->
+             <div class="fila-campos">
+              <!-- Teléfono -->
+               <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="text" name="telefono" id="telefono" placeholder="Teléfono">
+              </div>
+              <!-- Correo -->
+               <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" name="correo" id="correo" placeholder="Correo electrónico">
+              </div>
+            </div>
           </div>
+
           <div class="botones-formulario">
             <button type="submit" name="accion" value="<?= $editMode ? 'editar' : 'agregar' ?>" class="btn btn-guardar">
               <i class="fas fa-save"></i> Guardar

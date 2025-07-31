@@ -10,10 +10,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkboxes = () => document.querySelectorAll('.checkCliente:checked');
     const numeroDocInput = document.getElementById('numero_doc');
 
-    // Ocultar mensajes después de 3 segundos
-    setTimeout(() => {
-        document.querySelectorAll('.alerta').forEach(alerta => alerta.remove());
-    }, 3000);
+    // 🔹 Leer variables de los mensajes del backend (si las envías por POST)
+    const mensaje = document.body.dataset.mensaje;
+    const tipo = document.body.dataset.tipo;
+
+    // 🔹 Mostrar notificación Toast si hay mensaje
+    if (mensaje && tipo) {
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: tipo,
+            title: mensaje,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: tipo === 'success' ? '#28a745' : (tipo === 'error' ? '#dc3545' : '#17a2b8'),
+            color: '#fff'
+        });
+    }
 
     // Solo números en numero_doc
     numeroDocInput?.addEventListener('input', function () {
@@ -37,15 +51,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // Mostrar formulario vacío (Agregar)
     btnAgregar?.addEventListener('click', function () {
         limpiarFormulario();
-        formularioCliente.style.display = 'block';
-        document.getElementById('tituloFormulario').innerText = 'Datos del cliente';
-        document.querySelector('button[type="submit"]').value = 'agregar';
+        mostrarFormulario('Datos del cliente', 'agregar');
     });
 
-    // Botón cancelar
+    // Botón cancelar (cierra con animación)
     cancelarBtn?.addEventListener('click', () => {
-        formularioCliente.style.display = 'none';
-        limpiarFormulario();
+        ocultarFormulario();
     });
 
     // Checkbox selección
@@ -68,10 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('telefono').value = fila.dataset.telefono;
         document.getElementById('correo').value = fila.dataset.correo;
 
-        document.getElementById('tituloFormulario').innerText = 'Editar Cliente';
-        document.querySelector('button[type="submit"]').value = 'editar';
-
-        formularioCliente.style.display = 'block';
+        mostrarFormulario('Editar Cliente', 'editar');
     });
 
     // Botón eliminar (múltiple)
@@ -81,33 +89,63 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const ids = Array.from(seleccionados).map(chk => chk.dataset.id);
 
-        if (confirm(`¿Deseas eliminar ${ids.length} cliente(s)? Esta acción no se puede deshacer.`)) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'funcionalidades_clientes.php';
+        Swal.fire({
+            title: `¿Deseas eliminar ${ids.length} cliente(s)?`,
+            text: "Esta acción no se puede deshacer.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'funcionalidades_clientes.php';
 
-            const inputAccion = document.createElement('input');
-            inputAccion.type = 'hidden';
-            inputAccion.name = 'accion';
-            inputAccion.value = 'eliminar';
-            form.appendChild(inputAccion);
+                const inputAccion = document.createElement('input');
+                inputAccion.type = 'hidden';
+                inputAccion.name = 'accion';
+                inputAccion.value = 'eliminar';
+                form.appendChild(inputAccion);
 
-            ids.forEach(id => {
-                const inputId = document.createElement('input');
-                inputId.type = 'hidden';
-                inputId.name = 'ids[]';
-                inputId.value = id;
-                form.appendChild(inputId);
-            });
+                ids.forEach(id => {
+                    const inputId = document.createElement('input');
+                    inputId.type = 'hidden';
+                    inputId.name = 'ids[]';
+                    inputId.value = id;
+                    form.appendChild(inputId);
+                });
 
-            document.body.appendChild(form);
-            form.submit();
-        }
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
     });
 
-    // Función para limpiar formulario
+    /** Funciones auxiliares **/
     function limpiarFormulario() {
         document.getElementById('formCliente').reset();
         document.getElementById('clienteId').value = '';
+    }
+
+    function mostrarFormulario(titulo, accion) {
+        document.getElementById('tituloFormulario').innerText = titulo;
+        const submitBtn = document.querySelector('button[type="submit"]');
+        submitBtn.value = accion;
+
+        formularioCliente.classList.remove('ocultar');
+        formularioCliente.classList.add('mostrar');
+        formularioCliente.style.display = 'block';
+    }
+
+    function ocultarFormulario() {
+        formularioCliente.classList.remove('mostrar');
+        formularioCliente.classList.add('ocultar');
+
+        setTimeout(() => {
+            formularioCliente.style.display = 'none';
+        }, 300);
     }
 });
