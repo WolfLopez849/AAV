@@ -1,0 +1,134 @@
+/* ===== Variables ===== */
+:root{
+    --primary:#324759;
+    --primary-light:#3f5a6e;
+    --accent:#1d8cf8;
+    --danger:#ff2d2d;
+    --success:#28a745;
+    --secondary:#6c757d;
+    --bg:#f4f7f6;
+    --radius:.5rem;
+    --transition:.25s ease;
+  }
+  
+  /* ===== Reset & base ===== */
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',sans-serif;background:var(--bg);height:100vh;display:flex;overflow:hidden}
+  
+  /* ===== App Layout ===== */
+  .app-container{display:flex;width:100%;height:100%;transition:var(--transition)}
+  
+  /* ------ Sidebar ------ */
+  .sidebar{
+    width:260px;background:#fff;color:#111;border-right:1px solid #dcdfe4;
+    display:flex;flex-direction:column;transition:var(--transition)
+  }
+  .app-container.collapsed .sidebar{width:68px}
+  
+  .logo{display:flex;align-items:center;gap:.5rem;padding:1rem}
+  .logo i{font-size:1.75rem;color:var(--accent)}
+  .logo span{font-size:1.6rem;font-weight:700;color:var(--accent);white-space:nowrap;transition:var(--transition)}
+  .app-container.collapsed .logo span{opacity:0;width:0}
+  
+  .btn-icon{background:none;border:none;font-size:1.25rem;cursor:pointer;color:#555}
+  
+  .sidebar nav ul{list-style:none;margin-top:1rem}
+  .sidebar nav li{
+    display:flex;align-items:center;gap:1rem;font-size:1.1rem;
+    padding:.9rem 1rem;border-radius:var(--radius);cursor:pointer;
+    transition:background .15s,color .15s
+  }
+  .sidebar nav li i{width:26px;text-align:center;font-size:1.3rem}
+  .sidebar nav li:hover{background:var(--primary-light);color:#fff}
+  .app-container.collapsed nav li{justify-content:center}
+  .app-container.collapsed nav li span{opacity:0;width:0;overflow:hidden;transition:var(--transition)}
+  
+  /* ------ Main ------ */
+  .main-content{flex:1;display:flex;flex-direction:column;overflow:hidden}
+  
+  /* Topbar */
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    background:#fff;padding:.75rem 1.5rem;border-bottom:1px solid #dcdfe4
+  }
+  .topbar h1{font-size:2.2rem;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:.6rem}
+  .topbar i{font-size:1em}
+  .top-icons{display:flex;align-items:center;gap:2rem;font-size:1.6rem}
+  .top-icons .fa-bell{color:var(--accent)}
+  .top-icons .fa-user-circle{color:#000}
+  .top-icons .logout{color:var(--danger);cursor:pointer}
+  
+  /* Page background */
+  .content{flex:1;overflow:auto;background:var(--primary);padding:1.5rem}
+  .card{
+    background:#fff;border-radius:var(--radius);padding:1.25rem 1.5rem;
+    box-shadow:0 2px 6px rgba(0,0,0,.06)
+  }
+  
+  /* ----- Form Sections ----- */
+  .form-section{
+    border:1px solid #dfe3e8;border-radius:var(--radius);
+    padding:1rem 1.25rem;margin-bottom:1.25rem;background:#f9fbfd
+  }
+  .form-section h3{
+    margin:-.75rem -.75rem 1rem;padding:.75rem;font-size:1.05rem;font-weight:600;
+    color:var(--primary);background:#eff3f8;border-bottom:1px solid #dfe3e8;
+    border-top-left-radius:calc(var(--radius) - 1px);
+    border-top-right-radius:calc(var(--radius) - 1px);
+    display:flex;align-items:center;gap:.5rem
+  }
+  .form-section h3 i{color:var(--accent)}
+  
+  /* Form grid */
+  .form-grid{
+    display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))
+  }
+  .form-grid input{
+    padding:.55rem .75rem;border:1px solid #cbd5e1;border-radius:.375rem;
+    font-size:.95rem;width:100%;background:#f8fafc
+  }
+  .form-grid .full{grid-column:1/-1}
+  
+  /* ----- PILL Buttons ----- */
+  .btn{
+    --btn-bg:var(--primary);
+    --btn-bg-hover:var(--primary-light);
+    --btn-color:#fff;
+    border:none;background:var(--btn-bg);color:var(--btn-color);
+    font-weight:600;font-size:.95rem;padding:.6rem 1.5rem;
+    display:inline-flex;align-items:center;gap:.5rem;
+    border-radius:9999px;cursor:pointer;transition:background .15s ease;
+    box-shadow:0 2px 4px rgb(0 0 0 / .1)
+  }
+  .btn:hover{background:var(--btn-bg-hover)}
+  .btn i{font-size:1rem}
+  
+  /* Paletas */
+  .btn-primary   {--btn-bg:#1d8cf8;--btn-bg-hover:#0e77e6}
+  .btn-secondary {--btn-bg:var(--secondary);--btn-bg-hover:#545c63}
+  .btn-danger    {--btn-bg:var(--danger);--btn-bg-hover:#e51a1a}
+  .btn-success   {--btn-bg:var(--success);--btn-bg-hover:#1e7e34}
+  
+  /* Contenedor para centrar/alinear el botón Agregar producto */
+  .form-actions{
+    display:flex;
+    justify-content:center;  /* cámbialo a flex-end si lo prefieres a la derecha */
+    margin-top:.6rem;
+  }
+  
+  /* Tabla */
+  .table-responsive{overflow-x:auto;margin-bottom:1.25rem}
+  table{width:100%;border-collapse:collapse;font-size:.93rem}
+  thead{background:var(--primary);color:#fff}
+  th,td{padding:.7rem 1rem;border:1px solid #e8eaef;text-align:left}
+  tbody tr:nth-child(even){background:#f6f9fc}
+  
+  /* Acciones finales */
+  .actions-row{display:flex;gap:1rem;justify-content:flex-end}
+  
+  /* ===== Responsive ===== */
+  @media (max-width:700px){
+    .sidebar{display:none}
+    .content{padding:1rem}
+  }
+  
