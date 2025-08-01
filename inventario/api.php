@@ -16,7 +16,6 @@ if ($conn->connect_error) {
   exit;
 }
 
-// Leer datos JSON si existen
 $data = json_decode(file_get_contents("php://input"), true);
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -33,14 +32,14 @@ switch ($method) {
 
   case 'POST':
     $stmt = $conn->prepare("INSERT INTO productos (nombre, codigo, precioCompra, precioVenta, stock, categoria, iva, proveedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssddiiss",
+    $stmt->bind_param("ssddissi",
       $data['nombre'],
       $data['codigo'],
       $data['precioCompra'],
       $data['precioVenta'],
       $data['stock'],
-      $data['categoria'],
-      $data['iva'],
+      $data['categoria'],  // ✅ ahora es string
+      $data['iva'],        // ✅ es int
       $data['proveedor']
     );
     $stmt->execute();
@@ -49,14 +48,14 @@ switch ($method) {
 
   case 'PUT':
     $stmt = $conn->prepare("UPDATE productos SET nombre=?, codigo=?, precioCompra=?, precioVenta=?, stock=?, categoria=?, iva=?, proveedor=? WHERE id=?");
-    $stmt->bind_param("ssddiissi",
+    $stmt->bind_param("ssddisssi",
       $data['nombre'],
       $data['codigo'],
       $data['precioCompra'],
       $data['precioVenta'],
       $data['stock'],
-      $data['categoria'],
-      $data['iva'],
+      $data['categoria'],  // ✅ string
+      $data['iva'],        // ✅ int
       $data['proveedor'],
       $data['id']
     );

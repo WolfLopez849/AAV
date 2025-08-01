@@ -117,7 +117,9 @@ function actualizarTabla() {
     tr.setAttribute('data-id', p.id);
     tr.classList.toggle('seleccionado', seleccionados.has(p.id));
     if (p.stock <= 5) tr.classList.add('alerta-stock');
+
     const columnas = [
+      
       `<input type="checkbox" class="checkbox-seleccion" data-id="${p.id}" ${seleccionados.has(p.id) ? 'checked' : ''}>`,
       p.nombre,
       p.codigo,
@@ -136,48 +138,49 @@ function actualizarTabla() {
       tr.appendChild(td);
     });
 
-    tr.addEventListener('click', e => {
-      if (e.target.tagName !== 'INPUT' && !editando) {
-        if (e.ctrlKey) {
-          seleccionados.has(p.id) ? seleccionados.delete(p.id) : seleccionados.add(p.id);
-        } else {
-          if (seleccionados.has(p.id)) {
-            seleccionados.delete(p.id);
-          } else {
-            seleccionados.clear();
-            seleccionados.add(p.id);
-          }
-        }
-        actualizarTabla();
-      }
-    });
+    const checkbox = tr.querySelector('.checkbox-seleccion');
 
-    tbody.appendChild(tr);
-  });
-
-  // Manejar cambios de los checkboxes sin redibujar la tabla
-  document.querySelectorAll('.checkbox-seleccion').forEach(cb => {
-    cb.addEventListener('change', e => {
-      if (editando) return;
-      const id = parseInt(e.target.dataset.id);
-      if (e.target.checked) {
+    function actualizarSeleccion(id, activo) {
+      if (activo) {
         seleccionados.add(id);
       } else {
         seleccionados.delete(id);
       }
-
-      // Actualizar clase visual del <tr>
-      const fila = e.target.closest('tr');
-      if (fila) {
-        fila.classList.toggle('seleccionado', seleccionados.has(id));
-      }
-
+      tr.classList.toggle('seleccionado', activo);
+      if (checkbox) checkbox.checked = activo;
       actualizarBarraOpciones();
+    }
+
+    // Clic en fila
+    tr.addEventListener('click', e => {
+      if (e.target.tagName !== 'INPUT' && !editando) {
+        if (e.ctrlKey) {
+          actualizarSeleccion(p.id, !seleccionados.has(p.id));
+        } else {
+          if (seleccionados.has(p.id)) {
+            seleccionados.clear();
+          } else {
+            seleccionados.clear();
+            seleccionados.add(p.id);
+          }
+          actualizarTabla();
+        }
+      }
     });
+
+    // Clic en checkbox
+    if (checkbox) {
+      checkbox.addEventListener('change', e => {
+        actualizarSeleccion(p.id, e.target.checked);
+      });
+    }
+
+    tbody.appendChild(tr);
   });
 
   actualizarBarraOpciones();
 }
+
 
 function actualizarBarraOpciones() {
   const barra = document.querySelector('.botones-busqueda');

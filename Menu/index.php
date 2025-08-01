@@ -108,7 +108,7 @@ $userInfo = getUserInfo();
                     <h3>Proveedores</h3>
                     <p>Administrar proveedores</p>
                 </div>
-                <div class="menu-item" onclick="location.href='../usuarios/index.php'">
+                <div class="menu-item" onclick="location.href='../usuarios/Usuarios.php'">
                     <div class="menu-icon">
                         <i class="fas fa-user-cog"></i>
                     </div>

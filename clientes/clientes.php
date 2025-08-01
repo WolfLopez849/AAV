@@ -42,7 +42,7 @@ $editMode = isset($_POST['edit']) && $_POST['edit'] == 1;
         <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
         <li onclick="location.href='../caja/index.html'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
         <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
-        <li onclick="location.href='../usuarios/index.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
+        <li onclick="location.href='../usuarios/Usuarios.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
         <li onclick="location.href='../configuracion/config.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
       </ul>
     </nav>
