@@ -19,13 +19,20 @@ class UsuarioDB extends Conectar {
     }
 
     public function insert($nombre_completo, $usuario, $contrasena, $rol, $estado, $creado_por) {
+        $hash = password_hash($contrasena, PASSWORD_DEFAULT);
         $stmt = $this->dbCnx->prepare("INSERT INTO usuarios (nombre_completo, usuario, contrasena, rol, estado, fecha_creacion, creado_por) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
-        $stmt->execute([$nombre_completo, $usuario, md5($contrasena), $rol, $estado, $creado_por]);
+        $stmt->execute([$nombre_completo, $usuario, $hash, $rol, $estado, $creado_por]);
     }
 
     public function update($id, $nombre_completo, $usuario, $contrasena, $rol, $estado, $creado_por) {
-        $stmt = $this->dbCnx->prepare("UPDATE usuarios SET nombre_completo=?, usuario=?, contrasena=?, rol=?, estado=?, creado_por=? WHERE id=?");
-        $stmt->execute([$nombre_completo, $usuario, md5($contrasena), $rol, $estado, $creado_por, $id]);
+        if ($contrasena !== "") {
+            $hash = password_hash($contrasena, PASSWORD_DEFAULT);
+            $stmt = $this->dbCnx->prepare("UPDATE usuarios SET nombre_completo=?, usuario=?, contrasena=?, rol=?, estado=?, creado_por=? WHERE id=?");
+            $stmt->execute([$nombre_completo, $usuario, $hash, $rol, $estado, $creado_por, $id]);
+        } else {
+            $stmt = $this->dbCnx->prepare("UPDATE usuarios SET nombre_completo=?, usuario=?, rol=?, estado=?, creado_por=? WHERE id=?");
+            $stmt->execute([$nombre_completo, $usuario, $rol, $estado, $creado_por, $id]);
+        }
     }
 
     public function delete($id) {
