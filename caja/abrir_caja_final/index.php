@@ -23,15 +23,15 @@
             </div>
             <nav>
                 <ul>
-                    <li><i class="fas fa-home"></i> <span>Menu principal</span></li>
-                    <li><i class="fas fa-boxes"></i> <span>Inventario</span></li>
-                    <li><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
-                    <li><i class="fas fa-users"></i> <span>Clientes</span></li>
-                    <li><i class="fas fa-truck"></i> <span>Proveedores</span></li>
-                    <li><i class="fas fa-cash-register"></i> <span>Caja</span></li>
-                    <li><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
-                    <li><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
-                    <li><i class="fas fa-cog"></i> <span>Configuración</span></li>
+                    <li onclick="location.href='../../Menu/index.php'"><i class="fas fa-table-cells-large"></i><span>Menu principal</span></li>
+                    <li onclick="location.href='../../inventario/inventario.html'"><i class="fas fa-boxes-stacked"></i><span>Inventario</span></li>
+                    <li onclick="location.href='../../ventas/index.php'"><i class="fas fa-cart-shopping"></i><span>Ventas</span></li>
+                    <li onclick="location.href='../../clientes/clientes.php'"><i class="fas fa-user-group"></i><span>Clientes</span></li>
+                    <li onclick="location.href='../../proveedores/index.php'"><i class="fas fa-truck-fast"></i><span>Proveedores</span></li>
+                    <li onclick="location.href='index.php'"><i class="fas fa-cash-register"></i><span>Caja</span></li>
+                    <li onclick="location.href='../../reportes/index.php'"><i class="fas fa-chart-line"></i><span>Reportes</span></li>
+                    <li onclick="location.href='../../usuarios/Usuarios.php'"><i class="fas fa-user-gear"></i><span>Usuarios</span></li>
+                    <li onclick="location.href='../../configuracion/config.php'"><i class="fas fa-gear"></i><span>Configuración</span></li>
                 </ul>
             </nav>
         </aside>
@@ -46,27 +46,27 @@
                 <div class="topbar-icons">
                     <i class="fas fa-bell"></i>
                     <i class="fas fa-user-circle"></i>
-                    <i class="fas fa-right-from-bracket logout"></i>
+                    <i class="fas fa-right-from-bracket logout" onclick="location.href='../login/logout.php'"></i>
                 </div>
             </header>
             <section>
                 <!-- Aquí puedes añadir el contenido de tu página -->
             
     <div class="datetime-box">
-      <span id="datetime" class="datetime">Cargando fecha y hora</span>
+      <span id="datetime" class="datetime">Cargando fecha y hora actuales...</span>
     </div>
 
       <!-- Formulario -->
       <section class="form-section">
 
     <div class="form">
-    <label>Id del empleado:</label>
-    <input type="text" value="AUTOMATICO" readonly />
+        <label>Id del empleado:</label>
+        <input type="text" value="AUTOMATICO" readonly />
 
-    <label>Monto Inicial:</label>
-    <input type="text" id="initialAmount" placeholder="0.00" />
+        <label>Monto Inicial:</label>
+        <input type="text" id="initialAmount" placeholder="0.00" />
 
-    <button id="openRegisterBtn">Abrir caja</button>
+        <button id="openRegisterBtn">Abrir caja</button>
     </div>
             </section>
         </div>

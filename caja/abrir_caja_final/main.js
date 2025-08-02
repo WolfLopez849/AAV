@@ -39,13 +39,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Validación: verifica que no esté vacío, que sea un número y que no sea negativo
             if (amountValue === '' || isNaN(amount) || amount < 0) {
-                alert('Por favor, ingresa un monto inicial válido.');
+                alert('Por favor, ingresa un monto con el que inicia la caja.');
                 initialAmountInput.focus(); // Pone el cursor en el campo para corregir
                 return; // Detiene la función si la validación falla
             }
 
             // Si la validación es exitosa, muestra una confirmación
             alert(`Caja abierta con un monto inicial de: $${amount.toFixed(2)}`);
+            window.location.href = "../index.html";
 
             // Opcional: Limpiar el campo y deshabilitar el botón después de la apertura
             initialAmountInput.value = '0.00';
