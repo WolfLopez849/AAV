@@ -13,7 +13,35 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleBtn?.addEventListener('click', () => {
     document.getElementById('appContainer').classList.toggle('collapsed');
   });
+
+  // Formato en tiempo real para precios
+  const precioCompra = document.querySelector('input[name="precioCompra"]');
+  const precioVenta = document.querySelector('input[name="precioVenta"]');
+
+  [precioCompra, precioVenta].forEach(input => {
+    input.addEventListener('input', (e) => {
+      let val = e.target.value.replace(/\D/g, '');
+      if (val) {
+        e.target.setAttribute('data-raw', val);
+        e.target.value = formatCOP(val);
+      } else {
+        e.target.value = '';
+        e.target.removeAttribute('data-raw');
+      }
+    });
+
+    // Evita ingresar puntos o comas manuales
+    input.addEventListener('keydown', e => {
+      if (e.key === '.' || e.key === ',' || e.key === 'e') {
+        e.preventDefault();
+      }
+    });
+  });
 });
+
+function formatCOP(valor) {
+  return '$ ' + parseInt(valor, 10).toLocaleString('es-CO');
+}
 
 function toggleFormulario() {
   const contenedor = document.getElementById('contenedorFormulario');
@@ -55,10 +83,31 @@ async function guardarProducto(e) {
   e.preventDefault();
   const form = e.target;
   const data = Object.fromEntries(new FormData(form));
-  data.precioCompra = parseFloat(data.precioCompra);
-  data.precioVenta = parseFloat(data.precioVenta);
+
+  // Obtener valores sin formato
+  data.precioCompra = parseFloat(form.querySelector('input[name="precioCompra"]').getAttribute('data-raw') || 0);
+  data.precioVenta = parseFloat(form.querySelector('input[name="precioVenta"]').getAttribute('data-raw') || 0);
   data.stock = parseInt(data.stock);
   data.iva = parseInt(data.iva);
+
+  if (!data.nombre || !data.codigo || !data.precioCompra || !data.precioVenta || !data.stock) {
+    showNotification('Por favor completa todos los campos obligatorios', 'error');
+    return;
+  }
+
+  if (data.precioVenta <= data.precioCompra) {
+    showNotification('El precio de venta no puede ser menor al precio de compra.', 'error');
+    return;
+  }
+
+  // Validar código único
+  const codigoDuplicado = productos.some(p =>
+    p.codigo === data.codigo && p.id !== data.id
+  );
+  if (codigoDuplicado) {
+    showNotification('Ya existe un producto con ese código', 'error');
+    return;
+  }
 
   const metodo = data.id ? 'PUT' : 'POST';
 
@@ -119,11 +168,10 @@ function actualizarTabla() {
     if (p.stock <= 5) tr.classList.add('alerta-stock');
 
     const columnas = [
-      
       `<input type="checkbox" class="checkbox-seleccion" data-id="${p.id}" ${seleccionados.has(p.id) ? 'checked' : ''}>`,
       p.nombre,
       p.codigo,
-      `$${parseFloat(p.precioVenta).toFixed(2)}`,
+      formatCOP(p.precioVenta),
       p.stock <= 5
         ? `<i class="fas fa-exclamation-triangle icono-alerta" title="Stock bajo: considera reabastecer"></i> ${p.stock}`
         : p.stock,
@@ -157,12 +205,8 @@ function actualizarTabla() {
         if (e.ctrlKey) {
           actualizarSeleccion(p.id, !seleccionados.has(p.id));
         } else {
-          if (seleccionados.has(p.id)) {
-            seleccionados.clear();
-          } else {
-            seleccionados.clear();
-            seleccionados.add(p.id);
-          }
+          seleccionados.clear();
+          seleccionados.add(p.id);
           actualizarTabla();
         }
       }
@@ -180,7 +224,6 @@ function actualizarTabla() {
 
   actualizarBarraOpciones();
 }
-
 
 function actualizarBarraOpciones() {
   const barra = document.querySelector('.botones-busqueda');
@@ -211,7 +254,13 @@ function editarSeleccionado() {
 
   for (let campo in producto) {
     if (form.elements[campo]) {
-      form.elements[campo].value = producto[campo];
+      if (campo === 'precioCompra' || campo === 'precioVenta') {
+        const val = producto[campo];
+        form.elements[campo].setAttribute('data-raw', val);
+        form.elements[campo].value = formatCOP(val);
+      } else {
+        form.elements[campo].value = producto[campo];
+      }
     }
   }
 
@@ -251,8 +300,10 @@ async function eliminarSeleccionados() {
 }
 
 function resetFormulario() {
-  document.getElementById('formProducto').reset();
-  document.getElementById('formProducto').elements['id'].value = '';
+  const form = document.getElementById('formProducto');
+  form.reset();
+  form.elements['id'].value = '';
+  form.querySelectorAll('input[data-raw]').forEach(el => el.removeAttribute('data-raw'));
   editando = false;
 }
 

@@ -1,3 +1,4 @@
+/* RESET GENERAL */
 * {
   margin: 0;
   padding: 0;
@@ -656,3 +657,21 @@ nav ul li span {
   transform: rotate(-5deg) scale(1.1);
   color: #e67e22;
 }
+
+.campo-error {
+  border: 2px solid #e74c3c !important;
+  background-color: #fff6f6;
+  color: #b00020;
+}
+
+.mensaje-error {
+  font-size: 0.75rem;
+  color: #ff4d4f;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+input.campo-error::placeholder {
+  color: #ff8a8a;
+}
+

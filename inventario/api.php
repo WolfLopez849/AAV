@@ -4,6 +4,7 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 header('Access-Control-Allow-Headers: Content-Type');
 
+// Conexión a la base de datos
 $host = "localhost";
 $user = "root";
 $pass = "";
@@ -16,8 +17,9 @@ if ($conn->connect_error) {
   exit;
 }
 
-$data = json_decode(file_get_contents("php://input"), true);
+// Obtener método y datos
 $method = $_SERVER['REQUEST_METHOD'];
+$data = json_decode(file_get_contents("php://input"), true);
 
 switch ($method) {
   case 'GET':
@@ -31,15 +33,27 @@ switch ($method) {
     break;
 
   case 'POST':
+    // Validación básica: evitar códigos repetidos
+    $codigo = $data['codigo'];
+    $verifica = $conn->prepare("SELECT id FROM productos WHERE codigo = ?");
+    $verifica->bind_param("s", $codigo);
+    $verifica->execute();
+    $verifica->store_result();
+    if ($verifica->num_rows > 0) {
+      http_response_code(400);
+      echo json_encode(["error" => "Ya existe un producto con ese código"]);
+      exit;
+    }
+
     $stmt = $conn->prepare("INSERT INTO productos (nombre, codigo, precioCompra, precioVenta, stock, categoria, iva, proveedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssddissi",
+    $stmt->bind_param("ssddisss",
       $data['nombre'],
       $data['codigo'],
       $data['precioCompra'],
       $data['precioVenta'],
       $data['stock'],
-      $data['categoria'],  // ✅ ahora es string
-      $data['iva'],        // ✅ es int
+      $data['categoria'],
+      $data['iva'],
       $data['proveedor']
     );
     $stmt->execute();
@@ -54,8 +68,8 @@ switch ($method) {
       $data['precioCompra'],
       $data['precioVenta'],
       $data['stock'],
-      $data['categoria'],  // ✅ string
-      $data['iva'],        // ✅ int
+      $data['categoria'],
+      $data['iva'],
       $data['proveedor'],
       $data['id']
     );
