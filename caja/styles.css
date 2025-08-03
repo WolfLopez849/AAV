@@ -1,134 +1,170 @@
-/* ===== Variables ===== */
+/* ╔══════════════════════════════════════════════╗
+   ║   Variables de color (paleta POSNOVA)        ║
+   ╚══════════════════════════════════════════════╝ */
 :root{
-    --primary:#324759;
-    --primary-light:#3f5a6e;
-    --accent:#1d8cf8;
-    --danger:#ff2d2d;
-    --success:#28a745;
-    --secondary:#6c757d;
-    --bg:#f4f7f6;
-    --radius:.5rem;
-    --transition:.25s ease;
-  }
-  
-  /* ===== Reset & base ===== */
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Inter',sans-serif;background:var(--bg);height:100vh;display:flex;overflow:hidden}
-  
-  /* ===== App Layout ===== */
-  .app-container{display:flex;width:100%;height:100%;transition:var(--transition)}
-  
-  /* ------ Sidebar ------ */
-  .sidebar{
-    width:260px;background:#fff;color:#111;border-right:1px solid #dcdfe4;
-    display:flex;flex-direction:column;transition:var(--transition)
-  }
-  .app-container.collapsed .sidebar{width:68px}
-  
-  .logo{display:flex;align-items:center;gap:.5rem;padding:1rem}
-  .logo i{font-size:1.75rem;color:var(--accent)}
-  .logo span{font-size:1.6rem;font-weight:700;color:var(--accent);white-space:nowrap;transition:var(--transition)}
-  .app-container.collapsed .logo span{opacity:0;width:0}
-  
-  .btn-icon{background:none;border:none;font-size:1.25rem;cursor:pointer;color:#555}
-  
-  .sidebar nav ul{list-style:none;margin-top:1rem}
-  .sidebar nav li{
-    display:flex;align-items:center;gap:1rem;font-size:1.1rem;
-    padding:.9rem 1rem;border-radius:var(--radius);cursor:pointer;
-    transition:background .15s,color .15s
-  }
-  .sidebar nav li i{width:26px;text-align:center;font-size:1.3rem}
-  .sidebar nav li:hover{background:var(--primary-light);color:#fff}
-  .app-container.collapsed nav li{justify-content:center}
-  .app-container.collapsed nav li span{opacity:0;width:0;overflow:hidden;transition:var(--transition)}
-  
-  /* ------ Main ------ */
-  .main-content{flex:1;display:flex;flex-direction:column;overflow:hidden}
-  
-  /* Topbar */
-  .topbar{
-    display:flex;justify-content:space-between;align-items:center;
-    background:#fff;padding:.75rem 1.5rem;border-bottom:1px solid #dcdfe4
-  }
-  .topbar h1{font-size:2.2rem;font-weight:600;color:var(--primary);display:flex;align-items:center;gap:.6rem}
-  .topbar i{font-size:1em}
-  .top-icons{display:flex;align-items:center;gap:2rem;font-size:1.6rem}
-  .top-icons .fa-bell{color:var(--accent)}
-  .top-icons .fa-user-circle{color:#000}
-  .top-icons .logout{color:var(--danger);cursor:pointer}
-  
-  /* Page background */
-  .content{flex:1;overflow:auto;background:var(--primary);padding:1.5rem}
-  .card{
-    background:#fff;border-radius:var(--radius);padding:1.25rem 1.5rem;
-    box-shadow:0 2px 6px rgba(0,0,0,.06)
-  }
-  
-  /* ----- Form Sections ----- */
-  .form-section{
-    border:1px solid #dfe3e8;border-radius:var(--radius);
-    padding:1rem 1.25rem;margin-bottom:1.25rem;background:#f9fbfd
-  }
-  .form-section h3{
-    margin:-.75rem -.75rem 1rem;padding:.75rem;font-size:1.05rem;font-weight:600;
-    color:var(--primary);background:#eff3f8;border-bottom:1px solid #dfe3e8;
-    border-top-left-radius:calc(var(--radius) - 1px);
-    border-top-right-radius:calc(var(--radius) - 1px);
-    display:flex;align-items:center;gap:.5rem
-  }
-  .form-section h3 i{color:var(--accent)}
-  
-  /* Form grid */
-  .form-grid{
-    display:grid;gap:.8rem;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))
-  }
-  .form-grid input{
-    padding:.55rem .75rem;border:1px solid #cbd5e1;border-radius:.375rem;
-    font-size:.95rem;width:100%;background:#f8fafc
-  }
-  .form-grid .full{grid-column:1/-1}
-  
-  /* ----- PILL Buttons ----- */
-  .btn{
-    --btn-bg:var(--primary);
-    --btn-bg-hover:var(--primary-light);
-    --btn-color:#fff;
-    border:none;background:var(--btn-bg);color:var(--btn-color);
-    font-weight:600;font-size:.95rem;padding:.6rem 1.5rem;
-    display:inline-flex;align-items:center;gap:.5rem;
-    border-radius:9999px;cursor:pointer;transition:background .15s ease;
-    box-shadow:0 2px 4px rgb(0 0 0 / .1)
-  }
-  .btn:hover{background:var(--btn-bg-hover)}
-  .btn i{font-size:1rem}
-  
-  /* Paletas */
-  .btn-primary   {--btn-bg:#1d8cf8;--btn-bg-hover:#0e77e6}
-  .btn-secondary {--btn-bg:var(--secondary);--btn-bg-hover:#545c63}
-  .btn-danger    {--btn-bg:var(--danger);--btn-bg-hover:#e51a1a}
-  .btn-success   {--btn-bg:var(--success);--btn-bg-hover:#1e7e34}
-  
-  /* Contenedor para centrar/alinear el botón Agregar producto */
-  .form-actions{
-    display:flex;
-    justify-content:center;  /* cámbialo a flex-end si lo prefieres a la derecha */
-    margin-top:.6rem;
-  }
-  
-  /* Tabla */
-  .table-responsive{overflow-x:auto;margin-bottom:1.25rem}
-  table{width:100%;border-collapse:collapse;font-size:.93rem}
-  thead{background:var(--primary);color:#fff}
-  th,td{padding:.7rem 1rem;border:1px solid #e8eaef;text-align:left}
-  tbody tr:nth-child(even){background:#f6f9fc}
-  
-  /* Acciones finales */
-  .actions-row{display:flex;gap:1rem;justify-content:flex-end}
-  
-  /* ===== Responsive ===== */
-  @media (max-width:700px){
-    .sidebar{display:none}
-    .content{padding:1rem}
-  }
-  
+  --pos-dark  : #324759;   /* azul oscuro fondo paneles     */
+  --pos-accent: #369AD9;   /* azul claro (acentos / links)  */
+  --pos-white : #ffffff;   /* blanco                        */
+  --border    : #d0d4d8;   /* gris suave para bordes        */
+
+  /* textos */
+  --text-on-dark: #ffffff;
+  --text-nav    : #000000;
+
+  /* tamaños */
+  --sidebar-w        : 250px;
+  --sidebar-collapsed: 72px;
+
+  font-family: 'Inter', sans-serif;
+}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Layout general                             ║
+   ╚══════════════════════════════════════════════╝ */
+body,html{margin:0;height:100%;}
+.app-container{display:flex;width:100%;height:100vh;overflow:hidden;transition:.3s;}
+.main-content{flex:1;display:flex;flex-direction:column;background:var(--pos-dark);}
+.content{flex:1;padding:1.2rem;overflow:auto;}
+.card{
+  background:var(--pos-dark);
+  padding:1.25rem;
+  border-radius:.5rem;
+  box-shadow:0 1px 4px rgba(0,0,0,.15);
+  color:var(--text-on-dark);
+}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Topbar                                     ║
+   ╚══════════════════════════════════════════════╝ */
+.topbar{
+  background:var(--pos-white);
+  border-bottom:1px solid var(--border);
+  padding:.6rem 1rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.topbar h1{
+  color:var(--pos-dark);
+  font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.4rem;
+}
+.top-icons i{color:var(--pos-dark);margin-left:1rem;cursor:pointer;font-size:1.1rem;}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Sidebar plegable                           ║
+   ╚══════════════════════════════════════════════╝ */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;transition:width .3s;
+  background:var(--pos-white);color:var(--text-nav);height:100%;
+  box-shadow:2px 0 4px rgba(0,0,0,.1);display:flex;flex-direction:column;
+}
+.logo{display:flex;align-items:center;gap:.65rem;padding:1rem;border-bottom:1px solid var(--border);}
+.logo i{color:var(--pos-accent);}
+.logo span{font-weight:700;color:var(--pos-accent);}
+.btn-icon{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--pos-accent);}
+
+.sidebar nav ul{list-style:none;margin:0;padding:0;}
+.sidebar nav li{
+  display:flex;align-items:center;gap:.9rem;padding:.55rem 1rem;cursor:pointer;
+  transition:background .2s;
+}
+.sidebar nav li:hover,
+.sidebar nav li.active{background:#f2f4f7;}
+.sidebar nav li i{width:20px;text-align:center;font-size:1rem;color:var(--pos-dark);}
+.sidebar nav li span{white-space:nowrap;color:var(--text-nav);}
+
+.app-container.collapsed .sidebar{width:var(--sidebar-collapsed);}
+.app-container.collapsed .sidebar span{display:none;}
+.app-container.collapsed .sidebar nav li{justify-content:center;}
+.app-container.collapsed .sidebar nav li i{margin:0;}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Formularios                                ║
+   ╚══════════════════════════════════════════════╝ */
+.form-section h3{
+  font-size:1rem;font-weight:600;margin:0 0 .6rem;color:var(--pos-accent);
+  display:flex;align-items:center;gap:.4rem;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:.6rem;
+}
+.form-grid .double{grid-column:span 2;}
+.form-actions{text-align:right;margin-top:.8rem;}
+
+input,select{
+  width:100%;border:1px solid var(--border);border-radius:.35rem;
+  padding:.45rem .5rem;font-size:.9rem;background:var(--pos-white);
+  color:#000;
+}
+input[readonly]{background:#e9edf1;color:#6c757d;}
+input::placeholder{color:#98a2ad;font-size:.85rem;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;
+  border:none;border-radius:.35rem;padding:.42rem .9rem;font-size:.9rem;
+  transition:opacity .2s;
+}
+.btn-primary{background:var(--pos-accent);color:#fff;}
+.btn-secondary{background:#6c757d;color:#fff;}
+.btn-success{background:#198754;color:#fff;}
+.btn:hover{opacity:.9;}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Tabla DataTables                           ║
+   ╚══════════════════════════════════════════════╝ */
+.table-responsive{overflow:auto;}
+
+/* 1. Encabezado: igual que antes (azul oscuro + texto blanco) */
+#productTable thead{
+  background:var(--pos-dark);
+  color:var(--text-on-dark);
+}
+
+/* 2. Filas cuerpo: texto negro + fondo blanco / gris muy suave */
+#productTable tbody tr{
+  background:#ffffff;     /* filas impares */
+  color:#000000;          /* texto negro   */
+}
+#productTable tbody tr:nth-child(even){
+  background:#f2f4f7;     /* filas pares   */
+}
+
+/* 3. Hover opcional para destacar selección */
+#productTable tbody tr:hover{
+  background:#d9eefb;     /* celeste claro */
+}
+
+/* 4. Paginador */
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+  padding:.15rem .55rem;
+  margin:0 .15rem;
+  border-radius:.25rem;
+  background:#e4e7ec;
+  border:none;
+  color:#000;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{
+  background:var(--pos-accent);
+  color:#ffffff;
+}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Acciones finales                           ║
+   ╚══════════════════════════════════════════════╝ */
+.actions-row{display:flex;justify-content:flex-end;gap:.9rem;margin-top:1rem;}
+.actions-row .btn{font-size:.88rem;}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Modal Bootstrap                            ║
+   ╚══════════════════════════════════════════════╝ */
+.modal-content{border:none;border-radius:.5rem;}
+.modal-header{border-bottom:1px solid var(--border);}
+.modal-title{color:var(--pos-dark);}
+#searchTable thead{background:var(--pos-accent);color:#fff;}
+#searchTable tbody tr:hover{background:#d9eefb;cursor:pointer;}
+/* ╔═══════════════════════════════╗
+   ║  Fila marcada para eliminar   ║
+   ╚═══════════════════════════════╝ */
+#productTable tbody tr.selected{
+  background:#cf1919 !important;   /* rojo muy tenue */
+}

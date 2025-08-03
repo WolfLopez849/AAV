@@ -85,3 +85,51 @@ CREATE TABLE IF NOT EXISTS `ventas` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE IF NOT EXISTS `customers` (
+  `customer_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `doc_type` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `doc_num` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS `products` (
+  `product_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `code` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `purchase_price` decimal(12,2) NOT NULL,
+  `iva_percent` decimal(5,2) NOT NULL,
+  `category` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`product_id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS `sales` (
+  `sale_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `customer_id` int UNSIGNED DEFAULT NULL,
+  `sale_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `total` decimal(14,2) NOT NULL,
+  PRIMARY KEY (`sale_id`),
+  KEY `customer_id` (`customer_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+CREATE TABLE IF NOT EXISTS `sale_items` (
+  `item_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `sale_id` int UNSIGNED NOT NULL,
+  `product_id` int UNSIGNED NOT NULL,
+  `price_unit` decimal(12,2) NOT NULL,
+  `iva_percent` decimal(5,2) NOT NULL,
+  `qty` int UNSIGNED NOT NULL DEFAULT '1',
+  `total_line` decimal(14,2) NOT NULL,
+  PRIMARY KEY (`item_id`),
+  KEY `sale_id` (`sale_id`),
+  KEY `product_id` (`product_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
