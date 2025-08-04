@@ -45,8 +45,7 @@
             </header>
             <section>
                 <div class="config-menu">
-                    <h3>Menú de Configuración Avanzada - Sistema POS</h3>
-                    <form class="config-form" id="configForm" autocomplete="off">
+                    <form class="config-form" id="configForm" method="post" autocomplete="off">
                         <fieldset>
                             <legend>Datos del Comercio</legend>
                             <div class="form-group">
@@ -184,7 +183,7 @@
                                 <label><input type="checkbox" name="soporteExentos" /> Soporte para productos exentos/excluidos</label>
                             </div>
                         </fieldset>
-                        <fieldset>
+                        <!-- <fieldset>
                             <legend>Personalización y Apariencia</legend>
                             <div class="form-group">
                                 <label for="logo">Logo del comercio</label>
@@ -211,7 +210,7 @@
                                 <label for="qrDIAN">QR de la DIAN (si aplica)</label>
                                 <input type="file" id="qrDIAN" name="qrDIAN" accept="image/*" />
                             </div>
-                        </fieldset>
+                        </fieldset> -->
                         <fieldset>
                             <legend>Control de Inventario</legend>
                             <div class="form-group">
