@@ -1,0 +1,170 @@
+/* ╔══════════════════════════════════════════════╗
+   ║   Variables de color (paleta POSNOVA)        ║
+   ╚══════════════════════════════════════════════╝ */
+:root{
+  --pos-dark  : #324759;   /* azul oscuro fondo paneles     */
+  --pos-accent: #369AD9;   /* azul claro (acentos / links)  */
+  --pos-white : #ffffff;   /* blanco                        */
+  --border    : #d0d4d8;   /* gris suave para bordes        */
+
+  /* textos */
+  --text-on-dark: #ffffff;
+  --text-nav    : #000000;
+
+  /* tamaños */
+  --sidebar-w        : 250px;
+  --sidebar-collapsed: 72px;
+
+  font-family: 'Inter', sans-serif;
+}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Layout general                             ║
+   ╚══════════════════════════════════════════════╝ */
+body,html{margin:0;height:100%;}
+.app-container{display:flex;width:100%;height:100vh;overflow:hidden;transition:.3s;}
+.main-content{flex:1;display:flex;flex-direction:column;background:var(--pos-dark);}
+.content{flex:1;padding:1.2rem;overflow:auto;}
+.card{
+  background:var(--pos-dark);
+  padding:1.25rem;
+  border-radius:.5rem;
+  box-shadow:0 1px 4px rgba(0,0,0,.15);
+  color:var(--text-on-dark);
+}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Topbar                                     ║
+   ╚══════════════════════════════════════════════╝ */
+.topbar{
+  background:var(--pos-white);
+  border-bottom:1px solid var(--border);
+  padding:.6rem 1rem;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.topbar h1{
+  color:var(--pos-dark);
+  font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.4rem;
+}
+.top-icons i{color:var(--pos-dark);margin-left:1rem;cursor:pointer;font-size:1.1rem;}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Sidebar plegable                           ║
+   ╚══════════════════════════════════════════════╝ */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;transition:width .3s;
+  background:var(--pos-white);color:var(--text-nav);height:100%;
+  box-shadow:2px 0 4px rgba(0,0,0,.1);display:flex;flex-direction:column;
+}
+.logo{display:flex;align-items:center;gap:.65rem;padding:1rem;border-bottom:1px solid var(--border);}
+.logo i{color:var(--pos-accent);}
+.logo span{font-weight:700;color:var(--pos-accent);}
+.btn-icon{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--pos-accent);}
+
+.sidebar nav ul{list-style:none;margin:0;padding:0;}
+.sidebar nav li{
+  display:flex;align-items:center;gap:.9rem;padding:.55rem 1rem;cursor:pointer;
+  transition:background .2s;
+}
+.sidebar nav li:hover,
+.sidebar nav li.active{background:#f2f4f7;}
+.sidebar nav li i{width:20px;text-align:center;font-size:1rem;color:var(--pos-dark);}
+.sidebar nav li span{white-space:nowrap;color:var(--text-nav);}
+
+.app-container.collapsed .sidebar{width:var(--sidebar-collapsed);}
+.app-container.collapsed .sidebar span{display:none;}
+.app-container.collapsed .sidebar nav li{justify-content:center;}
+.app-container.collapsed .sidebar nav li i{margin:0;}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Formularios                                ║
+   ╚══════════════════════════════════════════════╝ */
+.form-section h3{
+  font-size:1rem;font-weight:600;margin:0 0 .6rem;color:var(--pos-accent);
+  display:flex;align-items:center;gap:.4rem;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:.6rem;
+}
+.form-grid .double{grid-column:span 2;}
+.form-actions{text-align:right;margin-top:.8rem;}
+
+input,select{
+  width:100%;border:1px solid var(--border);border-radius:.35rem;
+  padding:.45rem .5rem;font-size:.9rem;background:var(--pos-white);
+  color:#000;
+}
+input[readonly]{background:#e9edf1;color:#6c757d;}
+input::placeholder{color:#98a2ad;font-size:.85rem;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;
+  border:none;border-radius:.35rem;padding:.42rem .9rem;font-size:.9rem;
+  transition:opacity .2s;
+}
+.btn-primary{background:var(--pos-accent);color:#fff;}
+.btn-secondary{background:#6c757d;color:#fff;}
+.btn-success{background:#198754;color:#fff;}
+.btn:hover{opacity:.9;}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Tabla DataTables                           ║
+   ╚══════════════════════════════════════════════╝ */
+.table-responsive{overflow:auto;}
+
+/* 1. Encabezado: igual que antes (azul oscuro + texto blanco) */
+#productTable thead{
+  background:var(--pos-dark);
+  color:var(--text-on-dark);
+}
+
+/* 2. Filas cuerpo: texto negro + fondo blanco / gris muy suave */
+#productTable tbody tr{
+  background:#ffffff;     /* filas impares */
+  color:#000000;          /* texto negro   */
+}
+#productTable tbody tr:nth-child(even){
+  background:#f2f4f7;     /* filas pares   */
+}
+
+/* 3. Hover opcional para destacar selección */
+#productTable tbody tr:hover{
+  background:#d9eefb;     /* celeste claro */
+}
+
+/* 4. Paginador */
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+  padding:.15rem .55rem;
+  margin:0 .15rem;
+  border-radius:.25rem;
+  background:#e4e7ec;
+  border:none;
+  color:#000;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{
+  background:var(--pos-accent);
+  color:#ffffff;
+}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Acciones finales                           ║
+   ╚══════════════════════════════════════════════╝ */
+.actions-row{display:flex;justify-content:flex-end;gap:.9rem;margin-top:1rem;}
+.actions-row .btn{font-size:.88rem;}
+
+/* ╔══════════════════════════════════════════════╗
+   ║   Modal Bootstrap                            ║
+   ╚══════════════════════════════════════════════╝ */
+.modal-content{border:none;border-radius:.5rem;}
+.modal-header{border-bottom:1px solid var(--border);}
+.modal-title{color:var(--pos-dark);}
+#searchTable thead{background:var(--pos-accent);color:#fff;}
+#searchTable tbody tr:hover{background:#d9eefb;cursor:pointer;}
+/* ╔═══════════════════════════════╗
+   ║  Fila marcada para eliminar   ║
+   ╚═══════════════════════════════╝ */
+#productTable tbody tr.selected{
+  background:#cf1919 !important;   /* rojo muy tenue */
+}

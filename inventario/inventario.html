@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inventario - Sistema POS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <div class="app-container" id="appContainer">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <span>POSNOVA</span>
+      </div>
+      <nav>
+        <ul>
+          <li onclick="location.href='../Menu/index.php'"><i class="fas fa-home"></i> <span>Menu principal</span></li>
+                    <li onclick="location.href='../inventario/inventario.html'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+                    <li onclick="location.href='../ventas/index.php'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+                    <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
+                    <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+                    <li onclick="location.href='../caja/index.html'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+                    <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+                    <li onclick="location.href='../usuarios/Usuarios.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
+                    <li onclick="location.href='../configuracion/config.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="title">
+          <h2><i class="fas fa-boxes"></i> Inventario</h2>
+        </div>
+        <div class="topbar-icons">
+          <i class="fas fa-bell"></i>
+          <i class="fas fa-user-circle"></i>
+          <i class="fas fa-right-from-bracket logout" onclick="location.href='../login/logout.php'"></i>
+        </div>
+      </header>
+
+      <!-- Fondo Azul -->
+      <div class="contenedor-azul">
+        <!-- Botón y formulario -->
+        <div class="contenedor-formulario">
+          <button id="btnMostrarFormulario" class="btn-agregar">
+            <i class="fas fa-plus-circle"></i> Agregar Producto
+          </button>
+
+          <div id="contenedorFormulario" class="oculto contenedor-animado">
+            <form id="formProducto" class="formulario-producto">
+              <div class="form-grid">
+                <div class="campo-icono">
+                  <i class="fas fa-tag"></i>
+                  <input type="text" placeholder="Nombre del producto" name="nombre" required />
+                </div>
+                <div class="campo-icono">
+                  <i class="fas fa-barcode"></i>
+                  <input type="text" placeholder="Código" name="codigo" required />
+                </div>
+                <div class="campo-icono">
+                  <i class="fas fa-dollar-sign"></i>
+                  <input type="text" placeholder="Precio Compra" name="precioCompra" required />
+                </div>
+                <div class="campo-icono">
+                  <i class="fas fa-dollar-sign"></i>
+                  <input type="text" placeholder="Precio Venta" name="precioVenta" required />
+                </div>
+                <div class="campo-icono">
+                  <i class="fas fa-boxes"></i>
+                  <input type="number" placeholder="Stock" name="stock" required />
+                </div>
+                <div class="campo-icono">
+                  <i class="fas fa-folder"></i>
+                  <input type="text" placeholder="Categoría" name="categoria" />
+                </div>
+                <div class="campo-icono">
+                  <i class="fas fa-percent"></i>
+                  <select name="iva" required>
+                    <option value="19">IVA 19%</option>
+                    <option value="5">IVA 5%</option>
+                    <option value="0">Exento</option>
+                  </select>
+                </div>
+                <div class="campo-icono">
+                  <i class="fas fa-truck"></i>
+                  <input type="text" placeholder="Proveedor" name="proveedor" />
+                </div>
+              </div>
+
+              <input type="hidden" name="id" />
+              <button type="submit" class="btn btn-primary">Guardar Producto</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="mensajeVacio" class="mensaje-vacio oculto">
+          <i class="fas fa-info-circle"></i>
+          <span id="textoMensajeVacio">Aún no tienes productos agregados. Pulsa en <strong>Agregar Producto</strong> para comenzar.</span>
+        </div>
+
+        <div class="contenedor-busqueda-acciones">
+          <div class="buscador-pastilla">
+            <i class="fas fa-search"></i>
+            <input type="text" id="buscarProducto" placeholder="Buscar productos por nombre o código..." />
+          </div>
+          <div id="botonesSeleccion" class="botones-busqueda">
+            <button id="btnEditarSeleccionados" onclick="editarSeleccionado()" class="btn btn-primary">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button id="btnEliminarSeleccionados" onclick="eliminarSeleccionados()" class="btn btn-danger">
+              <i class="fas fa-trash-alt"></i> Eliminar
+            </button>
+          </div>
+        </div>
+
+        <div class="contenedor-tabla">
+          <table class="tabla-productos">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Nombre</th>
+                <th>Código</th>
+                <th>Precio Venta</th>
+                <th>Stock</th>
+                <th>Categoría</th>
+                <th>Proveedor</th>
+              </tr>
+            </thead>
+            <tbody id="listaProductos">
+              <!-- Contenido generado por JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="inventario.js"></script>
+</body>
+</html>

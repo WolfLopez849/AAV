@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Menú - Configuración</title>
-    <link rel="stylesheet" href="/Menu/Configuracion/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 <body>
@@ -19,15 +19,15 @@
             </div>
             <nav>
                 <ul>
-                    <li><i class="fas fa-home"></i> <span>Menu principal</span></li>
-                    <li><i class="fas fa-boxes"></i> <span>Inventario</span></li>
-                    <li><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
-                    <li><i class="fas fa-users"></i> <span>Clientes</span></li>
-                    <li><i class="fas fa-truck"></i> <span>Proveedores</span></li>
-                    <li><i class="fas fa-cash-register"></i> <span>Caja</span></li>
-                    <li><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
-                    <li><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
-                    <li><i class="fas fa-cog"></i> <span>Configuración</span></li>
+            <li onclick="location.href='../Menu/index.php'"><i class="fas fa-home"></i> <span>Menú principal</span></li>
+          <li class="active" onclick="location.href='../inventario/inventario.html'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+          <li onclick="location.href='../ventas/index.php'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+          <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
+          <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+          <li onclick="location.href='../caja/index.html'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+          <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+          <li onclick="location.href='../usuarios/Usuarios.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
+          <li onclick="location.href='../configuracion/index.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
                 </ul>
             </nav>
         </aside>
@@ -301,7 +301,7 @@
         </div>
     </div>
 
-    <script src="/Menu/menu/main.js"></script>
-    <script src="/Menu/Configuracion/scripts.js"></script>
+    <script src="../Menu/scripts.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>

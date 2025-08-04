@@ -193,11 +193,10 @@ body {
     color: #3498db;
 }
 
-
 .main-content {
     padding: 3rem 4rem;
     max-width: 1600px;
-    margin: 0 auto;
+    margin: 10rem 0 auto 0;
 }
 
 

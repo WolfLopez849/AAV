@@ -71,7 +71,7 @@ function logout() {
     if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
         showNotification('Cerrando sesión...', 'info');
         setTimeout(() => {
-            window.location.href = '?action=logout';
+            window.location.href = '../login/logout.php';
         }, 1000);
     }
 }
@@ -406,4 +406,4 @@ document.addEventListener('DOMContentLoaded', function() {
 function updateRealTimeData() {
     setInterval(updateAllCharts, 30000);
 }
-updateRealTimeData(); 
+updateRealTimeData();

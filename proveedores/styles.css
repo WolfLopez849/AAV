@@ -1,0 +1,264 @@
+/* Estilos generales */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #f4f7f6;
+    display: flex;
+    height: 100vh;
+    overflow: hidden; /* Evita el scroll global */
+}
+
+.app-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #ffffff; /* Color oscuro para la sidebar */
+    color: #333; /* Color de texto claro */
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: relative; /* Para posicionar el botón si es necesario */
+}
+
+.app-container.collapsed .sidebar {
+    width: 60px; /* Ancho reducido cuando está colapsada */
+}
+
+.logo {
+    display: flex; /* Usar flexbox para alinear el botón y el texto */
+    align-items: center;
+    justify-content: center; /* Centrar el contenido del logo */
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #3498db; /* Color de acento para el logo */
+    padding: 0 10px; /* Añadir padding para que el botón no toque el borde */
+}
+
+.logo span {
+    transition: opacity 0.3s ease, width 0.3s ease; /* Transición para el texto del logo */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se desborda */
+    width: auto; /* Ancho automático por defecto */
+}
+
+.app-container.collapsed .logo span {
+    opacity: 0; /* Oculta el texto del logo con una transición suave */
+    width: 0; /* Colapsa el espacio del texto */
+    margin-left: -15px; /* Ajusta el margen para que el botón se mueva */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 8px;
+    margin: 5px 10px;
+}
+
+nav ul li:hover {
+    background-color: #34495e; /* Color al pasar el ratón */
+    color: #ffffff;
+}
+
+nav ul li i {
+    margin-right: 15px;
+    font-size: 18px;
+    width: 20px; /* Asegura un ancho fijo para los iconos */
+    text-align: center;
+}
+
+/* Estilos cuando la barra lateral está colapsada */
+.app-container.collapsed nav ul li {
+    justify-content: center; 
+    margin: 5px 0; 
+    width: 100%;
+    box-sizing: border-box;
+}
+.contenedor {
+    background-color: #86c1e9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: white;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #32475a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: white;
+    color: black;
+    border-collapse: collapse;
+}
+
+button {
+    background-color: #32475a;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+table {
+    width: 100%;
+    margin-top: 20px;
+    background-color: white;
+    color: black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+th {
+    background-color: #32475a;
+    color: white;
+}
+.acciones a {
+    margin-right: 5px;
+    color: white;
+    background-color: #32475a;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.acciones a:hover {
+    background-color: #1f2d3a;
+}
+
+.app-container.collapsed nav ul li i {
+    margin-right: 0; /* Elimina el margen a la derecha del icono */
+}
+nav ul li span {
+    transition: opacity 0.3s ease, width 0.3s ease; /* Transición para el texto del menú */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se desborda */
+    width: auto; /* Ancho automático por defecto */
+}
+
+.app-container.collapsed nav ul li span {
+    opacity: 0; /* Oculta el texto del menú con una transición suave */
+    width: 0; /* Colapsa el espacio del texto */
+}
+
+/* Contenido principal */
+.main-content {
+    flex-grow: 1;
+    background-color: #324759;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Evita el scroll dentro del main content si no es necesario */
+    transition: margin-left 0.3s ease; /* Transición para el margen izquierdo */
+    color: #ffffff; /* Color de texto claro para el contenido principal */
+}
+
+.app-container.collapsed .main-content {
+    margin-left: 0; /* Ajusta el margen cuando la sidebar está colapsada */
+}
+
+/* Topbar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.topbar .title h2 {
+    margin: 0;
+    color: #333;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+}
+
+.topbar .title h2 i {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+.topbar-icons {
+    display: flex;
+    align-items: center;
+}
+
+.topbar-icons i {
+    font-size: 20px;
+    margin-left: 20px;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.topbar-icons i:hover {
+    color: #369AD9;
+}
+
+/* Botón de toggle de la sidebar */
+.sidebar-toggle-btn {
+    background: none;
+    border: none;
+    color: #333; /* Color blanco para el botón en la sidebar */
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 15px; /* Espacio entre el botón y el texto del logo */
+    transition: color 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover {
+    color: #369AD9;
+}
+
+section {
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto; /* Permite el scroll dentro de la sección si el contenido es largo */
+}
