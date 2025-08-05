@@ -46,14 +46,14 @@ document.addEventListener('click', function(event) {
 
 function navigateTo(section) {
     const routes = {
-        'inventario': '../Inventario/inventario.html',
-        'ventas': '../Ventas/ventas.html',
-        'clientes': '../Clientes/clientes.html',
-        'proveedores': '../Proveedores/proveedores.html',
-        'usuarios': '../Usuarios/usuarios.html',
-        'reportes': '../Reportes/reportes.html',
-        'caja': '../Caja/caja.html',
-        'configuracion': '../Configuracion/configuracion.html'
+        'inventario': '../Inventario/inventario.php',
+        'ventas': '../Ventas/ventas.php',
+        'clientes': '../Clientes/clientes.php',
+        'proveedores': '../Proveedores/proveedores.php',
+        'usuarios': '../Usuarios/usuarios.php',
+        'reportes': '../Reportes/reportes.php',
+        'caja': '../Caja/caja.php',
+        'configuracion': '../Configuracion/configuracion.php'
     };
     const route = routes[section];
     if (route) {

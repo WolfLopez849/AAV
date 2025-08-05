@@ -1,9 +1,13 @@
+<?php
+require_once 'config.php';
+setCajaEstado('abierta');
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Caja – Registro Venta</title>
+  <title>Caja - POSNOVA</title>
 
   <!-- 1️⃣  Bootstrap 5  -->
   <link rel="stylesheet"
@@ -35,47 +39,43 @@
 
     <nav>
       <ul>
-        <li onclick="location.href='../Menu/index.php'">
+        <li onclick="location.href='../Menu/'">
           <i class="fas fa-table-cells-large"></i><span>Menu principal</span>
         </li>
-        <li onclick="location.href='../inventario/inventario.html'">
+        <li onclick="location.href='../inventario/inventario.php'">
           <i class="fas fa-boxes-stacked"></i><span>Inventario</span>
         </li>
-        <li onclick="location.href='../ventas/index.php'">
+        <li onclick="location.href='../ventas/'">
           <i class="fas fa-cart-shopping"></i><span>Ventas</span>
         </li>
         <li onclick="location.href='../clientes/clientes.php'">
           <i class="fas fa-user-group"></i><span>Clientes</span>
         </li>
-        <li onclick="location.href='../proveedores/index.php'">
+        <li onclick="location.href='../proveedores/'">
           <i class="fas fa-truck-fast"></i><span>Proveedores</span>
         </li>
-        <li onclick="location.href='../caja/index.html'">
+        <li onclick="location.href=''">
           <i class="fas fa-cash-register"></i><span>Caja</span>
         </li>
-        <li onclick="location.href='../reportes/index.html'">
+        <li onclick="location.href='../reportes/reportes.php'">
           <i class="fas fa-chart-line"></i><span>Reportes</span>
         </li>
         <li onclick="location.href='../usuarios/Usuarios.php'">
           <i class="fas fa-user-gear"></i><span>Usuarios</span>
         </li>
-        <li onclick="location.href='../configuracion/config.php'">
-          <i class="fas fa-gear"></i><span>Configuración</span>
-        </li>
+        
       </ul>
     </nav>
   </aside>
 
   <!-- ░░ Main ░░ -->
   <div class="main-content">
-    <!-- Topbar -->
     <header class="topbar">
       <h1><i class="fas fa-cash-register"></i> Registro Venta</h1>
       <div class="top-icons">
-        <i class="fas fa-bell"></i>
-        <i class="fas fa-user-circle"></i>
-        <i class="fas fa-right-from-bracket logout"
-           onclick="location.href='../login/logout.php'"></i>
+        <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                    </button>
       </div>
     </header>
 
@@ -93,20 +93,19 @@
             <div class="form-grid">
               <input  id="pNameProd"  class="double" type="text"
                       placeholder="Nombre completo *" required>
-              <select id="pDocType">
-                <option value="">Tipo de documento</option>
+              <select id="pDocType" required>
+                <option value="">Tipo de documento *</option>
                 <option value="CC">Cédula de ciudadanía</option>
                 <option value="CE">Cédula extranjera</option>
                 <option value="PAS">Pasaporte</option>
               </select>
-              <input  id="pDocNum"    type="text" placeholder="No. documento">
-              <input  id="pEmail"     type="email" placeholder="Correo electrónico">
+              <input id="pDocNum" type="text" placeholder="No. documento *" required min="1000000" pattern="\d{7,}" inputmode="numeric" style="appearance: textfield;" />              <input  id="pEmail"     type="email" placeholder="Correo electrónico">
               <input  id="pTel"       type="text" placeholder="Teléfono">
             </div>
 
             <div class="form-actions">
               <button type="button" id="newClientBtn" class="btn btn-secondary">
-                <i class="fas fa-user-plus"></i> Nuevo cliente
+                <i class="fas fa-eraser"></i> Limpiar cliente
               </button>
             </div>
           </section>
@@ -121,17 +120,14 @@
             </div>
 
             <div class="form-grid">
+              <input type="hidden" id="pId">
               <input  id="pCode"       type="text"   placeholder="Código *" readonly required>
-              <input  id="pName" class="double" type="text" placeholder="Nombre" readonly>
-              <input  id="pPrice"      type="number" step="0.01" placeholder="Precio compra *" required>
+              <input  id="pName" class="double" type="text" placeholder="Nombre" readonly required>
+              <input  id="pPrice"      type="number" step="0.01" placeholder="Precio compra *" readonly required>
               <input id="pQty"   type="number" min="1" value="1" placeholder="Cant." required>
-              <select id="pIVA" required>
-                <option value="18">18 %</option>
-                <option value="19">19 %</option>
-                <option value="20">20 %</option>
-              </select>
-              <input  id="pDate" type="date">
-              <input  id="pCategory"   type="text" placeholder="Categoría" readonly>
+              <input  id="pIVA"       type="number" min="0" placeholder="IVA %" readonly required>
+              <input  id="pDate" type="date" required readonly>
+              <input  id="pCategory"   type="text" placeholder="Categoría" readonly required>
               <select id="pPaymentMethod" required>
                 <option value="">Método de pago</option>
                 <option>Efectivo</option><option>Tarjeta</option>
@@ -155,7 +151,7 @@
           <table id="productTable" class="table table-striped w-100">
             <thead>
               <tr>
-                <th>Código</th><th>Nombre</th><th>Precio compra</th>
+                <th>ID</th><th>Código</th><th>Nombre</th><th>Precio compra</th>
                 <th>Cant.</th>
                 <th>IVA %</th><th>Fecha</th><th>Categoría</th>
                 <th>Método</th><th>Total</th>
@@ -192,7 +188,7 @@
       <div class="modal-body">
         <table id="searchTable" class="table table-hover w-100">
           <thead>
-            <tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>Precio compra</th></tr>
+            <tr><th>id</th><th>Código</th><th>Nombre</th><th>Categoría</th><th>Precio compra</th><th>IVA%</th></tr>
           </thead>
           <tbody></tbody>
         </table>
@@ -207,5 +203,6 @@
 <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
 <script src="main.js"></script>
+<script src=""></script>
 </body>
 </html>

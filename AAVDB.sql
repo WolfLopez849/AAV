@@ -6,14 +6,20 @@ CREATE DATABASE IF NOT EXISTS AAVDB;
 USE AAVDB;
 
 CREATE TABLE IF NOT EXISTS `caja` (
-  `product_id` int NOT NULL AUTO_INCREMENT,
-  `code` varchar(40) NOT NULL,
-  `name` varchar(120) NOT NULL,
-  `purchase_price` decimal(12,2) NOT NULL,
-  `iva_percent` decimal(5,2) NOT NULL,
-  `category` varchar(60) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`product_id`)
+  `item_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name_client` VARCHAR(255) DEFAULT NULL,
+  `document` VARCHAR(255) DEFAULT NULL,
+  `product_id` int UNSIGNED NOT NULL,
+  `price_unit` DECIMAL(12,2) NOT NULL,
+  `iva_percent` DECIMAL(5,2) NOT NULL,
+  `qty` int UNSIGNED NOT NULL,
+  `total_line` DECIMAL(14,2) NOT NULL,
+  `code` VARCHAR(40) NOT NULL,
+  `name` VARCHAR(120) NOT NULL,
+  `category` VARCHAR(60) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`item_id`),
+  KEY `product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `clientes` (
@@ -76,60 +82,75 @@ CREATE TABLE IF NOT EXISTS `accesos` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `ventas` (
+CREATE TABLE IF NOT EXISTS `configuracion_sistema` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `fecha` varchar(80) NOT NULL,
-  `hora` varchar(80) NOT NULL,
-  `productos` varchar(225) NOT NULL,
-  `total` int NOT NULL,
+  `tipo_persona` varchar(20) NOT NULL,
+  `nombre_comercio` varchar(200) NOT NULL,
+  `nit` varchar(50) NOT NULL,
+  `ciiu` varchar(20),
+  `regimen` varchar(50),
+  `responsable_iva` tinyint(1) DEFAULT 0,
+  `responsable_ica` tinyint(1) DEFAULT 0,
+  `responsable_retefuente` tinyint(1) DEFAULT 0,
+  `direccion` text NOT NULL,
+  `telefono` varchar(20) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `ciudad` varchar(100) NOT NULL,
+  `departamento` varchar(100) NOT NULL,
+  `web` varchar(200),
+  `resolucion` varchar(200) NOT NULL,
+  `fecha_inicio` date NOT NULL,
+  `tipo_facturacion` varchar(50),
+  `prefijo_dian` varchar(50),
+  `consecutivo_facturas` tinyint(1) DEFAULT 0,
+  `consecutivo_notas_credito` tinyint(1) DEFAULT 0,
+  `consecutivo_notas_debito` tinyint(1) DEFAULT 0,
+  `consecutivo_documentos_equivalentes` tinyint(1) DEFAULT 0,
+  `obligatorio_nit_cliente` tinyint(1) DEFAULT 0,
+  `formato_personalizable` tinyint(1) DEFAULT 0,
+  `formato_encabezado_pie` tinyint(1) DEFAULT 0,
+  `formato_info_adicional` tinyint(1) DEFAULT 0,
+  `formato_qr_dian` tinyint(1) DEFAULT 0,
+  `iva_porcentaje` decimal(5,2) DEFAULT 19.00,
+  `aplica_iva_producto` tinyint(1) DEFAULT 0,
+  `aplica_iva_categoria` tinyint(1) DEFAULT 0,
+  `aplica_iva_proveedor` tinyint(1) DEFAULT 0,
+  `impuesto_consumo` tinyint(1) DEFAULT 0,
+  `retefuente` tinyint(1) DEFAULT 0,
+  `rete_iva` tinyint(1) DEFAULT 0,
+  `rete_ica` tinyint(1) DEFAULT 0,
+  `activar_impuestos_linea` tinyint(1) DEFAULT 0,
+  `soporte_exentos` tinyint(1) DEFAULT 0,
+  `unidad_medida` varchar(20),
+  `stock_minimo` int DEFAULT 0,
+  `reposicion_auto` tinyint(1) DEFAULT 0,
+  `control_lote` tinyint(1) DEFAULT 0,
+  `control_seriales` tinyint(1) DEFAULT 0,
+  `max_descuento` decimal(5,2) DEFAULT 0.00,
+  `tipo_descuento_producto` tinyint(1) DEFAULT 0,
+  `tipo_descuento_categoria` tinyint(1) DEFAULT 0,
+  `tipo_descuento_vip` tinyint(1) DEFAULT 0,
+  `politica_devoluciones` text,
+  `precio_base` tinyint(1) DEFAULT 0,
+  `precio_final` tinyint(1) DEFAULT 0,
+  `redondeo` tinyint(1) DEFAULT 0,
+  `metodo_pago_efectivo` tinyint(1) DEFAULT 0,
+  `metodo_pago_tarjeta` tinyint(1) DEFAULT 0,
+  `metodo_pago_transferencia` tinyint(1) DEFAULT 0,
+  `metodo_pago_qr` tinyint(1) DEFAULT 0,
+  `metodo_pago_pse` tinyint(1) DEFAULT 0,
+  `metodo_pago_propina` tinyint(1) DEFAULT 0,
+  `pago_mixto` tinyint(1) DEFAULT 0,
+  `recargo_metodo` decimal(5,2) DEFAULT 0.00,
+  `consentimiento_datos` tinyint(1) DEFAULT 0,
+  `fecha_actualizacion` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-CREATE TABLE IF NOT EXISTS `customers` (
-  `customer_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `doc_type` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `doc_num` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` varchar(160) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`customer_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE IF NOT EXISTS caja_estado (
+  id INT PRIMARY KEY DEFAULT 1,
+  estado ENUM('abierta','cerrada') NOT NULL DEFAULT 'cerrada',
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 
-
-CREATE TABLE IF NOT EXISTS `products` (
-  `product_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `code` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `purchase_price` decimal(12,2) NOT NULL,
-  `iva_percent` decimal(5,2) NOT NULL,
-  `category` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`product_id`),
-  UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-CREATE TABLE IF NOT EXISTS `sales` (
-  `sale_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `customer_id` int UNSIGNED DEFAULT NULL,
-  `sale_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `total` decimal(14,2) NOT NULL,
-  PRIMARY KEY (`sale_id`),
-  KEY `customer_id` (`customer_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-CREATE TABLE IF NOT EXISTS `sale_items` (
-  `item_id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `sale_id` int UNSIGNED NOT NULL,
-  `product_id` int UNSIGNED NOT NULL,
-  `price_unit` decimal(12,2) NOT NULL,
-  `iva_percent` decimal(5,2) NOT NULL,
-  `qty` int UNSIGNED NOT NULL DEFAULT '1',
-  `total_line` decimal(14,2) NOT NULL,
-  PRIMARY KEY (`item_id`),
-  KEY `sale_id` (`sale_id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+INSERT INTO caja_estado (id, estado) VALUES (1, 'cerrada');

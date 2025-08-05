@@ -149,3 +149,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 300);
     }
 });
+function logout() {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        showNotification('Cerrando sesión...', 'info');
+        setTimeout(() => {
+            window.location.href = '../login/logout.php';
+        });
+    }
+}
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.classList.add('show');
+    });
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        });
+    });
+}

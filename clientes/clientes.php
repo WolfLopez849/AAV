@@ -9,6 +9,10 @@ $totalClientes = count($clientes);
 // Variables para reabrir formulario en caso de error
 $showForm = isset($_POST['error']) && $_POST['error'] == 'doc_existente';
 $editMode = isset($_POST['edit']) && $_POST['edit'] == 1;
+
+require_once '../caja/config.php';
+
+$estadoCaja = getCajaEstado();
 ?>
 
 <!DOCTYPE html>
@@ -35,15 +39,14 @@ $editMode = isset($_POST['edit']) && $_POST['edit'] == 1;
     </div>
     <nav>
       <ul>
-        <li onclick="location.href='../Menu/index.php'"><i class="fas fa-home"></i> <span>Menu principal</span></li>
-        <li onclick="location.href='../inventario/inventario.html'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
-        <li onclick="location.href='../ventas/index.php'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+        <li onclick="location.href='../Menu/'"><i class="fas fa-home"></i> <span>Menu principal</span></li>
+        <li onclick="location.href='../inventario/inventario.php'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+        <li onclick="location.href='../ventas/'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
         <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
-        <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
-        <li onclick="location.href='../caja/index.html'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
-        <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+        <li onclick="location.href='../proveedores/'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+        <li onclick="location.href='<?= ($estadoCaja === 'cerrada') ? '../caja/abrir_caja_final/' : '../caja/' ?>'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+        <li onclick="location.href='../reportes/reportes.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
         <li onclick="location.href='../usuarios/Usuarios.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
-        <li onclick="location.href='../configuracion/config.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
       </ul>
     </nav>
   </aside>
@@ -55,10 +58,9 @@ $editMode = isset($_POST['edit']) && $_POST['edit'] == 1;
         <h2><i class="fas fa-users"></i> Clientes</h2>
       </div>
       <div class="topbar-icons">
-        <i class="fas fa-bell"></i>
-        <i class="fas fa-user-circle"></i>
-        <i class="fas fa-right-from-bracket logout" onclick="location.href='../login/logout.php'"></i>
-      </div>
+<button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                    </button>      </div>
     </header>
 
     <section class="clientes-seccion">

@@ -314,3 +314,43 @@ function showNotification(msg, tipo = 'info') {
   toast.className = `toast show ${tipo}`;
   setTimeout(() => (toast.className = 'toast'), 3000);
 }
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('buscar_proveedor.php')
+    .then(res => res.json())
+    .then(proveedores => {
+      const select = document.getElementById('proveedorSelect');
+      if (!select) return;
+      proveedores.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.nombre;
+        opt.textContent = p.nombre;
+        select.appendChild(opt);
+      });
+    });
+});
+function logout() {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        showNotification('Cerrando sesión...', 'info');
+        setTimeout(() => {
+            window.location.href = '../login/logout.php';
+        });
+    }
+}
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.classList.add('show');
+    });
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        });
+    });
+}

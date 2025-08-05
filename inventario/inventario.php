@@ -1,8 +1,14 @@
+<?php
+require_once '../caja/config.php';
+
+// Obtén el estado actual de la caja
+$estadoCaja = getCajaEstado();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Inventario - Sistema POS</title>
+  <title>Inventario - POSNOVA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -19,15 +25,14 @@
       </div>
       <nav>
         <ul>
-          <li onclick="location.href='../Menu/index.php'"><i class="fas fa-home"></i> <span>Menu principal</span></li>
-                    <li onclick="location.href='../inventario/inventario.html'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
-                    <li onclick="location.href='../ventas/index.php'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+          <li onclick="location.href='../Menu/'"><i class="fas fa-home"></i> <span>Menu principal</span></li>
+                    <li onclick="location.href='../inventario/inventario.php'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+                    <li onclick="location.href='../ventas/'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
                     <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
-                    <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
-                    <li onclick="location.href='../caja/index.html'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
-                    <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+                    <li onclick="location.href='../proveedores/'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+                    <li onclick="location.href='<?= ($estadoCaja === 'cerrada') ? '../caja/abrir_caja_final/' : '../caja/' ?>'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+                    <li onclick="location.href='../reportes/reportes.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
                     <li onclick="location.href='../usuarios/Usuarios.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
-                    <li onclick="location.href='../configuracion/config.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
         </ul>
       </nav>
     </aside>
@@ -40,10 +45,9 @@
           <h2><i class="fas fa-boxes"></i> Inventario</h2>
         </div>
         <div class="topbar-icons">
-          <i class="fas fa-bell"></i>
-          <i class="fas fa-user-circle"></i>
-          <i class="fas fa-right-from-bracket logout" onclick="location.href='../login/logout.php'"></i>
-        </div>
+<button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                    </button>        </div>
       </header>
 
       <!-- Fondo Azul -->
@@ -91,7 +95,10 @@
                 </div>
                 <div class="campo-icono">
                   <i class="fas fa-truck"></i>
-                  <input type="text" placeholder="Proveedor" name="proveedor" />
+                  <select name="proveedor" id="proveedorSelect" required>
+                    <option value="">Seleccione proveedor</option>
+                    <!-- Opciones se llenan por JS -->
+                  </select>
                 </div>
               </div>
 

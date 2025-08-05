@@ -12,14 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
      ║   2. DataTable principal                     ║
      ╚══════════════════════════════════════════════╝ */
   const table = $('#productTable').DataTable({
-    responsive : true,
-    pageLength : 10,
-    language   : { url : 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json' },
-    // las columnas se detectan por <thead>; si quisieras fijarlas:
-    // columns: [
-    //   null, null, null, null, null, null, null, null, null
-    // ]
-  });
+  responsive : true,
+  pageLength : 10,
+  language   : { url : 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json' },
+  columnDefs: [
+    { targets: 0, visible: false } // Oculta la columna del ID
+  ]
+});
 
   /* ╔══════════════════════════════════════════════╗
      ║   3. Botón NUEVO CLIENTE                     ║
@@ -53,22 +52,26 @@ document.addEventListener('DOMContentLoaded', () => {
       searchDT = $('#searchTable').DataTable({
         data     : data,
         columns  : [
-          { data : 'codigo'        },
-          { data : 'nombre'        },
-          { data : 'categoria'     },
-          { data : 'precio_compra' }
+          { data: 'id', visible: false }, // ID oculto
+          { data: 'codigo' },
+          { data: 'nombre' },
+          { data: 'categoria' },
+          { data: 'precio_compra' },
+          { data: 'iva' }
         ],
         language : { url : 'https://cdn.datatables.net/plug-ins/1.13.8/i18n/es-ES.json' }
       });
 
       $('#searchTable tbody').on('click', 'tr', function () {
         const p = searchDT.row(this).data();
+        $('#pId').val(p.id); // <-- ID real
         $('#pCode').val(p.codigo);
         $('#pName').val(p.nombre);
         $('#pCategory').val(p.categoria);
         $('#pPrice').val(parseFloat(p.precio_compra).toFixed(2));
         $('#pQty').val('1');
-        $('#pIVA').trigger('change');        // recalcula total
+        $('#pIVA').val(p.iva);
+        $('#pTotal').val((parseFloat($('#pPrice').val()) * parseInt($('#pQty').val()) * (1 + parseFloat($('#pIVA').val()) / 100)).toFixed(2));
         modal.hide();
       });
     })
@@ -94,35 +97,30 @@ document.addEventListener('DOMContentLoaded', () => {
      ║   6. Añadir producto a la tabla              ║
      ╚══════════════════════════════════════════════╝ */
   $('#productForm').on('submit', function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const code = $('#pCode').val().trim();
-    if (!code){ alert('Selecciona un producto primero'); return; }
+  const code = $('#pCode').val().trim();
+  if (!code){ alert('Selecciona un producto primero'); return; }
 
-    if (table.column(0).data().toArray().includes(code)){
-      alert('Ese producto ya fue agregado'); return;
-    }
+  // Evita duplicados por código
+  if (table.column(1).data().toArray().includes(code)){
+    alert('Ese producto ya fue agregado'); return;
+  }
 
-    const row = [
-      code,
-      $('#pName').val(),
-      parseFloat($('#pPrice').val() || 0).toFixed(2),
-      $('#pQty').val(),
-      $('#pIVA').val(),
-      $('#pDate').val() || '-',
-      $('#pCategory').val() || '-',
-      $('#pPaymentMethod').val(),
-      $('#pTotal').val()
-    ];
-
-    table.row.add(row).draw(false);
-
-    /* limpiar controles */
-    this.reset();
-    $('#pQty').val('1');
-    $('#pIVA').val('18');
-    $('#pTotal').val('');
-  });
+  const row = [
+    $('#pId').val(),             // ID real (oculto)
+    $('#pCode').val(),           // Código (visible)
+    $('#pName').val(),           // Nombre (visible)
+    parseFloat($('#pPrice').val() || 0).toFixed(2),
+    $('#pQty').val(),
+    $('#pIVA').val(),
+    $('#pDate').val() || '-',
+    $('#pCategory').val() || '-',
+    $('#pPaymentMethod').val(),
+    $('#pTotal').val()
+  ];
+  table.row.add(row).draw(false);
+});
 
   /* ╔══════════════════════════════════════════════╗
      ║   7. Seleccionar fila y eliminar producto    ║
@@ -158,47 +156,52 @@ document.addEventListener('DOMContentLoaded', () => {
      ║   8. Registrar venta (placeholder)           ║
      ╚══════════════════════════════════════════════╝ */
   $('#registerSaleBtn').on('click', () => {
-    const productos = table.rows().data().toArray();
-    if (productos.length === 0) {
-      alert('Agrega al menos un producto para registrar la venta.');
-      return;
-    }
+  const productos = table.rows().data().toArray();
+  if (productos.length === 0) {
+    alert('Agrega al menos un producto para registrar la venta.');
+    return;
+  }
 
-    // Datos del cliente
-    const customer = {
-      name: $('#pNameProd').val(),
-      doc_type: $('#pDocType').val(),
-      doc_num: $('#pDocNum').val(),
-      email: $('#pEmail').val(),
-      phone: $('#pTel').val()
-    };
+  // Datos del cliente
+  const customer = {
+    name: $('#pNameProd').val(),
+    doc_type: $('#pDocType').val(),
+    doc_num: $('#pDocNum').val(),
+    email: $('#pEmail').val(),
+    phone: $('#pTel').val()
+  };
 
-    // Convierte las filas de la tabla en el formato que espera PHP
-    const items = productos.map(row => ({
-      product_id: row[0], // Asegúrate que sea el ID del producto, si no, ajusta
-      price_unit: parseFloat(row[2]),
-      iva_percent: parseFloat(row[4]),
-      qty: parseInt(row[3]),
-      total_line: parseFloat(row[8])
-    }));
+  // AJUSTA AQUÍ: Asegúrate que el ID real esté en la posición correcta
+  const items = productos.map(row => ({
+    product_id: row[0], // <-- Debe ser el ID real, no el código
+    code: row[1],
+    name: row[2],
+    price_unit: parseFloat(row[3]),
+    qty: parseInt(row[4]),
+    iva_percent: parseFloat(row[5]),
+    category: row[7],
+    total_line: parseFloat(row[9])
+  }));
 
-    // Calcula el total de la venta
-    const total = items.reduce((sum, it) => sum + it.total_line, 0);
+  // Calcula el total de la venta
+  const total = items.reduce((sum, it) => sum + it.total_line, 0);
 
-    const venta = {
-      customer: customer,
-      items: items,
-      total: total
-    };
+  const venta = {
+    customer: customer,
+    items: items,
+    total: total
+  };
 
-    $.ajax({
+  $.ajax({
       url: 'save_sale.php',
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(venta),
       success: function(res) {
         alert('Venta registrada correctamente.');
-        window.location.href = 'index.html';
+        // Limpiar datos del cliente
+        $('#pNameProd, #pDocType, #pDocNum, #pEmail, #pTel').val('');
+        window.location.href = 'index.php';
       },
       error: function(xhr, err) {
         alert('Error al registrar la venta.');
@@ -213,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#closeCashBtn').on('click', () => {
   if (confirm('¿Estás seguro de cerrar caja?')) {
     // Redirige al formulario de apertura
-    window.location.href = 'cierre_caja_final/index.html';
+    window.location.href = 'abrir_caja_final/index.php';
   }
 });
 
@@ -225,8 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('openCashBtn');
   btn.addEventListener('click', () => {
-    // Ruta relativa: sube un nivel a /caja/ y carga index.html
-    window.location.href = '../index.html';
+    // Ruta relativa: sube un nivel a /caja/ y carga index.php
+    window.location.href = '../index.php';
   });
 });
 
@@ -240,3 +243,30 @@ document.addEventListener('DOMContentLoaded', () => {
         dateInput.value = `${yyyy}-${mm}-${dd}`;
     }
 });
+
+function logout() {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        showNotification('Cerrando sesión...', 'info');
+        setTimeout(() => {
+            window.location.href = '../../login/logout.php';
+        });
+    }
+}
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.classList.add('show');
+    });
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        });
+    });
+}

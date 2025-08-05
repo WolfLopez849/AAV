@@ -1,137 +1,217 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const ivaInput = document.getElementById('iva');
-    if (ivaInput) {
-        ivaInput.addEventListener('input', function(e) {
-            let val = ivaInput.value.replace(/[^0-9]/g, ''); 
-            if (val.length > 3) val = val.slice(0, 3); 
-            ivaInput.value = val ? val + '%' : '';
-        });
-        ivaInput.addEventListener('focus', function() {
-            let val = ivaInput.value.replace(/[^0-9]/g, '');
-            ivaInput.value = val;
-        });
-        ivaInput.addEventListener('blur', function() {
-            let val = ivaInput.value.replace(/[^0-9]/g, '');
-            if (val !== '') {
-                ivaInput.value = val + '%';
+    const configForm = document.getElementById('configForm');
+    const btnGuardar = document.querySelector('.btn-guardar');
+    const btnReset = document.querySelector('.btn-reset');
+
+    // Manejar envío del formulario
+    configForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Mostrar indicador de carga
+        btnGuardar.disabled = true;
+        btnGuardar.textContent = 'Guardando...';
+        
+        // Recopilar datos del formulario
+        const formData = new FormData(configForm);
+        
+        // Enviar datos al servidor
+        fetch('guardar_configuracion.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarMensaje('Configuración guardada exitosamente', 'success');
             } else {
-                ivaInput.value = '';
+                mostrarMensaje('Error: ' + data.message, 'error');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mostrarMensaje('Error de conexión. Intente nuevamente.', 'error');
+        })
+        .finally(() => {
+            // Restaurar botón
+            btnGuardar.disabled = false;
+            btnGuardar.textContent = 'Guardar configuración';
         });
-    }
+    });
 
-    const form = document.getElementById('configForm');
-    const storageKey = 'configFormData';
-    let isDirty = false;
-
-    if (form) {
-        form.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-                e.preventDefault();
-            }
-        });
-
-
-        form.addEventListener('input', function() {
-            isDirty = true;
-        });
-        form.addEventListener('change', function() {
-            isDirty = true;
-        });
-    }
-
-    // Advertencia al recargar si hay cambios sin guardar
-    window.addEventListener('beforeunload', function(e) {
-        if (isDirty) {
-            e.preventDefault();
-            e.returnValue = 'Tienes cambios sin guardar. ¿Seguro que quieres salir?';
-            return 'Tienes cambios sin guardar. ¿Seguro que quieres salir?';
+    // Manejar botón de reset
+    btnReset.addEventListener('click', function() {
+        if (confirm('¿Está seguro de que desea restablecer todos los campos del formulario?')) {
+            configForm.reset();
+            mostrarMensaje('Formulario restablecido', 'info');
         }
     });
 
-    // Cargar datos guardados al iniciar
-    if (form && localStorage.getItem(storageKey)) {
-        const data = JSON.parse(localStorage.getItem(storageKey));
-        for (const [key, value] of Object.entries(data)) {
-            const field = form.elements[key];
-            if (!field) continue;
-            if (field.type === 'checkbox') {
-                field.checked = value;
-            } else if (field.type === 'radio') {
-                if (field.value === value) field.checked = true;
-            } else {
-                field.value = value;
-                if (key === 'iva' && !value.endsWith('%') && value !== '') field.value = value + '%';
-            }
+    // Función para mostrar mensajes
+    function mostrarMensaje(mensaje, tipo) {
+        // Crear elemento de mensaje
+        const mensajeDiv = document.createElement('div');
+        mensajeDiv.className = `mensaje mensaje-${tipo}`;
+        mensajeDiv.textContent = mensaje;
+        
+        // Estilos del mensaje
+        mensajeDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease-out;
+        `;
+        
+        // Colores según tipo
+        switch(tipo) {
+            case 'success':
+                mensajeDiv.style.backgroundColor = '#28a745';
+                break;
+            case 'error':
+                mensajeDiv.style.backgroundColor = '#dc3545';
+                break;
+            case 'info':
+                mensajeDiv.style.backgroundColor = '#17a2b8';
+                break;
+            default:
+                mensajeDiv.style.backgroundColor = '#6c757d';
         }
-        isDirty = false;
+        
+        // Agregar al DOM
+        document.body.appendChild(mensajeDiv);
+        
+        // Remover después de 5 segundos
+        setTimeout(() => {
+            mensajeDiv.style.animation = 'slideOut 0.3s ease-in';
+            setTimeout(() => {
+                if (mensajeDiv.parentNode) {
+                    mensajeDiv.parentNode.removeChild(mensajeDiv);
+                }
+            }, 300);
+        }, 5000);
     }
 
-
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault(); // No recargar la página
-            const data = {};
-            for (const el of form.elements) {
-                if (!el.name) continue;
-                if (el.type === 'checkbox') {
-                    data[el.name] = el.checked;
-                } else if (el.type === 'radio') {
-                    if (el.checked) data[el.name] = el.value;
-                } else {
-                    data[el.name] = el.value;
-                }
+    // Agregar estilos CSS para animaciones
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
             }
-            localStorage.setItem(storageKey, JSON.stringify(data));
-            isDirty = false;
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
 
-            if (!document.getElementById('saveMsg')) {
-                const msg = document.createElement('div');
-                msg.id = 'saveMsg';
-                msg.textContent = '¡Configuración guardada!';
-                msg.style.position = 'fixed';
-                msg.style.bottom = '32px';
-                msg.style.right = '32px';
-                msg.style.background = '#3498db';
-                msg.style.color = '#fff';
-                msg.style.padding = '12px 24px';
-                msg.style.borderRadius = '8px';
-                msg.style.boxShadow = '0 2px 8px rgba(52,152,219,0.15)';
-                msg.style.zIndex = '9999';
-                document.body.appendChild(msg);
-                setTimeout(() => msg.remove(), 1800);
+    // Validación en tiempo real para campos requeridos
+    const camposRequeridos = configForm.querySelectorAll('[required]');
+    camposRequeridos.forEach(campo => {
+        campo.addEventListener('blur', function() {
+            if (!this.value.trim()) {
+                this.style.borderColor = '#dc3545';
+                this.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+            } else {
+                this.style.borderColor = '#28a745';
+                this.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
             }
         });
-
-
-        form.addEventListener('reset', function(e) {
-            const confirmed = confirm('¿Estás seguro de que deseas restablecer la configuración? Se perderán los cambios no guardados.');
-            if (!confirmed) {
-                e.preventDefault();
-                return;
+        
+        campo.addEventListener('input', function() {
+            if (this.value.trim()) {
+                this.style.borderColor = '#28a745';
+                this.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
+            } else {
+                this.style.borderColor = '';
+                this.style.boxShadow = '';
             }
-            setTimeout(() => {
-                localStorage.removeItem(storageKey);
-                if (ivaInput) ivaInput.value = '19%';
-                isDirty = false;
-                // Mensaje de restablecido
-                if (!document.getElementById('resetMsg')) {
-                    const msg = document.createElement('div');
-                    msg.id = 'resetMsg';
-                    msg.textContent = '¡Configuración restablecida!';
-                    msg.style.position = 'fixed';
-                    msg.style.bottom = '32px';
-                    msg.style.right = '32px';
-                    msg.style.background = '#e67e22';
-                    msg.style.color = '#fff';
-                    msg.style.padding = '12px 24px';
-                    msg.style.borderRadius = '8px';
-                    msg.style.boxShadow = '0 2px 8px rgba(230,126,34,0.15)';
-                    msg.style.zIndex = '9999';
-                    document.body.appendChild(msg);
-                    setTimeout(() => msg.remove(), 1800);
-                }
-            }, 0);
+        });
+    });
+
+    // Validación especial para email
+    const campoEmail = document.getElementById('correo');
+    if (campoEmail) {
+        campoEmail.addEventListener('blur', function() {
+            const email = this.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (email && !emailRegex.test(email)) {
+                this.style.borderColor = '#dc3545';
+                this.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+                mostrarMensaje('Por favor ingrese un email válido', 'error');
+            }
+        });
+    }
+
+    // Validación para NIT
+    const campoNIT = document.getElementById('nit');
+    if (campoNIT) {
+        campoNIT.addEventListener('blur', function() {
+            const nit = this.value.trim();
+            if (nit && nit.length < 8) {
+                this.style.borderColor = '#dc3545';
+                this.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+                mostrarMensaje('El NIT debe tener al menos 8 caracteres', 'error');
+            }
+        });
+    }
+
+    // Validación para teléfono
+    const campoTelefono = document.getElementById('telefono');
+    if (campoTelefono) {
+        campoTelefono.addEventListener('blur', function() {
+            const telefono = this.value.trim();
+            if (telefono && telefono.length < 7) {
+                this.style.borderColor = '#dc3545';
+                this.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+                mostrarMensaje('El teléfono debe tener al menos 7 dígitos', 'error');
+            }
         });
     }
 });
+function logout() {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        showNotification('Cerrando sesión...', 'info');
+        setTimeout(() => {
+            window.location.href = '../login/logout.php';
+        });
+    }
+}
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.classList.add('show');
+    });
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        });
+    });
+}

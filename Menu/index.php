@@ -28,6 +28,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     logout();
 }
 
+require_once '../caja/config.php';
+
+$estadoCaja = getCajaEstado();
+
 $userInfo = getUserInfo();
 ?>
 
@@ -36,7 +40,7 @@ $userInfo = getUserInfo();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema POS - Menú Principal</title>
+    <title>Menú Principal - POSNOVA</title>
     <link rel="stylesheet" href="styless.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">  
@@ -49,23 +53,14 @@ $userInfo = getUserInfo();
 
                 <div class="logo d-flex align-items-center">
                     <i class="fas fa-store"></i>
-                    <span class="ms-2">Sistema POS</span>
+                    <span class="ms-2">POSNOVA</span>
                 </div>
             </div>
 
             <div class="user-info">
-                <div class="notifications">
-                    <button class="notification-btn" onclick="toggleNotifications(event)">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge" id="notificationBadge"></span>
-                    </button>
-                    <div class="notification-dropdown" id="notificationDropdown"></div>
-                </div>
+                
                 <div class="user-details-group">
-                    <div class="user-details">
-                        <span class="user-name" id="userName">Usuario</span>
-                        <span class="user-role" id="userRole">Administrador</span>
-                    </div>
+                    
                     <button class="logout-btn" onclick="logout()">
                         <i class="fas fa-sign-out-alt me-2"></i>
                     </button>
@@ -80,14 +75,14 @@ $userInfo = getUserInfo();
         <section class="navigation-section">
             <h2>Menú Principal</h2>
             <div class="menu-grid">
-                <div class="menu-item" onclick="location.href='../inventario/inventario.html'">
+                <div class="menu-item" onclick="location.href='../inventario/inventario.php'">
                     <div class="menu-icon">
                         <i class="fas fa-boxes"></i>
                     </div>
                     <h3>Inventario</h3>
                     <p>Gestionar productos y stock</p>
                 </div>
-                <div class="menu-item" onclick="location.href='../ventas/index.php'">
+                <div class="menu-item" onclick="location.href='../ventas/'">
                     <div class="menu-icon">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
@@ -101,7 +96,7 @@ $userInfo = getUserInfo();
                     <h3>Clientes</h3>
                     <p>Gestionar base de clientes</p>
                 </div>
-                <div class="menu-item" onclick="location.href='../proveedores/index.php'">
+                <div class="menu-item" onclick="location.href='../proveedores/'">
                     <div class="menu-icon">
                         <i class="fas fa-truck"></i>
                     </div>
@@ -115,54 +110,31 @@ $userInfo = getUserInfo();
                     <h3>Usuarios</h3>
                     <p>Gestionar usuarios del sistema</p>
                 </div>
-                <div class="menu-item" onclick="location.href='../reportes/index.php'">
+                <div class="menu-item" onclick="location.href='../reportes/reportes.php'">
                     <div class="menu-icon">
                         <i class="fas fa-chart-bar"></i>
                     </div>
                     <h3>Reportes</h3>
                     <p>Generar reportes detallados</p>
                 </div>
-                <div class="menu-item" onclick="location.href='../caja/index.html'">
+                <div class="menu-item" onclick="location.href='<?= ($estadoCaja === 'cerrada') ? '../caja/abrir_caja_final/' : '../caja/' ?>'">
                     <div class="menu-icon">
                         <i class="fas fa-cash-register"></i>
                     </div>
                     <h3>Caja</h3>
                     <p>Control de caja y efectivo</p>
                 </div>
-                <div class="menu-item" onclick="location.href='../configuracion/config.php'">
+                <div class="menu-item">
                     <div class="menu-icon">
-                        <i class="fas fa-cog"></i>
+                        <i class="fa-solid fa-cross"></i>
                     </div>
-                    <h3>Configuración</h3>
-                    <p>Configurar sistema</p>
+                    <h3>Creditos</h3>
+                    <p>A Yisus</p>
                 </div>
             </div>
         </section>
 
-        <section class="reports-section">
-            <h2>Reportes Rápidos</h2>
-            <div class="charts-grid">
-                <div class="chart-container">
-                    <h3>Productos Más Vendidos - Mes</h3>
-                    <canvas id="topProductsChart"></canvas>
-                </div>
-
-                <div class="chart-container">
-                    <h3>Productos Más Vendidos - Día</h3>
-                    <canvas id="topProductsDayChart"></canvas>
-                </div>
-
-                <div class="chart-container">
-                    <h3>Ganancias Anuales por Mes</h3>
-                    <canvas id="yearlyEarningsChart"></canvas>
-                </div>
-
-                <div class="chart-container">
-                    <h3>Ventas por Categoría</h3>
-                    <canvas id="salesByCategoryChart"></canvas>
-                </div>
-            </div>
-        </section>
+       
     </main>
 
     <script src="scripts.js"></script>

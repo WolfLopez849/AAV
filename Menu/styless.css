@@ -196,17 +196,17 @@ body {
 .main-content {
     padding: 3rem 4rem;
     max-width: 1600px;
-    margin: 10rem 0 auto 0;
+    margin: 6rem auto 0 auto; /* <-- centrado horizontal y separación arriba */
 }
 
 
 .navigation-section {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 3rem;
     margin-bottom: 3rem;
+    margin-top: 2rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    background: rgba(255,255,255,0.95);
+    padding: 3rem;
 }
 
 .navigation-section h2 {

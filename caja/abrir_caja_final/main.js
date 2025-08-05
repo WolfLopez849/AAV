@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Si la validación es exitosa, muestra una confirmación
             alert(`Caja abierta con un monto inicial de: $${amount.toFixed(2)}`);
-            window.location.href = "../index.html";
+            window.location.href = "../index.php";
 
             // Opcional: Limpiar el campo y deshabilitar el botón después de la apertura
             initialAmountInput.value = '0.00';
@@ -59,3 +59,29 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('No se encontró el botón "Abrir caja" o el campo de monto inicial.');
     }
 });
+function logout() {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        showNotification('Cerrando sesión...', 'info');
+        setTimeout(() => {
+            window.location.href = '../../login/logout.php';
+        });
+    }
+}
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification-toast ${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'error' ? 'exclamation-circle' : type === 'success' ? 'check-circle' : 'info-circle'}"></i>
+        <span>${message}</span>
+    `;
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.classList.add('show');
+    });
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        });
+    });
+}

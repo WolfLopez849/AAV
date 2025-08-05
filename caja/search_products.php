@@ -10,7 +10,7 @@ require_once __DIR__ . '/config.php';   // ← asegúrate de que la ruta es corr
 
 try {
     // 1️⃣  Consulta — ajusta el nombre de la tabla si es distinto
-    $sql  = "SELECT codigo, nombre, categoria, precioCompra  AS precio_compra
+    $sql  = "SELECT id, codigo, nombre, categoria, precioVenta AS precio_compra, iva
              FROM   productos
              LIMIT  500";                  
     $stmt = $pdo->query($sql);
@@ -21,6 +21,7 @@ try {
     /* 3️⃣  Asegura que precio_compra sea numérico */
     foreach ($rows as &$r) {
     $r['precio_compra'] = (float) $r['precio_compra'];
+    $r['iva'] = (int) $r['iva'];
 }
 
     echo json_encode($rows);            // ← EXACTAMENTE lo que espera DataTables

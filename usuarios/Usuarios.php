@@ -12,25 +12,30 @@ class UsuarioDB extends Conectar {
         return $stmt->fetchAll();
     }
 
-    public function getById($id) {
-        $stmt = $this->dbCnx->prepare("SELECT * FROM usuarios WHERE id = ?");
-        $stmt->execute([$id]);
-        return $stmt->fetch();
-    }
-
     public function insert($nombre_completo, $usuario, $contrasena, $rol, $estado, $creado_por) {
+        if (empty($rol)) $rol = 'Administrador';
+        if (empty($estado)) $estado = 'activo';
         $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-        $stmt = $this->dbCnx->prepare("INSERT INTO usuarios (nombre_completo, usuario, contrasena, rol, estado, fecha_creacion, creado_por) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
+        $stmt = $this->dbCnx->prepare(
+            "INSERT INTO usuarios (nombre_completo, usuario, contrasena, rol, estado, fecha_creacion, creado_por)
+             VALUES (?, ?, ?, ?, ?, NOW(), ?)"
+        );
         $stmt->execute([$nombre_completo, $usuario, $hash, $rol, $estado, $creado_por]);
     }
 
     public function update($id, $nombre_completo, $usuario, $contrasena, $rol, $estado, $creado_por) {
+        if (empty($rol)) $rol = 'Administrador';
+        if (empty($estado)) $estado = 'activo';
         if ($contrasena !== "") {
             $hash = password_hash($contrasena, PASSWORD_DEFAULT);
-            $stmt = $this->dbCnx->prepare("UPDATE usuarios SET nombre_completo=?, usuario=?, contrasena=?, rol=?, estado=?, creado_por=? WHERE id=?");
+            $stmt = $this->dbCnx->prepare(
+                "UPDATE usuarios SET nombre_completo=?, usuario=?, contrasena=?, rol=?, estado=?, creado_por=? WHERE id=?"
+            );
             $stmt->execute([$nombre_completo, $usuario, $hash, $rol, $estado, $creado_por, $id]);
         } else {
-            $stmt = $this->dbCnx->prepare("UPDATE usuarios SET nombre_completo=?, usuario=?, rol=?, estado=?, creado_por=? WHERE id=?");
+            $stmt = $this->dbCnx->prepare(
+                "UPDATE usuarios SET nombre_completo=?, usuario=?, rol=?, estado=?, creado_por=? WHERE id=?"
+            );
             $stmt->execute([$nombre_completo, $usuario, $rol, $estado, $creado_por, $id]);
         }
     }
@@ -51,201 +56,209 @@ class UsuarioDB extends Conectar {
 }
 
 $usuarioDB = new UsuarioDB();
-$editando = false;
-$edit_id = "";
-$nombre_completo = $usuario = $contrasena = $rol = $estado = $creado_por = "";
+$usuarios = $usuarioDB->getAll();
 
-// Cargar datos para edición
-if (isset($_POST['editar'])) {
-    $editando = true;
-    $edit_id = $_POST['editar'];
-    $datos = $usuarioDB->getById($edit_id);
-    if ($datos) {
-        $nombre_completo = $datos['nombre_completo'];
-        $usuario = $datos['usuario'];
-        $contrasena = $datos['contrasena'];
-        $rol = $datos['rol'];
-        $estado = $datos['estado'];
-        $creado_por = $datos['creado_por'];
-    }
-}
-
-// Guardar nuevo o actualizar existente
-elseif ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre_completo = $_POST["nombre_completo"] ?? '';
     $usuario = $_POST["usuario"] ?? '';
     $contrasena = $_POST["contrasena"] ?? '';
     $rol = $_POST["rol"] ?? '';
-    $estado = $_POST["estado"] ?? 'Activo';
+    $estado = $_POST["estado"] ?? 'activo';
     $creado_por = $_POST["creado_por"] ?? 'sistema';
 
-    if (isset($_POST["actualizar"])) {
-        $id_actualizar = $_POST["id"];
-        $usuarioDB->update($id_actualizar, $nombre_completo, $usuario, $contrasena, $rol, $estado, $creado_por);
-        header("Location: Usuarios.php");
+    if (isset($_POST['eliminar'])) {
+        $usuarioDB->delete($_POST['eliminar']);
+        if ($usuarioDB->count() == 0) $usuarioDB->resetAutoIncrement();
+        header("Location: Usuarios.php?status=eliminado");
         exit;
-    } elseif (isset($_POST["guardar"])) {
+    }
+
+    if (isset($_POST["guardar"])) {
         $usuarioDB->insert($nombre_completo, $usuario, $contrasena, $rol, $estado, $creado_por);
-        header("Location: Usuarios.php");
+        header("Location: Usuarios.php?status=creado");
+        exit;
+    }
+
+    if (isset($_POST["actualizar"])) {
+        $usuarioDB->update($_POST["id"], $nombre_completo, $usuario, $contrasena, $rol, $estado, $creado_por);
+        header("Location: Usuarios.php?status=actualizado");
         exit;
     }
 }
+require_once '../caja/config.php';
 
-// Eliminar
-if (isset($_POST['eliminar'])) {
-    $id = $_POST['eliminar'];
-    $usuarioDB->delete($id);
-
-    if ($usuarioDB->count() == 0) {
-        $usuarioDB->resetAutoIncrement();
-    }
-
-    header("Location: Usuarios.php");
-    exit;
-}
-
-// Consultar todos los usuarios
-$usuarios = $usuarioDB->getAll();
+$estadoCaja = getCajaEstado();
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Gestión de Usuarios</title>
-    <link rel="stylesheet" href="styless.css"/>
-    <link rel="stylesheet" href="styles.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Usuarios - POSNOVA</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
-    <div class="app-container" id="appContainer">
-        <aside class="sidebar">
-            <div class="logo">
-                <button class="sidebar-toggle-btn" id="sidebarToggleBtn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <span>POSNOVA</span>
-            </div>
-            <nav>
-                <ul>
-                    <li onclick="location.href='../Menu/index.php'"><i class="fas fa-home"></i> <span>Menú principal</span></li>
-                    <li onclick="location.href='../inventario/inventario.html'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
-                    <li onclick="location.href='../ventas/index.php'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
-                    <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
-                    <li onclick="location.href='../proveedores/index.php'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
-                    <li onclick="location.href='../caja/index.html'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
-                    <li onclick="location.href='../reportes/index.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
-                    <li onclick="location.href='../usuarios/Usuarios.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
-                    <li onclick="location.href='../configuracion/config.php'"><i class="fas fa-cog"></i> <span>Configuración</span></li>
-                </ul>
-            </nav>
-        </aside>
-
-        <div class="main-content">
-            <header class="topbar">
-                <div class="title">
-                    <h2><i class="fas fa-user-cog"></i> <span>Usuarios</span></h2>
-                </div>
-                <div class="topbar-icons">
-                    <i class="fas fa-bell"></i>
-                    <i class="fas fa-user-circle"></i>
-                    <i class="fas fa-right-from-bracket logout" onclick="location.href='../login/logout.php'"></i>
-                </div>
-            </header>
-            <section>
-                <h2><?= $editando ? 'Editar Usuario' : 'Registro de Usuarios' ?></h2>
-                <div class="contenedor">
-                    <form method="POST">
-                        <input type="hidden" name="id" value="<?= $edit_id ?>">
-
-                        <label>Nombre completo:</label>
-                        <input type="text" name="nombre_completo" value="<?= htmlspecialchars($nombre_completo) ?>" required>
-
-                        <label>Usuario:</label>
-                        <input type="text" name="usuario" value="<?= htmlspecialchars($usuario) ?>" required>
-
-                        <label>Contraseña:</label>
-                        <div style="position:relative; display:flex; align-items:center;">
-                            <input type="password" name="contrasena" id="contrasenaInput" value="<?= htmlspecialchars($contrasena) ?>" required style="padding-right:50px;">
-                            <button type="button" id="togglePwd" style=" right:10px; color:black; background:none; padding:5px; border:none; cursor:pointer;">
-                                <i id="eyeIcon" class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <div class="form-row-modal-horizontal">
-                            <label>Rol:</label>
-                            <select name="rol" class="input-field select-rol" required>
-                                <option value=""></option>
-                                <option value="Administrador" <?= $rol=="Administrador"?"selected":"" ?>>Administrador</option>
-                                <option value="Cajero" <?= $rol=="Cajero"?"selected":"" ?>>Cajero</option>
-                                <option value="Supervisor" <?= $rol=="Supervisor"?"selected":"" ?>>Supervisor</option>
-                            </select>
-
-                            <label>Estado:</label>
-                            <select name="estado" class="input-field select-rol" required>
-                                <option value=""></option>
-                                <option value="Activo" <?= $estado=="activo"?"selected":"" ?>>Activo</option>
-                                <option value="Inactivo" <?= $estado=="inactivo"?"selected":"" ?>>Inactivo</option>
-                            </select>
-
-                            <label>Creado por:</label>
-                            <select name="creado_por" class="input-field select-rol" required>
-                                <option value=""></option>
-                                <option value="Administrador" <?= $creado_por=="Administrador"?"selected":"" ?>>Administrador</option>
-                                <option value="Supervisor" <?= $creado_por=="Supervisor"?"selected":"" ?>>Supervisor</option>
-                                <option value="sistema" <?= $creado_por=="sistema"?"selected":"" ?>>Sistema</option>
-                            </select>
-                        </div>
-                        
-
-                        <?php if ($editando): ?>
-                            <button type="submit" name="actualizar">Actualizar</button>
-                            <a href="Usuarios.php" style="margin-left: 10px;">Cancelar</a>
-                        <?php else: ?>
-                            <button type="submit" name="guardar">Guardar</button>
-                        <?php endif; ?>
-                    </form>
-                </div>
-
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre completo</th>
-                        <th>Usuario</th>
-                        <th>Contraseña</th>
-                        <th>Rol</th>
-                        <th>Estado</th>
-                        <th>Fecha creación</th>
-                        <th>Creado por</th>
-                        <th>Acciones</th>
-                    </tr>
-                    <?php foreach ($usuarios as $row): ?>
-                        <tr>
-                            <td><?= $row['id'] ?></td>
-                            <td><?= htmlspecialchars($row['nombre_completo']) ?></td>
-                            <td><?= htmlspecialchars($row['usuario']) ?></td>
-                            <td><?= htmlspecialchars($row['contrasena']) ?></td>
-                            <td><?= htmlspecialchars($row['rol']) ?></td>
-                            <td><?= htmlspecialchars($row['estado']) ?></td>
-                            <td><?= htmlspecialchars($row['fecha_creacion']) ?></td>
-                            <td><?= htmlspecialchars($row['creado_por']) ?></td>
-                            <td class="acciones">
-                                <form method="post" action="Usuarios.php" style="display:inline;">
-                                    <input type="hidden" name="editar" value="<?= $row['id'] ?>">
-                                    <button type="submit" style="background:#32475a; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Editar</button>
-                                </form>
-                                <form method="post" action="Usuarios.php" style="display:inline;" onsubmit="return confirm('¿Eliminar este usuario?');">
-                                    <input type="hidden" name="eliminar" value="<?= $row['id'] ?>">
-                                    <button type="submit" style="background:#32475a; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </table>
-            </section>
-        </div>
+<div class="app-container" id="appContainer">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <button class="sidebar-toggle-btn" id="sidebarToggleBtn"><i class="fas fa-bars"></i></button>
+      <span>POSNOVA</span>
     </div>
-    <script src="main.js"></script>
-    <script src="script.js"></script>
+    <nav>
+      <ul>
+        <li onclick="location.href='../Menu/'"><i class="fas fa-home"></i> <span>Menu principal</span></li>
+        <li onclick="location.href='../inventario/inventario.php'"><i class="fas fa-boxes"></i> <span>Inventario</span></li>
+        <li onclick="location.href='../ventas/'"><i class="fas fa-shopping-cart"></i> <span>Ventas</span></li>
+        <li onclick="location.href='../clientes/clientes.php'"><i class="fas fa-users"></i> <span>Clientes</span></li>
+        <li onclick="location.href='../proveedores/'"><i class="fas fa-truck"></i> <span>Proveedores</span></li>
+        <li onclick="location.href='<?= ($estadoCaja === 'cerrada') ? '../caja/abrir_caja_final/' : '../caja/' ?>'"><i class="fas fa-cash-register"></i> <span>Caja</span></li>
+        <li onclick="location.href='../reportes/reportes.php'"><i class="fas fa-chart-line"></i> <span>Reportes</span></li>
+        <li onclick="location.href='../usuarios/Usuarios.php'"><i class="fas fa-user-cog"></i> <span>Usuarios</span></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="main-content">
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="title">
+          <h2><i class="fas fa-user-cog"></i> Usuarios</h2>
+        </div>
+        <div class="topbar-icons">
+          
+          <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt me-2"></i>
+                    </button>
+        </div>
+      </header>
+
+      <div class="main-panel">
+        <div class="panel-header">
+          <h3 class="panel-title">Lista de Usuarios</h3>
+          
+          <div class="action-buttons" id="actionButtons">
+            <button class="btn-editar" id="btnEditar" style="display:none">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <form method="post" style="display:inline;" id="formEliminar">
+              <input type="hidden" name="eliminar" id="eliminarId">
+              <button type="submit" class="btn-eliminar" id="btnEliminar" style="display:none">
+                <i class="fas fa-trash"></i> Eliminar
+              </button>
+            </form>
+          </div>
+          <button class="btn-agregar" id="btnAgregarUsuario">
+            <i class="fas fa-user-plus"></i> Agregar Usuario
+          </button>
+        </div>
+        <div class="buscador-pastilla" id="buscadorUsuarios">
+          <i class="fas fa-search"></i>
+          <input type="text" id="buscarInput" placeholder="Buscar usuario, rol, estado...">
+        </div>
+
+
+        <div style="overflow-x:auto;">
+          <table class="tabla-usuarios">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Usuario</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Contraseña</th>
+                <th>Fecha Creación</th>
+                <th>Creado por</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($usuarios as $u): ?>
+                <tr data-id="<?= $u['id'] ?>"
+                    data-nombre="<?= htmlspecialchars($u['nombre_completo']) ?>"
+                    data-usuario="<?= htmlspecialchars($u['usuario']) ?>"
+                    data-rol="<?= htmlspecialchars($u['rol']) ?>"
+                    data-estado="<?= htmlspecialchars($u['estado']) ?>"
+                    data-creado="<?= htmlspecialchars($u['creado_por']) ?>">
+                  <td><?= htmlspecialchars($u['nombre_completo']) ?></td>
+                  <td><?= htmlspecialchars($u['usuario']) ?></td>
+                  <td><?= htmlspecialchars($u['rol']) ?></td>
+                  <td><?= htmlspecialchars($u['estado']) ?></td>
+                  <td>
+                    <div class="campo-password">
+                      <input type="password" value="<?= htmlspecialchars($u['contrasena']) ?>" disabled>
+                      <button type="button" class="btn-ver" title="Mostrar contraseña">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </div>
+                  </td>
+                  <td><?= date("d/m/Y", strtotime($u['fecha_creacion'])) ?></td>
+                  <td><?= htmlspecialchars($u['creado_por']) ?></td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div id="modalUsuario" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close" id="btnCerrarModal">&times;</span>
+    <h2 id="modalTitulo">Nuevo Usuario</h2>
+    <form class="formulario-usuario" method="post" id="formUsuario">
+      <input type="hidden" name="id" id="idUsuario">
+
+      <div class="form-grid">
+        <div>
+          <label for="nombre"><i class="fas fa-user"></i> Nombre completo</label>
+          <input type="text" name="nombre_completo" id="nombre" placeholder="Ej: Juan Pérez" required>
+        </div>
+        <div>
+          <label for="usuario"><i class="fas fa-id-badge"></i> Nombre de usuario</label>
+          <input type="text" name="usuario" id="usuario" placeholder="Ej: juanp" required>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div>
+          <label for="rol"><i class="fas fa-user-shield"></i> Rol</label>
+          <select name="rol" id="rol" required>
+            <option value="">Seleccionar</option>
+            <option value="Administrador">Administrador</option>
+            <option value="Cajero">Cajero</option>
+            <option value="Supervisor">Supervisor</option>
+          </select>
+        </div>
+        <div>
+          <label for="estado"><i class="fas fa-toggle-on"></i> Estado</label>
+          <select name="estado" id="estado" required>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="passwordSection">
+        <label id="passwordLabel" for="contrasena"><i class="fas fa-lock"></i> Contraseña</label>
+        <input type="password" name="contrasena" id="contrasena" placeholder="Escribe una contraseña">
+        <button type="button" id="togglePassword">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+
+      <button type="submit" name="guardar" class="btn btn-primary" id="btnSubmit">
+        <i class="fas fa-save"></i> Guardar
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- JS externo -->
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,661 @@
+/* Estilos generales */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: #f4f7f6;
+    display: flex;
+    height: 100vh;
+}
+
+.app-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #ffffff; /* Color oscuro para la sidebar */
+    color: #333; /* Color de texto claro */
+    padding: 20px 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.3s ease;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    position: relative; /* Para posicionar el botón si es necesario */
+}
+
+.app-container.collapsed .sidebar {
+    width: 60agpx; /* Ancho reducido cuando está colapsada */
+}
+
+.logo {
+    display: flex; /* Usar flexbox para alinear el botón y el texto */
+    align-items: center;
+    justify-content: center; /* Centrar el contenido del logo */
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #3498db; /* Color de acento para el logo */
+    padding: 0 10px; /* Añadir padding para que el botón no toque el borde */
+}
+
+.logo span {
+    transition: opacity 0.3s ease, width 0.3s ease; /* Transición para el texto del logo */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se desborda */
+    width: auto; /* Ancho automático por defecto */
+}
+
+.app-container.collapsed .logo span {
+    opacity: 0; /* Oculta el texto del logo con una transición suave */
+    width: 0; /* Colapsa el espacio del texto */
+    margin-left: -15px; /* Ajusta el margen para que el botón se mueva */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 8px;
+    margin: 5px 10px;
+}
+
+nav ul li:hover {
+    background-color: #34495e; /* Color al pasar el ratón */
+    color: #ffffff;
+}
+
+nav ul li i {
+    margin-right: 15px;
+    font-size: 18px;
+    width: 20px; /* Asegura un ancho fijo para los iconos */
+    text-align: center;
+}
+
+/* Estilos cuando la barra lateral está colapsada */
+.app-container.collapsed nav ul li {
+    justify-content: center; /* Centra los iconos */
+    padding: 15px 0; /* Ajusta el padding, eliminando el padding horizontal */
+    margin: 5px 0; /* Elimina los márgenes horizontales */
+    width: 100%; /* Ocupa el 100% del ancho de la sidebar colapsada */
+    box-sizing: border-box; /* Incluye el padding en el cálculo del ancho */
+}
+
+.app-container.collapsed nav ul li i {
+    margin-right: 0; /* Elimina el margen a la derecha del icono */
+}
+nav ul li span {
+    transition: opacity 0.3s ease, width 0.3s ease; /* Transición para el texto del menú */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden; /* Oculta el texto que se desborda */
+    width: auto; /* Ancho automático por defecto */
+}
+
+.app-container.collapsed nav ul li span {
+    opacity: 0; /* Oculta el texto del menú con una transición suave */
+    width: 0; /* Colapsa el espacio del texto */
+}
+
+/* Contenido principal */
+.main-content {
+    flex-grow: 1;
+    background-color: #324759;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Evita el scroll dentro del main content si no es necesario */
+    transition: margin-left 0.3s ease; /* Transición para el margen izquierdo */
+    color: #ffffff; /* Color de texto claro para el contenido principal */
+    max-height: 100vh;
+    overflow-y: auto;
+}
+
+.app-container.collapsed .main-content {
+    margin-left: 0; /* Ajusta el margen cuando la sidebar está colapsada */
+}
+
+/* Topbar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.topbar .title h2 {
+    margin: 0;
+    color: #333;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+}
+
+.topbar .title h2 i {
+    margin-right: 10px;
+    color: #3498db;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(231, 76, 60, 0.1);
+    transform: scale(1.1);
+}
+
+/* Botón de toggle de la sidebar */
+.sidebar-toggle-btn {
+    background: none;
+    border: none;
+    color: #333; /* Color blanco para el botón en la sidebar */
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 15px; /* Espacio entre el botón y el texto del logo */
+    transition: color 0.2s ease;
+}
+
+.sidebar-toggle-btn:hover {
+    color: #369AD9;
+}
+
+section {
+    flex-grow: 1;
+    padding: 25px;
+    overflow-y: auto; /* Permite el scroll dentro de la sección si el contenido es largo */
+}
+
+.historial-container {
+  background-color: #2c3e50;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+}
+
+.busqueda {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+select {
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.boton-azul, .boton-verde {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.boton-azul {
+  background-color: #3498db;
+}
+
+.boton-verde {
+  background-color: #1abc9c;
+}
+
+.acciones-reportes {
+  margin-left: auto;
+  display: flex;
+  gap: 15px;
+}
+
+.acciones-reportes button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  color: black;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 8px;
+}
+
+thead {
+  background-color: #34495e;
+  color: white;
+}
+
+a {
+  color: #2980b9;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.resumen {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: white;
+}
+
+
+
+/* SEGUNDA PARTE DEL CODIGO*/
+
+
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #2c3e50; /* Un gris azulado oscuro como el fondo de las imágenes */
+    color: #ecf0f1; /* Texto claro para contrastar con el fondo oscuro */
+}
+
+.container {
+    background-color: #34495e; /* Un gris azulado un poco más claro que el fondo */
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 20px auto;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding-bottom: 30px; /* Espacio extra para los botones de paginación */
+}
+
+/* Sección de encabezado (filtros y botones de acción) */
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Alinea los elementos al final */
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+    gap: 15px; /* Espacio entre los grupos de elementos */
+}
+
+.search-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Permite que los controles de búsqueda se envuelvan */
+}
+
+.search-controls label {
+    font-weight: bold;
+    white-space: nowrap; /* Evita que el texto se rompa */
+    color: #ecf0f1; /* Color de texto para el label */
+}
+
+.search-controls input[type="text"] {
+    padding: 8px 12px;
+    border: 1px solid #5a6268; /* Borde gris oscuro */
+    border-radius: 4px;
+    font-size: 1rem;
+    min-width: 250px; /* Ancho un poco mayor para el campo de búsqueda unificado */
+    background-color: #4a6078; /* Fondo más oscuro para los inputs */
+    color: #ecf0f1; /* Texto claro en los inputs */
+}
+.search-controls input[type="date"] {
+    padding: 8px 12px 8px 38px;
+    border: 1px solid #5a6268;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #4a6078;
+    color: #ecf0f1;
+    position: relative;
+    background-image: url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/svgs/solid/calendar-days.svg');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 18px 18px;
+    transition: border-color 0.2s;
+}
+
+.search-controls input[type="date"]:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #5a7ca3;
+}
+
+/* Opcional: cambia el color del icono al enfocar */
+.search-controls input[type="date"]:focus {
+    background-image: url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/svgs/solid/calendar-check.svg');
+}
+
+.search-controls input::placeholder {
+    color: #bdc3c7; /* Color de placeholder más claro */
+}
+
+.filter-btn {
+    background-color: #007bff; /* Azul */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.filter-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Permite que los botones de acción se envuelvan */
+}
+
+.search-controls input[type="date"] {
+    padding: 8px 12px 8px 38px;
+    border: 1px solid #5a6268;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #4a6078;
+    color: #ecf0f1;
+    position: relative;
+    background-image: url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/svgs/solid/calendar-days.svg');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    background-size: 18px 18px;
+    transition: border-color 0.2s;
+}
+
+.search-controls input[type="date"]:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #5a7ca3;
+}
+
+/* Opcional: cambia el color del icono al enfocar */
+.search-controls input[type="date"]:focus {
+    background-image: url('https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/svgs/solid/calendar-check.svg');
+}
+
+/* Mejoras para los botones de acción (Exportar, Imprimir) */
+.icon-btn {
+    background-color: #4a6078; /* Un gris azulado para los botones por defecto */
+    color: white;
+    padding: 5px 10px; /* Reducimos el padding */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem; /* Fuente un poco más pequeña */
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Espacio entre icono y texto */
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-align: center;
+    white-space: nowrap; /* Evita que el texto se rompa */
+}
+
+.icon-btn i {
+    font-size: 1.2rem; /* Iconos un poco más grandes */
+    margin: 0; /* Aseguramos que no haya margen extra */
+}
+
+/* Colores específicos para los botones de acción */
+.pdf-btn {
+    background-color: #dc3545; /* Rojo para PDF */
+}
+.excel-btn {
+    background-color: #28a745; /* Verde para Excel */
+}
+.print-btn {
+    background-color: #007bff; /* Azul para Imprimir */
+}
+
+.icon-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+
+/* Controles de tabla (flechas) */
+.table-controls {
+    display: flex;
+    justify-content: flex-start; /* Alinea a la izquierda como en la imagen */
+    margin-bottom: 15px;
+    gap: 8px;
+}
+
+.arrow-btn {
+    background-color: #67ccca; /* Gris azulado para los botones de flecha */
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.arrow-btn:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+/* Tabla de datos */
+.table-responsive {
+    max-height: 500px; /* Altura máxima para la tabla para scroll vertical */
+    overflow-y: auto; /* Agrega scroll vertical si el contenido excede la altura */
+    overflow-x: auto; /* Agrega scroll horizontal si la tabla es muy ancha */
+    margin-bottom: 20px;
+    background-color: #fff; /* Fondo blanco para la tabla */
+    border-radius: 8px; /* Bordes redondeados del contenedor */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+    border: 1px solid #ddd; /* Un borde sutil para el contenedor de la tabla */
+}
+
+table {
+    width: 100%; /* La tabla ocupa el 100% del ancho de su contenedor */
+    min-width: 800px; /* Define un ancho mínimo para la tabla para forzar el scroll horizontal */
+    border-collapse: collapse; /* Asegura que no haya espacios entre celdas */
+}
+
+table th,
+table td {
+    padding: 12px 15px;
+    text-align: left;
+    color: #333; /* Texto oscuro para la tabla */
+    white-space: nowrap; /* Evita que el texto de las celdas se rompa, forzando el scroll horizontal */
+}
+
+table thead th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #0056b3;
+}
+
+/* Añadimos un borde inferior a las filas del cuerpo de la tabla para simular la separación */
+table tbody tr {
+    border-bottom: 1px solid #eee; /* Borde más claro para separar filas */
+}
+
+table tbody tr:last-child {
+    border-bottom: none; /* No hay borde en la última fila para que la tabla se vea limpia al final */
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Rayado para filas alternas */
+}
+
+table tbody tr:hover {
+    background-color: #e2f4ff; /* Un azul muy claro al pasar el ratón */
+}
+
+/* Checkbox en la tabla */
+table td input[type="checkbox"] {
+    transform: scale(1.2); /* Aumenta un poco el tamaño del checkbox */
+    cursor: pointer;
+}
+
+/* Botón "Ver detalles" en la tabla */
+.view-details-btn {
+    background-color: #6c757d; /* Gris */
+    color: white;
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.view-details-btn:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+/* Paginación y Resumen */
+
+
+
+.pagination button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 8px 18px;
+    margin: 0 4px;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    transition: background 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.pagination button:disabled {
+    background-color: #b0b8c1;
+    color: #e9ecef;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-2px) scale(1.04);
+}
+
+
+.pagination #pageInfo{
+    font-weight: bold;
+    color: #007bff; /* Azul para el texto de paginación */
+    white-space: nowrap;
+}
+
+.summary {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+}
+
+
+/* Scrollbar global para toda la página */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+}
+
+/* Elimina cualquier max-height y overflow-y en los contenedores principales */
+.app-container,
+.main-content,
+.container {
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-controls,
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .search-controls input,
+    .search-controls select,
+    .filter-btn,
+    .icon-btn {
+        width: 100%;
+        box-sizing: border-box; /* Asegura que padding y border no aumenten el ancho */
+        flex-direction: row; /* Icono y texto en fila para móviles */
+        justify-content: center;
+    }
+
+    .icon-btn i {
+        margin-right: 8px; /* Espacio entre icono y texto en móvil */
+    }
+
+    .pagination-summary {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .summary {
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 10px;
+    }
+    
+    table {
+        min-width: unset; /* Desactiva el min-width en móviles para que se adapte */
+    }
+}

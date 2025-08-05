@@ -213,6 +213,21 @@ nav ul li span {
     align-items: center;
 }
 
+.logout-btn {
+    background: none;
+    border: none;
+    color: #e74c3c !important;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(231, 76, 60, 0.1);
+    transform: scale(1.1);
+}
 .topbar .title h2 i {
     margin-right: 10px;
     color: #3498db;
@@ -223,17 +238,7 @@ nav ul li span {
     align-items: center;
 }
 
-.topbar-icons i {
-    font-size: 20px;
-    margin-left: 20px;
-    color: #555;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
 
-.topbar-icons i:hover {
-    color: #369AD9;
-}
 
 /* Botón de toggle de la sidebar */
 .sidebar-toggle-btn {
